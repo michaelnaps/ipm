@@ -37,7 +37,6 @@ U = [0;u];
 ddq = M\(U - C - G);
 
 dx = [dq1;dq2;ddq];
-disp(dx)
 
 end
 
