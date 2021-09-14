@@ -1,3 +1,14 @@
+%% Project: LIPM_2d_2link
+%  Created by: Michael Napoli
+%  Created on: 9/14/2021
+
+%  Purpose: Model and stabilize an underactuated
+%           linear inverted pendulum system made up
+%           of two connected rods.
+%
+%           The system will be contrtolled via
+%           the torque input on the bottom rod.
+
 clc;clear;
 close all;
 
