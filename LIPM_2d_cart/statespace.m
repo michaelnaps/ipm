@@ -12,5 +12,5 @@ function [dq] = statespace(q, u)
     ddq = [u / (mc + mb);
           (x2 * x4 * cos(x3) - g * cos(x3))/(l + 1)];
 
-    dq = [x1; x3; ddq];
+    dq = [x2; ddq(1); x4; ddq(2)];
 end

@@ -18,7 +18,7 @@ th = [pi/2; 0.1];      % angular position and velocity
 q0 = [s; th];           % state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace_sol(q, 0), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q, 0), [0 T], q0);
 
 % plot angular and linear velocities
 figure(1)
