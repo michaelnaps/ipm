@@ -17,7 +17,7 @@ T  = 30;                % time span
 
 % initial variables, vertical rod
 th1_0 = [pi/2; 0.01];      % angle 1 - position and vel.
-th2_0 = [00; 0];      % angle 2 - position and vel.
+th2_0 = [0; 0];      % angle 2 - position and vel.
 th0 = [th1_0; th2_0];   % state space
 
 % solve nonlinear function using ode45
