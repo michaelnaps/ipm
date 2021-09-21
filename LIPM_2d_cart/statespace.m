@@ -9,8 +9,7 @@ function [dq] = statespace(q, u)
     x3 = q(3);
     x4 = q(4);
     
-    ddq = [u / (mc + mb);
-          (x2 * x4 * cos(x3) - g * cos(x3))/(l + 1)];
-
-    dq = [x2; ddq(1); x4; ddq(2)];
+    dq = [x2; 0; x4; 0];
+    dq(2) = u / mc - (mb / mc) * g * x3;
+    dq(4) = u / (mc * l) + g / (mc * l) * (mc + mb) * x3;
 end
