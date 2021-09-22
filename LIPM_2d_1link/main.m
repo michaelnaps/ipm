@@ -11,19 +11,20 @@ clc;clear;
 close all;
 
 % time span and initial state variables
-T = 50000;                 % [s]
-th0 = [pi/2, 0.1];      % joint pos and joint vel
+T = 100;                 % [s]
+th0 = [3*pi/2, 0.1];     % joint pos and joint vel
 
 % solve nonlinear state space
 [t,q] = ode45(@(t,q) statespace(q,0), [0 T], th0);
 
-% velocity and position plots
+% angular position
 figure(1)
 hold on
 plot(t, q(:,1));
 title('Angular Position')
 hold off
 
+% angular velocity
 figure(2)
 hold on
 plot(t, q(:,2));
