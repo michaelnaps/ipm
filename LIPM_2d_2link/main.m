@@ -12,16 +12,16 @@
 clc;clear;
 close all;
 
-%% Task 2(a): simulation of the dynamics equation
-T  = 10;                % time span
+% time span
+T  = 10;
 
 % initial variables, vertical rod
 th1_0 = [pi/2; 0];      % angle 1 - position and vel.
-th2_0 = [0; 0.01];      % angle 2 - position and vel.
+th2_0 = [pi/2; 0.01];      % angle 2 - position and vel.
 th0 = [th1_0; th2_0];   % state space
 
 % solve nonlinear function using ode45
-[t, q] = ode45(@(t, q) statespace(t, q), [0 T], th0);
+[t, q] = ode45(@(t, q) statespace(q, 0), [0 T], th0);
 
 % plot values for theta 1 and 2
 % theta 1
@@ -44,4 +44,4 @@ hold off
 
 % run animation for double-arm inverted pendulum
 % animation(q', 0.01);
-% animation([q(:,1), q(:,3), q(:,2), q(:,4)]', 0.01);
+animation([q(:,1), q(:,3), q(:,2), q(:,4)]', 0.01);
