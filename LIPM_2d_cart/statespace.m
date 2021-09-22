@@ -1,4 +1,4 @@
-function [dq] = statespace(q, u)
+function [dx] = statespace(q, u)
     mc = 10;
     mb = 1;
     l = 1;
@@ -9,7 +9,8 @@ function [dq] = statespace(q, u)
     x3 = q(3);
     x4 = q(4);
     
-    dq = [x2; 0; x4; 0];
-    dq(2) = u / mc - (mb / mc) * g * x3;
-    dq(4) = u / (mc * l) + g / (mc * l) * (mc + mb) * x3;
+    dx = [x2; 0; x4; 0];
+    
+    dx(2) = u / (mc + mb);    
+    dx(4) = (x2 * x4 * sin(x3) - g * cos(x3)) / l;
 end
