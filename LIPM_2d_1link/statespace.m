@@ -1,7 +1,7 @@
 function dq = statespace(th, tao)
     m = 10;     % [kg]
     l = 10;     % [m]
-    g = -9.81;   % [m/s^2]
+    g = 9.81;   % [m/s^2]
     
     q1 = th(1);
     q2 = th(2);

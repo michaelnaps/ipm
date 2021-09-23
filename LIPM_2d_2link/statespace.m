@@ -2,7 +2,7 @@ function [dq] = statespace(th, tao)
     m1 = 10;
     m2 = 10;
     l = 1;
-    g = -9.81;
+    g = 9.81;
     
     q1 = th(1);
     q2 = th(2);

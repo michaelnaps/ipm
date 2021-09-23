@@ -1,4 +1,5 @@
-%% Project: LIPM_2d_cart
+%% Project: Linear Inverted Pendulum Model
+%  Complexity: Cart (actuated by cart movement)
 %  Created by: Michael Napoli
 %  Created on: 9/13/2021
 

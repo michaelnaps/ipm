@@ -1,4 +1,5 @@
-%% Project: LIPM_2d_2link
+%% Project: Linear Inverted Pendulum Model
+%  Complexity: 2 Links (actuated at ground)
 %  Created by: Michael Napoli
 %  Created on: 9/14/2021
 
