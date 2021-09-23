@@ -14,7 +14,7 @@ clc;clear;
 close all;
 
 % time span
-T = 30;
+T = 150;
 
 % initial variables, vertical rod
 th1_0 = [pi/2; 0];      % angle 1 - position and vel.
@@ -24,24 +24,24 @@ th0 = [th1_0; th2_0];   % initial state space values
 % solve nonlinear function using ode45
 [t, q] = ode45(@(t, q) statespace(q, 0), [0 T], th0);
 
-% plot values for theta 1 and 2
-% theta 1
-figure(1)
-hold on
-plot(t, q(:,1))
-plot(t, q(:,3))
-title('Angular Position')
-legend('Theta1', 'Theta2')
-hold off
-
-% theta 2
-figure(2)
-hold on
-plot(t, q(:,2))
-plot(t, q(:,4))
-title('Angular Velocity')
-legend('Theta1', 'Theta2')
-hold off
+% % plot values for theta 1 and 2
+% % theta 1
+% figure(1)
+% hold on
+% plot(t, q(:,1))
+% plot(t, q(:,3))
+% title('Angular Position')
+% legend('Theta1', 'Theta2')
+% hold off
+% 
+% % theta 2
+% figure(2)
+% hold on
+% plot(t, q(:,2))
+% plot(t, q(:,4))
+% title('Angular Velocity')
+% legend('Theta1', 'Theta2')
+% hold off
 
 % run animation for double-arm inverted pendulum
 % animation(q', 0.01);

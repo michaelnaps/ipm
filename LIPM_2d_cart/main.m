@@ -32,14 +32,14 @@ title('Cart Profile')
 legend('Cart Position', 'Cart Velocity') 
 hold off
 
-figure(2)
-hold on
-plot(t, q(:,3))
-plot(t, q(:,4))
-title('Angular Profile')
-legend('Angular Position', 'Angular Velocity') 
-hold off
+% figure(2)
+% hold on
+% plot(t, q(:,3))
+% plot(t, q(:,4))
+% title('Angular Profile')
+% legend('Angular Position', 'Angular Velocity') 
+% hold off
 
-% animate link motion
+% % animate link motion
 n = length(q(:,1));
 animation([q(:,3), zeros(n,1), q(:,4), zeros(n,1)]', 0.01);
