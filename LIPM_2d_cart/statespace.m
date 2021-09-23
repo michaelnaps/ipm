@@ -2,7 +2,7 @@ function [dx] = statespace(q, u)
     mc = 10;
     mb = 1;
     l = 1;
-    g = 9.81;
+    g = -9.81;
     
     x1 = q(1);
     x2 = q(2);
