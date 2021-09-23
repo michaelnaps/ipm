@@ -2,7 +2,7 @@ function [dq] = statespace(th, tao)
     m1 = 10;
     m2 = 10;
     l = 1;
-    g = -9.81;
+    g = 9.81;
     
     q1 = th(1);
     q2 = th(2);
@@ -11,10 +11,8 @@ function [dq] = statespace(th, tao)
     
     dq = [q2; 0; q4; 0];
     
-    dq(2) = (g * sin(q1) - sqrt(2) * q4^2 * sin(q1 + q3) / m1...
-        - l * m2 * g * cos(q1) / m1 + tao) / l;
+    dq(2) = (tao - l * m2 * q4 - m1 * g * cos(q1)...
+        - m2 * g * cos(q1 + q3)) / (l * (m1 + m2));
     
-    T = -sqrt(2) * l * q4^2 * sin(q1+q3) - l * m2 * g * cos(q3);
-    U = 2 * sqrt(2) * l * (cos(q1+q3) + 1);
-    dq(4) = T / U;
+    dq(4) = (-q2 - g * cos(q1 + q3)) / (l * m2);
 end

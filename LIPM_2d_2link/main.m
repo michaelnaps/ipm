@@ -13,12 +13,12 @@ clc;clear;
 close all;
 
 % time span
-T  = 10;
+T = 30;
 
 % initial variables, vertical rod
 th1_0 = [pi/2; 0];      % angle 1 - position and vel.
-th2_0 = [pi/2; 0.01];      % angle 2 - position and vel.
-th0 = [th1_0; th2_0];   % state space
+th2_0 = [0; 0.1];       % angle 2 - position and vel.
+th0 = [th1_0; th2_0];   % initial state space values
 
 % solve nonlinear function using ode45
 [t, q] = ode45(@(t, q) statespace(q, 0), [0 T], th0);
