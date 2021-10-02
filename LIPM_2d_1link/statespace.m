@@ -10,5 +10,6 @@ function dq = statespace(th, u, c)
     kp = sin(1/2 * (q1 - 5*pi/2));
     
     dq = [q2; 
-         (kp * u - c * l * q2 - m * l * g * sin(q1)) / (m * l)];
+         (kp * u - c * l * q2 - m * l * g * sin(q1)) / (m * l)
+         kp];
 end
