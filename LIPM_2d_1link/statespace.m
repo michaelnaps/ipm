@@ -7,5 +7,6 @@ function dq = statespace(th, tao)
     q2 = th(2);
     
     dq = [q2; 
-        (tao - m * g * l * sin(q1)) / (m * l^2)];
+        (tao - m * g * l * cos(q1)) / (m * l^2)];
+        % - g / l * cos(q1)];
 end
