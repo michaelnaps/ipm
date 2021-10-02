@@ -11,26 +11,26 @@ clc;clear;
 close all;
 
 % time span and initial state variables
-T = 30;                 % [s]
-th0 = [pi/2, 0.01];     % joint pos and joint vel
+T = 30;                      % [s]
+th0 = [pi/2 - 0.01, 0];      % joint pos and joint vel
 
 % solve nonlinear state space
 [t,q] = ode45(@(t,q) statespace(q,0), [0 T], th0);
 
-% angular position
-figure(1)
-hold on
-plot(t, q(:,1));
-title('Angular Position')
-hold off
+% % angular position
+% figure(1)
+% hold on
+% plot(t, q(:,1));
+% title('Angular Position')
+% hold off
+% 
+% % angular velocity
+% figure(2)
+% hold on
+% plot(t, q(:,2));
+% title('Angular Velocity')
+% hold off
 
-% angular velocity
-figure(2)
-hold on
-plot(t, q(:,2));
-title('Angular Velocity')
-hold off
-
-% simulate process
+% % simulate process
 n = length(q(:,1));
 animation([q(:,1), zeros(n,1), q(:,2), zeros(n,1)]', 0.01)
