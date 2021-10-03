@@ -13,13 +13,14 @@ clc;clear;
 close all;
 
 % establish state space vectors
-T = 100;                  % time span
-s = [0; 0.1];             % cart position and velocity
-th = [pi/2; 0];      % angular position and velocity
-q0 = [s; th];           % state space
+adj = pi/2;
+T = 30;                  % time span
+s = [0; 0.1];            % cart position and velocity
+th = [pi/2+adj; 0.1];    % angular position and velocity
+q0 = [s; th];            % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q, 0), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q,0,10), [0 T], q0);
 
 % plot angular and linear velocities
 figure(1)
@@ -42,4 +43,4 @@ hold off
 
 % % animate link motion
 n = length(q(:,1));
-animation([q(:,3), zeros(n,1), q(:,4), zeros(n,1)]', 0.01);
+animation([q(:,3)-adj, zeros(n,1), q(:,4)-adj, zeros(n,1)]', 0.01);
