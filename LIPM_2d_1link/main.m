@@ -43,4 +43,4 @@ th0 = [3*pi/2+adj, 0.01, 0];    % joint pos and joint vel
 
 % % simulate process
 n = length(q(:,1));
-animation([q(:,1)-adj, zeros(n,1), q(:,2)-adj, zeros(n,1)]', 0.01);
+animation([q(:,1)-adj, zeros(n,1), q(:,2), zeros(n,1)]', 0.01);
