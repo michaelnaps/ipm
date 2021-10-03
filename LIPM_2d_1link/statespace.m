@@ -7,9 +7,9 @@ function dq = statespace(th, u, c)
     q2 = th(2);
     
     % Proportional Gain Component
-    kp = sin(1/2 * (q1 - 5*pi/2));
+    kp = sin(1/2 * (q1 + pi));
     
     dq = [q2; 
          (kp * u - c * l * q2 - m * l * g * sin(q1)) / (m * l)
-         kp];
+         (kp * u)];
 end
