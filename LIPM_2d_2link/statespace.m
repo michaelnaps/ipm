@@ -1,6 +1,6 @@
-function [dq] = statespace(th, tao)
+function [dq] = statespace(th, u, c)
     m1 = 10;
-    m2 = 10;
+    m2 = m1;
     l = 1;
     g = 9.81;
     
@@ -11,7 +11,7 @@ function [dq] = statespace(th, tao)
     
     dq = [q2; 0; q4; 0];
     
-%     dq(2) = (tao - l * m2 * q4 - m1 * g * cos(q1)...
+%     dq(2) = (u - l * m2 * q4 - m1 * g * cos(q1)...
 %         - m2 * g * cos(q1 + q3)) / (l * (m1 + m2));
 %     
 %     dq(4) = (-q2 - g * cos(q1 + q3)) / (l * m2);
