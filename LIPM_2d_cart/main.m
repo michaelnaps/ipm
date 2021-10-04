@@ -14,24 +14,24 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 10;                  % time span
-s = [0; 10];            % cart position and velocity
-th = [pi/2+adj; 0.1];    % angular position and velocity
-q0 = [s; th];            % initial state space
+T = 60;                  % time span
+s = [0; 1];            % cart position and velocity
+th = [pi/2+adj; 0];    % angular position and velocity
+q0 = [s; th; 0];            % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q,100000,100,10), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q,2000,100,50), [0 T], q0);
 
-% velocity of cart
-figure(1)
-hold on
-yyaxis left
-plot(t, q(:,2))
+% % velocity of cart
+% figure(1)
+% hold on
+% yyaxis left
+% plot(t, q(:,2))
 % yyaxis right
 % plot(t, q(:,1))
-title('Cart Profile')
+% title('Cart Profile')
 % legend('Cart Velocity', 'Cart Position')
-hold off
+% hold off
 
 % % angular position and velocity of pendulum
 % figure(2)
@@ -42,6 +42,15 @@ hold off
 % legend('Angular Position', 'Angular Velocity') 
 % hold off
 
-% % animate link motion
+% % proportional gain vs. angular position
+% figure(3)
+% hold on
+% plot(q(:,5), q(:,1))
+% title('Proportional Gain Plot')
+% xlabel('Kp * Torque [Nm]')
+% ylabel('Angle [rad]')
+% hold off
+
+% animate link motion
 n = length(q(:,1));
 animation([q(:,3)-adj, zeros(n,1), q(:,4)-adj, zeros(n,1)]', 0.01);
