@@ -1,4 +1,4 @@
-function [dq] = statespace(q, u, c)
+function [dq] = statespace(q, u, c1, c2)
     mc = 100;
     mb = 10;
     l = 1;
@@ -10,10 +10,10 @@ function [dq] = statespace(q, u, c)
     q4 = q(4);
     
     % Proportional Gain (from 1-link system)
-    kp = sin(1/2 * (q1 + pi));
+    kp = -sin(1/2 * (q1 + pi));
     
     dq = [q2; 0; q4; 0];
     
-    dq(2) = kp * u / (mc + mb);   
-    dq(4) = (q2 * q4 * sin(q3) - c * l * q4 - mb * l * g * sin(q3)) / (mb * l);
+    dq(2) = (kp * u - c1 * q2) / (mc + mb);   
+    dq(4) = q2 * q4 * sin(q3) - (c2 * l * q4 + mb * l * g * sin(q3)) / (mb * l);
 end
