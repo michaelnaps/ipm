@@ -11,8 +11,8 @@ clc;clear;
 close all;
 
 % time span and initial state variables
-adj = pi/2;              % for animation function adjustment [rad]
-T = 50;                 % [s]
+adj = pi/2;                % for animation function adjustment [rad]
+T = 30;                    % [s]
 th0 = [pi/2+adj, 1, 0];    % joint pos and joint vel
 
 % solve nonlinear state space
