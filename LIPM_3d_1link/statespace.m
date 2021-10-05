@@ -11,5 +11,5 @@ function dq = statespace(q, ut, ua, c)
     dq = [q2
          (ut - c * l * q2 - m * g * l * sin(q1)) / (m * l);
          (q4);
-         (ua - c * l * q4 * sin(q1)) / (m * l * sin(q1))];
+         (ua - c * l * q4 * sin(q1)) / (m * l)];
 end

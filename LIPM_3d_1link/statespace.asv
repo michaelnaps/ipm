@@ -1,7 +1,0 @@
-function dq = statespace(q, ut, ua)
-    m = 100;
-    l = 1;
-    g = 9.81;
-    
-    q1 = 
-end
