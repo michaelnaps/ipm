@@ -32,7 +32,7 @@ th0 = [pi/2+adj, 1, 0];    % joint pos and joint vel
 % title('Angular Velocity')
 % hold off
 
-% % proportional gain vs. angular position
+% % proportional gain vs. position
 % figure(3)
 % hold on
 % plot(q(:,3), q(:,1))
@@ -40,6 +40,10 @@ th0 = [pi/2+adj, 1, 0];    % joint pos and joint vel
 % xlabel('Kp * Torque [Nm]')
 % ylabel('Angle [rad]')
 % hold off
+
+% % gain vs. position equation
+% figure(4)
+% fplot(@(q1) sin(1/2 * (q1 + pi)), [0 6*pi])
 
 % % simulate process
 n = length(q(:,1));
