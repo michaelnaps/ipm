@@ -7,13 +7,25 @@
 %       3-DOF and actuated by the ground connection. Create
 %       conrol system to reach equilibrium at theta = pi/2.
 
+clc;clear;
+close all;
+
 % time span and adjustment angle
 T = 30;
 adj = pi/2;
 
 % initial state space
 % order: 
-q0 = [0, 0, 0, 0];
+q0 = [pi/4+adj, 0.1, pi/4+adj, 0];
 
 % nonlinear state space solver
-[t, q] = ode45(@(t,q) statespace(q,0,0), [0 T], q0);
+% damper is same for both angle directions
+[t, q] = ode45(@(t,q) statespace(q,0,0,50), [0 T], q0);
+
+% animation - theta
+n = length(q(:,1));
+animation([q(:,1)-adj, zeros(n,1), q(:,2), zeros(n,1)]', 0.01, 1);
+
+% % animation - azimuth
+% n = length(q(:,3));
+% animation([q(:,3)-adj, zeros(n,1), q(:,4), zeros(n,1)]', 0.01, 2);
