@@ -16,7 +16,7 @@ function [dq] = statespace(q, u, c1, c2)
     dq(1) = (q2);
     dq(2) = (kp * u - c1 * q2) / (mc + mb); 
     dq(3) = (q4); 
-    dq(4) = (mc * dq(2) * l * (sin(q1) + cos(q1))...
+    dq(4) = (q2 * q4 * sin(q3)...
              - c2 * l * q4 - mb * l * g * sin(q3)) / (mb * l);
     dq(5) = (kp);
        

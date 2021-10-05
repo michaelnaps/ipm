@@ -14,24 +14,24 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 60;                  % time span
-s = [0; 1];            % cart position and velocity
+T = 30;                  % time span
+s = [0; -1];            % cart position and velocity
 th = [pi/2+adj; 0];    % angular position and velocity
 q0 = [s; th; 0];            % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q,2000,100,50), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q,0,100,50), [0 T], q0);
 
-% % velocity of cart
-% figure(1)
-% hold on
-% yyaxis left
-% plot(t, q(:,2))
-% yyaxis right
-% plot(t, q(:,1))
-% title('Cart Profile')
-% legend('Cart Velocity', 'Cart Position')
-% hold off
+% velocity of cart
+figure(1)
+hold on
+yyaxis left
+plot(t, q(:,2))
+yyaxis right
+plot(t, q(:,1))
+title('Cart Profile')
+legend('Cart Velocity', 'Cart Position')
+hold off
 
 % % angular position and velocity of pendulum
 % figure(2)
