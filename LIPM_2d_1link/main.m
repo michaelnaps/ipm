@@ -16,7 +16,7 @@ T = 30;                    % [s]
 th0 = [pi/2+adj, 1, 0];    % joint pos and joint vel
 
 % solve nonlinear state space
-[t,q] = ode45(@(t,q) statespace(q,2000,50), [0 T], th0);
+[t,q] = ode45(@(t,q) statespace(q,50,2000), [0 T], th0);
 
 % % angular position
 % figure(1)
