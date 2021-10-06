@@ -10,13 +10,15 @@
 clc;clear;
 close all;
 
-% time span and initial state variables
-adj = pi/2;                % for animation function adjustment [rad]
-T = 30;                    % [s]
-th0 = [pi/2+adj, 1, 0];    % joint pos and joint vel
+% animation adjustment and time span
+adj = pi/2;  % [rad]
+T = 10;      % [s]
+
+% initial conditions and tracking variables for gains
+q0 = [pi/2+adj; 1; 0; 0; 0];  % joint pos and joint vel
 
 % solve nonlinear state space
-[t,q] = ode45(@(t,q) statespace(q,50,2000), [0 T], th0);
+[t,q] = ode45(@(t,q) statespace(q,50,800,800), [0 T], q0);
 
 % % angular position
 % figure(1)
