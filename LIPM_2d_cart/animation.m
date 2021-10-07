@@ -19,7 +19,7 @@ end
 
 disp = figure;clf;
 hold on;
-
+grid on;
 % axis off;
 plot([-0.05,0.05],[0,0],'k-','LineWidth',2)
 
@@ -49,7 +49,6 @@ for i=1:n
     
     pause(deltaT);
 end
-
-
+hold off
 end
 

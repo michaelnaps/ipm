@@ -14,48 +14,62 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 50;                   % time span
+T = 0:0.01:100;            % time span
 s0 = [0; 0];              % cart position and velocity
 th0 = [pi/2+adj; 0.1];    % angular position and velocity
 q0 = [s0; th0; 0; 0; 0];  % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q,20,2000,2000), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q,50,50,1100,10,0), T, q0);
 
-% % velocity and position of cart
-% figure(1)
-% hold on
-% yyaxis left
-% plot(t, q(:,1))
-% ylabel('Position [m]')
-% yyaxis right
-% plot(t, q(:,2))
-% ylabel('Velocity [m/s]')
-% title('Cart Profile')
-% legend('Pos', 'Vel')
-% hold off
+% final angle at end of simulation
+disp("Final Position of Pendulum: "+q(length(q),3)+" [rad]")
 
-% % angular position and velocity of pendulum
-% figure(2)
-% hold on
-% yyaxis left
-% plot(t, q(:,3))
-% yyaxis right
-% plot(t, q(:,4))
-% title('Angular Profile')
-% legend('Angular Position', 'Angular Velocity') 
-% hold off
+% velocity and position of cart
+figure(1)
+hold on
+yyaxis left
+plot(t, q(:,1))
+ylabel('Position [m]')
+yyaxis right
+plot(t, q(:,2))
+ylabel('Velocity [m/s]')
+title('Cart Profile')
+legend('Pos', 'Vel')
+hold off
 
-% % proportional gain vs. angular position
-% figure(3)
-% hold on
-% plot(q(:,5), q(:,1))
-% title('Proportional Gain Plot')
-% xlabel('Kp * Torque [Nm]')
-% ylabel('Angle [rad]')
-% hold off
+% angular position and velocity of pendulum
+figure(2)
+hold on
+yyaxis left
+plot(t, q(:,3))
+ylabel('Pos [rad]')
+yyaxis right
+plot(t, q(:,4))
+ylabel('Vel [rad/s]')
+title('Angular Profile')
+legend('Angular Position', 'Angular Velocity') 
+hold off
+ 
+% proportional gain vs. angular position
+figure(3)
+hold on
+plot(t, q(:,6))
+title('Proportional Gain Plot')
+ylabel('Kp')
+xlabel('Time [s]')
+hold off
+  
+% integral gain vs. angular position
+figure(4)
+hold on
+plot(t, q(:,7))
+title('Integral Gain Plot')
+ylabel('Ki')
+xlabel('Time [s]')
+hold off
 
 % animate link motion
 n = length(q(:,1));
 animation([q(:,3)-adj, zeros(n,1),...
-             q(:,4)-adj, zeros(n,1)]', 0.01);
+             q(:,4)-adj, zeros(n,1)]', T(2)-T(1));
