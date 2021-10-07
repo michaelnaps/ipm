@@ -14,24 +14,26 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 10;                     % time span
-s0 = [0; 0];                % cart position and velocity
-th0 = [pi/2+adj; 0.1];        % angular position and velocity
-q0 = [s0; th0; 0];          % initial state space
+T = 50;                   % time span
+s0 = [0; 0];              % cart position and velocity
+th0 = [pi/2+adj; 0.1];    % angular position and velocity
+q0 = [s0; th0; 0; 0; 0];  % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q,0,20), [0 T], q0);
+[t, q] = ode45(@(t, q) statespace(q,20,2000,2000), [0 T], q0);
 
-% velocity and position of cart
-figure(1)
-hold on
-yyaxis left
-plot(t, q(:,2))
-yyaxis right
-plot(t, q(:,1))
-title('Cart Profile')
-legend('Cart Velocity', 'Cart Position')
-hold off
+% % velocity and position of cart
+% figure(1)
+% hold on
+% yyaxis left
+% plot(t, q(:,1))
+% ylabel('Position [m]')
+% yyaxis right
+% plot(t, q(:,2))
+% ylabel('Velocity [m/s]')
+% title('Cart Profile')
+% legend('Pos', 'Vel')
+% hold off
 
 % % angular position and velocity of pendulum
 % figure(2)
@@ -53,7 +55,7 @@ hold off
 % ylabel('Angle [rad]')
 % hold off
 
-% % animate link motion
-% n = length(q(:,1));
-% animation([q(:,3)-adj, zeros(n,1),...
-%              q(:,4)-adj, zeros(n,1)]', 0.01);
+% animate link motion
+n = length(q(:,1));
+animation([q(:,3)-adj, zeros(n,1),...
+             q(:,4)-adj, zeros(n,1)]', 0.01);
