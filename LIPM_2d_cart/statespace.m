@@ -24,21 +24,15 @@ function [dq] = statespace(q, c1, c2, kp, ki, kd)
     %% State Space and Controller Variables
     dq = [
          (q2);
-         
          (u - c1 * q2 + mb * sin(q3) * (l * q4^2 - g * cos(q3)))...
-               / (mc + mb * sin(q3)^2);
-               
+               / (mc + mb * sin(q3)^2);               
          (q4);
-         
          (-u * cos(q3) - mb * l * sin(q3) * cos(q3)...
                - (mc + mb) * g * sin(q3)...
                - c2 * l * q4)...
                / (l * (mc + mb * sin(q3)^2));
-               
          (e);   % return for next iteration
-         
          (up);  % for plotting only
-         
          (ui)   % return for next iteration
          ];
 end
