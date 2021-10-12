@@ -10,11 +10,6 @@ function [dq] = statespace(th, u, c)
     q4 = th(4);
     
     dq = [q2; 0; q4; 0];
-    
-%     dq(2) = (u - l * m2 * q4 - m1 * g * cos(q1)...
-%         - m2 * g * cos(q1 + q3)) / (l * (m1 + m2));
-%     
-%     dq(4) = (-q2 - g * cos(q1 + q3)) / (l * m2);
 
     den = l * (2 * m1 + m2 - m2 * cos(2 * q1 - 2 * q3));
     

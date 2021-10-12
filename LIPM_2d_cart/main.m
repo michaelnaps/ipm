@@ -23,7 +23,9 @@ q0 = [s0; th0; 0; 0; 0];  % initial state space
 [t, q] = ode45(@(t, q) statespace(q,50,50,1100,10,0), T, q0);
 
 % final angle at end of simulation
-disp("Final Position of Pendulum: "+q(length(q),3)+" [rad]")
+disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
+disp("Final Position of Pendulum: " + q(length(q),3) + " [rad]")
+disp("Final Velocity of Pendulum: " + q(length(q),4) + " [rad/s]")
 
 % velocity and position of cart
 figure(1)
@@ -51,23 +53,23 @@ title('Angular Profile')
 legend('Angular Position', 'Angular Velocity') 
 hold off
  
-% proportional gain vs. angular position
-figure(3)
-hold on
-plot(t, q(:,6))
-title('Proportional Gain Plot')
-ylabel('Kp')
-xlabel('Time [s]')
-hold off
-  
-% integral gain vs. angular position
-figure(4)
-hold on
-plot(t, q(:,7))
-title('Integral Gain Plot')
-ylabel('Ki')
-xlabel('Time [s]')
-hold off
+% % proportional gain vs. angular position
+% figure(3)
+% hold on
+% plot(t, q(:,6))
+% title('Proportional Gain Plot')
+% ylabel('Kp')
+% xlabel('Time [s]')
+% hold off
+%   
+% % integral gain vs. angular position
+% figure(4)
+% hold on
+% plot(t, q(:,7))
+% title('Integral Gain Plot')
+% ylabel('Ki')
+% xlabel('Time [s]')
+% hold off
 
 % animate link motion
 n = length(q(:,1));
