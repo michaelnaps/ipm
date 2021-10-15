@@ -71,7 +71,7 @@ hold off
 % xlabel('Time [s]')
 % hold off
 
-% animate link motion
-n = length(q(:,1));
-animation([q(:,3)-adj, zeros(n,1),...
-             q(:,4)-adj, zeros(n,1)]', T(2)-T(1));
+% % animate link motion
+% n = length(q(:,1));
+% animation([q(:,3)-adj, zeros(n,1),...
+%              q(:,4)-adj, zeros(n,1)]', T(2)-T(1));
