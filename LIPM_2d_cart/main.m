@@ -20,7 +20,7 @@ th0 = [pi/2+adj; 0.1];    % angular position and velocity
 q0 = [s0; th0; 0; 0; 0];  % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) statespace(q,50,50,1100,10,0), T, q0);
+[t, q] = ode45(@(t, q) pid_control(q,50,50,1100,10,0), T, q0);
 
 % final angle at end of simulation
 disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
