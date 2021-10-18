@@ -1,5 +1,6 @@
 function [dq] = statespace(q, c1, c2, kp, ki, kd)
     %% Setup
+    qd = pi;
     t = 0.1;   % [s], time span
     mc = 100;  % [kg]
     mb = 10;   % [kg]
@@ -11,15 +12,10 @@ function [dq] = statespace(q, c1, c2, kp, ki, kd)
     q2 = q(2);
     q3 = q(3);
     q4 = q(4);
-    e0 = q(5);   % previous error term
-    ui0 = q(7);  % previous value of integrator
     
-    %% PI Controller
-    e = (pi - q3);                     % error
-    up = kp * e;                       % proportional gain
-    ui = ui0 + ki * t / 2 * (e - e0);  % integral gain
-    ud = kd;                           % derivative gain
-    u = up + ui + ud;                  % total input
+    %% PID Controller
+    [up,ui,ud,e] = pid_control(qd,q(3),kp,ki,kd,q(5),q(7),t);
+    u = up + ui + ud;
     
     %% State Space and Controller Variables
     dq = [
