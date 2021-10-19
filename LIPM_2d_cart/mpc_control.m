@@ -14,20 +14,21 @@ function dq = mpc_control(q, P, c1, c2)
 
     %% MPC Controller
     u0 = q(5);  % from previous iteration
-    u_mpc = (u0-10):1:(u0+10);
+    u_mpc = (u0-10):1:(u0+10);  % inputs to consider
     
     % cost function
     %          cart vel.     ang. pos.      ang. vel.     prev. input
     C = @(qc) (0-qc(2))^2 + (pi-qc(3))^2 + (0-qc(4))^2 + (qc(5)-qc(6))^2;
     
     % loop for iteration checks
+    qt = q';
     c = Inf;  % set to Inf so that first value is auto set
     u = NaN;  % to check if input is assigned properly
     for i = 1:length(u_mpc)
-        [t, qt] = ode45(@(t,q) statespace(q,c1,c2), 0:0.5:P, q(1:5));
+        [t, qt] = ode45(@(t,q) statespace(q,c1,c2), 0:0.5:P, [qt(1:4),u_mpc(i)]);
 
         % check for lowest value input
-        q_mpc = [qt(length(qt(:,1)),:), u0];  % final state
+        q_mpc = [qt(length(qt(:,1)),:), u_mpc(i)];  % final state
         if C(q_mpc) < c
             u = q_mpc(5);
             c = C(q_mpc);

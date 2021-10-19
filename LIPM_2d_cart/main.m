@@ -72,11 +72,20 @@ hold off
 % hold off
 
 % plot cost from mpc controller
-figure (5)
+figure(5)
 hold on
 plot(t, q(:,6))
 title('MPC Cost Trend')
 ylabel('Cost')
+xlabel('Time')
+hold off
+
+% plot input variable
+figure(8)
+hold on
+plot(t, q(:,5))
+title('Input')
+ylabel('Magnitude of Input')
 xlabel('Time')
 hold off
 
