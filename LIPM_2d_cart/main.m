@@ -16,11 +16,11 @@ close all;
 adj = pi/2;
 T = 0:0.01:100;            % time span
 s0 = [0; 0];              % cart position and velocity
-th0 = [pi/2+adj; 0.1];    % angular position and velocity
-q0 = [s0; th0; 0; 0; 0];  % initial state space
+th0 = [3*pi/4; 0];    % angular position and velocity
+q0 = [s0; th0; 0; 0];  % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t, q) pid_control(q,50,50,1100,10,0), T, q0);
+[t, q] = ode45(@(t,q) mpc_control(q,1,100,100), T, q0);
 
 % final angle at end of simulation
 disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
@@ -70,6 +70,15 @@ hold off
 % ylabel('Ki')
 % xlabel('Time [s]')
 % hold off
+
+% plot cost from mpc controller
+figure (5)
+hold on
+plot(t, q(:,6))
+title('MPC Cost Trend')
+ylabel('Cost')
+xlabel('Time')
+hold off
 
 % % animate link motion
 % n = length(q(:,1));

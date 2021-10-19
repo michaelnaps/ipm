@@ -1,4 +1,4 @@
-function dq = statespace(q, u)
+function dq = statespace(q, c1, c2)
     %% Setup
     mc = 100;  % [kg]
     mb = 10;   % [kg]
@@ -10,6 +10,7 @@ function dq = statespace(q, u)
     q2 = q(2);
     q3 = q(3);
     q4 = q(4);
+    u  = q(5);
     
     %% State Space
     dq = [
