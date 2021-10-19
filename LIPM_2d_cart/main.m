@@ -14,7 +14,7 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 0:0.01:100;            % time span
+T = 0:0.01:30;            % time span
 s0 = [0; 0];              % cart position and velocity
 th0 = [3*pi/4; 0];    % angular position and velocity
 q0 = [s0; th0; 0; 0];  % initial state space
@@ -72,11 +72,20 @@ hold off
 % hold off
 
 % plot cost from mpc controller
-figure (5)
+figure(5)
 hold on
 plot(t, q(:,6))
 title('MPC Cost Trend')
 ylabel('Cost')
+xlabel('Time')
+hold off
+
+% plot input variable
+figure(8)
+hold on
+plot(t, q(:,5))
+title('Input')
+ylabel('Magnitude of Input')
 xlabel('Time')
 hold off
 
