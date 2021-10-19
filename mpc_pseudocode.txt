@@ -1,0 +1,23 @@
+_________________________________________________________________________
+- create model of system (predefined)
+- create prediction horizon (predefined)
+
+1). evaluate the model in the range of the prediction horizon
+2). calculate cost for each component of the prediction output
+3). optimal point is that where the overall cost is lowest
+4). calculate the input force required to reach optimal conditions
+
+_________________________________________________________________________
+
+Pseudocode:
+create intial state variables
+intialize range of checked input values
+
+for range of possible input values
+  calculate the following state
+  calculate cost of the following state
+  add cost to array of the applicable inputs and cost of each input
+end for loop
+
+evaluate cost array for lowest score
+_________________________________________________________________________
