@@ -16,7 +16,8 @@ function dq = mpc_control(q, P, c1, c2)
     u0 = q(5);  % from previous iteration
     u_mpc = (u0-10):1:(u0+10);
     
-    % changing cost function
+    % cost function
+    %          cart vel.     ang. pos.      ang. vel.     prev. input
     C = @(qc) (0-qc(2))^2 + (pi-qc(3))^2 + (0-qc(4))^2 + (qc(5)-qc(6))^2;
     
     % loop for iteration checks

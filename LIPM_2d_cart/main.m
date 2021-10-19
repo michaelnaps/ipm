@@ -14,7 +14,7 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 0:0.01:100;            % time span
+T = 0:0.01:30;            % time span
 s0 = [0; 0];              % cart position and velocity
 th0 = [3*pi/4; 0];    % angular position and velocity
 q0 = [s0; th0; 0; 0];  % initial state space
