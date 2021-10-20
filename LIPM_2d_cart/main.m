@@ -14,32 +14,34 @@ close all;
 
 % establish state space vectors
 adj = pi/2;
-T = 0:0.01:30;            % time span
+dt = 0.1;                 % change in time
+T = 0:dt:10;              % time span
+p = 2;                    % prediction horizon
 s0 = [0; 0];              % cart position and velocity
-th0 = [3*pi/4; 0];    % angular position and velocity
-q0 = [s0; th0; 0; 0];  % initial state space
+th0 = [3*pi/4; 0];        % angular position and velocity
+q0 = [s0; th0; 0; 0];     % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t,q) mpc_control(q,1,100,100), T, q0);
+[t, q] = ode45(@(t,q) mpc_control(q,p,100,100,dt), T, q0);
 
 % final angle at end of simulation
 disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
 disp("Final Position of Pendulum: " + q(length(q),3) + " [rad]")
 disp("Final Velocity of Pendulum: " + q(length(q),4) + " [rad/s]")
 
-% velocity and position of cart
-figure(1)
-hold on
-yyaxis left
-plot(t, q(:,1))
-ylabel('Position [m]')
-yyaxis right
-plot(t, q(:,2))
-ylabel('Velocity [m/s]')
-title('Cart Profile')
-legend('Pos', 'Vel')
-hold off
-
+% % velocity and position of cart
+% figure(1)
+% hold on
+% yyaxis left
+% plot(t, q(:,1))
+% ylabel('Position [m]')
+% yyaxis right
+% plot(t, q(:,2))
+% ylabel('Velocity [m/s]')
+% title('Cart Profile')
+% legend('Pos', 'Vel')
+% hold off
+% 
 % angular position and velocity of pendulum
 figure(2)
 hold on
@@ -52,7 +54,7 @@ ylabel('Vel [rad/s]')
 title('Angular Profile')
 legend('Angular Position', 'Angular Velocity') 
 hold off
- 
+%  
 % % proportional gain vs. angular position
 % figure(3)
 % hold on
@@ -71,14 +73,14 @@ hold off
 % xlabel('Time [s]')
 % hold off
 
-% plot cost from mpc controller
-figure(5)
-hold on
-plot(t, q(:,6))
-title('MPC Cost Trend')
-ylabel('Cost')
-xlabel('Time')
-hold off
+% % plot cost from mpc controller
+% figure(5)
+% hold on
+% plot(t, q(:,6))
+% title('MPC Cost Trend')
+% ylabel('Cost')
+% xlabel('Time')
+% hold off
 
 % plot input variable
 figure(8)
