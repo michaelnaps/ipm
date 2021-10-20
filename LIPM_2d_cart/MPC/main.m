@@ -6,7 +6,7 @@
 %  Purpose: Model an underactuated linear inverted 
 %           pendulum system connected to a moving
 %           block with the goal of reaching equilibrium
-%           by adjusting the force applied to said
+%            by adjusting the force applied to said
 %           block.
 
 clc;clear;
@@ -16,13 +16,13 @@ close all;
 adj = pi/2;
 dt = 0.1;                 % change in time
 T = 0:dt:10;              % time span
-p = 2;                    % prediction horizon
+p = [dt; 2];                    % prediction horizon
 s0 = [0; 0];              % cart position and velocity
 th0 = [3*pi/4; 0];        % angular position and velocity
 q0 = [s0; th0; 0; 0];     % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t,q) mpc_control(q,p,100,100,dt), T, q0);
+[t, q] = ode45(@(t,q) mpc_control(q,p,5000,100,100), T, q0);
 
 % final angle at end of simulation
 disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")

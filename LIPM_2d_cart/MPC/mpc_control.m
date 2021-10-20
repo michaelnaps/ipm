@@ -1,4 +1,4 @@
-function dq = mpc_control(q, p, c1, c2, dt)
+function dq = mpc_control(q, p, um, c1, c2)
     %% Setup
     mc = 100;  % [kg]
     mb = 10;   % [kg]
@@ -14,7 +14,7 @@ function dq = mpc_control(q, p, c1, c2, dt)
 
 
     %% MPC Controller
-    u_mpc = ((u0-150):10:(u0+150))';  % inputs to consider
+    u_mpc = linspace((u0-um),(u0+um),10)';  % inputs to consider
     
     % cost function: linear quadratic regulator (based on error)
     %          cart vel.     ang. pos.      ang. vel.     prev. input
@@ -25,7 +25,7 @@ function dq = mpc_control(q, p, c1, c2, dt)
     for i = 1:length(u_mpc)
         
         % solve for next state
-        [t,q_mpc] = ode45(@(t,q) statespace(q,c1,c2), 0:dt:p*dt, [q(1:4); u_mpc(i)]);
+        [t,q_mpc] = ode45(@(t,q) statespace(q,c1,c2), 0:1:p, [q(1:4); u_mpc(i)]);
         
         % cost at prediction horizon
         qc = [q_mpc(end,:)'; u_mpc(i)];
