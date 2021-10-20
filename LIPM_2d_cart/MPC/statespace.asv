@@ -19,8 +19,9 @@ function dq = statespace(q, c1, c2)
                / (mc + mb*sin(q3)^2);               
          (q4);
          (-u*cos(q3) - mb*l*q4^2*sin(q3)*cos(q3) - (mc+mb)*g*sin(q3)...
-               - (1+mb/mc)*c2/l*q4 + c1*q2*cos(q3))...
+               - (1+mb/mc)c2/l*q4 + c1*q2*cos(q3))...
                / (l*(mc+mb*sin(q3)^2));
          (u)
-         ];
+         
 end
+
