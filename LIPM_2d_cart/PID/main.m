@@ -78,7 +78,7 @@ figure(5)
 hold on
 plot(t, q(:,6)+q(:,7))
 title('Input')
-ylabel('Magnitude of Input')
+ylabel('Input vs. Time')
 xlabel('Time')
 hold off
 
