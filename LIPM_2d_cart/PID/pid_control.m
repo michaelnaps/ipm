@@ -14,11 +14,13 @@ function [dq] = pid_control(q, c1, c2, kp, ki, kd)
     q4 = q(4);
     
     %% PI Controller
-    e = (qd - q3);                        % error
-    up = kp * e;                          % proportional gain
-    ui = q(7) + ki * t / 2 * (e - q(5));  % integral gain
-    ud = kd;   
-    u = up + ui + ud;
+    e0 = q(5);                      % previous error
+    ui0 = q(7);                     % previous integral input
+    e = (qd - q3);                  % error
+    up = kp * e;                    % proportional gain
+    ui = ui0 + ki * t / 2 * (e - e0);  % integral gain
+    ud = kd;                        % derivative input not in use
+    u = up + ui + ud;               % total input
     
     %% State Space and Controller Variables
     dq = [

@@ -22,7 +22,7 @@ th0 = [pi; 0.1];        % angular position and velocity
 q0 = [s0; th0; 0; 0; 0];     % initial state space
 
 % solve for time dependent solution
-[t, q] = ode45(@(t,q) pid_control(q,50,50,1100,10,0), T, q0);
+[t, q] = ode45(@(t,q) pid_control(q,50,50,1100,100,0), T, q0);
 
 % final angle at end of simulation
 disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
@@ -55,32 +55,32 @@ disp("Final Velocity of Pendulum: " + q(length(q),4) + " [rad/s]")
 % legend('Angular Position', 'Angular Velocity') 
 % hold off
 
-% % proportional gain vs. angular position
-% figure(3)
-% hold on
-% plot(t, q(:,6))
-% title('Proportional Gain Plot')
-% ylabel('Kp')
-% xlabel('Time [s]')
-% hold off
-
-% % integral gain vs. angular position
-% figure(4)
-% hold on
-% plot(t, q(:,7))
-% title('Integral Gain Plot')
-% ylabel('Ki')
-% xlabel('Time [s]')
-% hold off
-
-% plot input variable
-figure(5)
+% proportional input vs. time
+figure(3)
 hold on
-plot(t, q(:,6)+q(:,7))
-title('Input')
-ylabel('Input vs. Time')
-xlabel('Time')
+plot(t, q(:,6))
+title('Proportional Input Plot')
+ylabel('Kp')
+xlabel('Time [s]')
 hold off
+
+% integral input vs. time
+figure(4)
+hold on
+plot(t, q(:,7))
+title('Integral Input Plot')
+ylabel('Ui')
+xlabel('Time [s]')
+hold off
+
+% % plot input variable
+% figure(5)
+% hold on
+% plot(t, q(:,6)+q(:,7))
+% title('Input')
+% ylabel('Input vs. Time')
+% xlabel('Time')
+% hold off
 
 % % animate link motion
 % n = length(q(:,1));
