@@ -1,35 +1,32 @@
-function dq = mpc_control(q, p, um, c1, c2)
+function [T, q] = mpc_control(q0, T, P, um, c1, c2, C)
     %% MPC Controller
-    dt = p(1);
-    P = p(2);
+    dt = T(2) - T(1);
     up = (-um:1:um)';  % inputs to consider
-    
-    % cost function: linear quadratic regulator (based on error)
-    %          cart vel.     ang. pos.      ang. vel.     prev. input
-    C = @(qc) (0-qc(2))^2 + (pi-qc(3))^2 + (0-qc(4))^2;
-    
-    % loop for iteration checks
-    c = Inf;
-    for i = 1:length(up)
+    q = NaN(length(T), length(q0));
+    q(1,:) = q0;
+    for i = 2:length(T)
         
-        % solve for states at next state inputs (unrefined)
-        dqc = statespace([q(1:4); up(i)], c1, c2);
-        qc = [
-              q(1) + P*dt*dqc(1);
-              q(2) + P*dt*dqc(2);
-              q(3) + P*dt*dqc(3);
-              q(4) + P*dt*dqc(4);
-             ];
-        
-        % check cost at end of prediction horizon
-        Cp = C(qc);
-        if (Cp < c)
-            u = up(i);
-            c = Cp;
+        % MPC Loop
+        c = Inf;  % reset every loop
+        for j = 1:length(up)
+            % solve for states at next state inputs (unrefined)
+%             dqc = statespace([q(i-1,1:4)'; up(j)], c1, c2);
+%             qc = q(i-1,1:4) + P*dt*dqc(1:4)';
+            [~, qc] = ode45(@(t,qc) statespace(qc,up(j),c1,c2),...
+                0:dt:P*dt, q(i-1,1:4)');
+
+            % calculate cost
+%             Cp = C([qc, q(i-1,6), up(j)]);
+            for k = 1:P
+                Cp = sum(C(qc(P+1,:)));
+            end
+            
+            % compare new costs
+            if (Cp < c)
+                c = Cp;
+                q(i,:) = [qc(2,:)'; q(i-1,6); up(j); c];  % add optimized state
+            end
         end
         
     end
-    
-    % Return state variables with new inputs
-    dq = [statespace([q(1:4); u], c1, c2); c];
 end
