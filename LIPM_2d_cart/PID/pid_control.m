@@ -1,4 +1,4 @@
-function [dq] = pid_control(q, c1, c2, kp, ki, kd)
+function [dq] = pid_control(q, c1, c2, kp, ki, kd, tau, range)
     %% Setup
     qd = pi;
     t = 0.1;   % [s], time span
@@ -12,15 +12,28 @@ function [dq] = pid_control(q, c1, c2, kp, ki, kd)
     q2 = q(2);
     q3 = q(3);
     q4 = q(4);
+    q3_0 = q(9);
     
     %% PI Controller
-    e0 = q(5);                      % previous error
-    ui0 = q(7);                     % previous integral input
-    e = (qd - q3);                  % error
-    up = kp * e;                    % proportional gain
-    ui = ui0 + ki * t / 2 * (e - e0);  % integral gain
-    ud = kd;                        % derivative input not in use
-    u = up + ui + ud;               % total input
+    e0 = q(5);                          % previous error
+    ui0 = q(7);                         % previous integral input
+    ud0 = q(8);                         % previous derivative input
+    e = (qd-q3);                        % error
+    up = kp*e;                          % proportional gain
+    ui = ui0 + ki*t/2*(e - e0);         % integral gain
+    ud = kd*2/(2*tau-t)*(q3-q3_0)...    % derivative gain
+       + ud0*(2*tau-t)/(2*tau+t);
+    
+    % integrator clamp?
+    
+    % total input
+    u = up + ui + ud;
+    % input limits
+    if u > range
+        u = range;
+    elseif u < -range
+        u = -range;
+    end
     
     %% State Space and Controller Variables
     dq = [
@@ -34,6 +47,8 @@ function [dq] = pid_control(q, c1, c2, kp, ki, kd)
                / (l * (mc + mb * sin(q3)^2));
          (e);   % return for next iteration
          (up);  % for plotting only
-         (ui)   % return for next iteration
+         (ui);  % return for next iteration
+         (ud);  % return for next iteration
+         (q3)
          ];
 end
