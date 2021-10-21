@@ -1,11 +1,12 @@
 function dq = statespace(q, u, c1, c2)
     %% Setup
+    % Constants
     mc = 100;  % [kg]
     mb = 10;   % [kg]
     l = 1;     % [m]
     g = 9.81;  % [m/s^2]
     
-    % Measured/Retained Values
+    % Current State Values
     q1 = q(1);   % not needed for computations
     q2 = q(2);
     q3 = q(3);
