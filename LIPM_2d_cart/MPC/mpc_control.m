@@ -1,7 +1,7 @@
 function [T, q] = mpc_control(q0, T, P, um, c1, c2, C)
     %% MPC Controller
     dt = T(2) - T(1);
-    up = (-um:1:um)';  % inputs to consider
+    up = [0; linspace(-um,um,1000)'];  % inputs to consider
     q = NaN(length(T), length(q0));
     q(1,:) = q0;
     for i = 2:length(T)
@@ -13,7 +13,7 @@ function [T, q] = mpc_control(q0, T, P, um, c1, c2, C)
 %             dqc = statespace([q(i-1,1:4)'; up(j)], c1, c2);
 %             qc = q(i-1,1:4) + P*dt*dqc(1:4)';
             [~, qc] = ode45(@(t,qc) statespace(qc,up(j),c1,c2),...
-                0:dt:P*dt, q(i-1,1:4)');
+                0:dt:P*dt, q(i-1,1:4)'); %, odeset('AbsTol',1e-3));
 
             % calculate cost
 %             Cp = C([qc, q(i-1,6), up(j)]);
@@ -24,9 +24,10 @@ function [T, q] = mpc_control(q0, T, P, um, c1, c2, C)
             % compare new costs
             if (Cp < c)
                 c = Cp;
-                q(i,:) = [qc(2,:)'; q(i-1,6); up(j); c];  % add optimized state
+                % add optimized cost-state to output matrix
+                q(i,:) = [qc(2,:)'; q(i-1,6); up(j); c]; 
             end
-        end
+        end % end of MPC
         
     end
 end
