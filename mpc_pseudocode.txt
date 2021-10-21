@@ -10,14 +10,13 @@ _________________________________________________________________________
 _________________________________________________________________________
 
 Pseudocode:
-create intial state variables
-intialize range of checked input values
-
-for range of possible input values
-  calculate the following state
-  calculate cost of the following state
-  add cost to array of the applicable inputs and cost of each input
-end for loop
-
-evaluate cost array for lowest score
+1|  create initial state variables
+2|  initialize range of checked input values (-max->max)
+3|  for (range of possible input values)
+4|    calculate the following states with constant input (ode45)
+5|    calculate cost of the following state (C)
+6|    if (cost better than previous state)
+7|      add cost to array of the applicable inputs and cost of each input
+8|    end if
+9|  end for
 _________________________________________________________________________
