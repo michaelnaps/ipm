@@ -20,7 +20,7 @@ dt = 0.1;                 % change in time
 T = 0:dt:20;              % time span
 P = 4;                    % prediction horizon
 s0 = [0; 0];              % cart position and velocity
-th0 = [pi; 3.1];          % angular position and velocity
+th0 = [pi; -0.1];         % angular position and velocity
 q0 = [s0;th0;0;0;0];      % initial state space
 
 % Damping Coefficients
@@ -41,18 +41,18 @@ C = @(qc) (pi-qc(3))^2; % + (pd-qc(1))^2; % + (qc(5)-qc(6))^2;
 
 
 %% Graphing and Evaluation
-disp("Final Input on Cart: " + q(length(q),5) + " [N]")
-disp("Final Position of Cart: " + q(length(q),1) + " [m]")
-disp("Final Velocity of Cart: " + q(length(q),2) + " [m/s]")
-disp("Final Position of Pendulum: " + q(length(q),3) + " [rad]")
-disp("Final Velocity of Pendulum: " + q(length(q),4) + " [rad/s]")
+fprintf("Final Input on Cart:        %.4f [N]\n", q(length(q),5))
+fprintf("Final Position of Cart:     %.4f [m]\n", q(length(q),1))
+fprintf("Final Velocity of Cart:     %.4f [m/s]\n", q(length(q),2))
+fprintf("Final Position of Pendulum: %.4f [rad]\n", q(length(q),3))
+fprintf("Final Velocity of Pendulum: %.4f [rad/s]\n", q(length(q),4))
 
 % percent overshoot
 PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
-disp("Percent Overshoot: " + PO + " [%]")
+fprintf("Percent Overshoot:          %.4f [%%]\n\n", PO)
 
 % velocity and position of cart
-figure('Position', [0 0 1400 800])
+figure('Position', [2800 0 1400 800])
 hold on
 subplot(2,2,1)
 yyaxis left

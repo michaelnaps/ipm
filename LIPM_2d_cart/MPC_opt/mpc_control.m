@@ -9,14 +9,11 @@ function [T, q] = mpc_control(q0, T, P, um, c1, c2, C)
         % MPC Loop
         c = Inf;  % reset every loop
         for j = 1:length(up)
-            % solve for states at next state inputs (unrefined)
-%             dqc = statespace([q(i-1,1:4)'; up(j)], c1, c2);
-%             qc = q(i-1,1:4) + P*dt*dqc(1:4)';
+            % solve for states at next state inputs
             [~, qc] = ode45(@(t,qc) statespace(qc,up(j),c1,c2),...
-                0:dt:P*dt, q(i-1,1:4)'); %, odeset('AbsTol',1e-3));
+                0:dt:P*dt, q(i-1,1:4)');
 
             % calculate cost
-%             Cp = C([qc, q(i-1,6), up(j)]);
             for k = 1:P
                 Cp = sum(C(qc(P+1,:)));
             end
