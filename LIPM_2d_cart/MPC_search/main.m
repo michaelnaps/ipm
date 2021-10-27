@@ -9,7 +9,7 @@
 %            by adjusting the force applied to said
 %           block.
 
-clc;clear;
+clear;
 close all;
 
 
@@ -37,8 +37,9 @@ C = @(qc) (pi-qc(3))^2; % + (pd-qc(1))^2; % + (qc(5)-qc(6))^2;
 
 %% Implementation
 % solve for time dependent solution
+tic
 [T, q] = mpc_control(q0, T, P, um, c1, c2, C);
-
+toc
 
 %% Graphing and Evaluation
 disp("Final Input on Cart: " + q(length(q),5) + " [N]")
