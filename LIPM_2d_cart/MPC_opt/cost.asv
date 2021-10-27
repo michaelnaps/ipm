@@ -1,4 +1,7 @@
-function [c, ceq] = cost(q)    
+function [c, ceq] = cost(q)
+    %% Run simulation over next set of points
+    [~, q] = ode45(@(t,q) statespace(q, u, c1, 
+    
     %% Cost Function
     % linear quadratic regulator (based on error)
     %    ang pos.       cart pos.      ang. vel.     prev. input
