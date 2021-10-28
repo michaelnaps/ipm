@@ -13,17 +13,18 @@ clc;clear;
 close all;
 
 
-%% Setup
-% establish state space vectors
-um = 1000;                % maximum input change
-dt = 0.1;                 % change in time
-T = 0:dt:20;              % time span
+%% Variable Setup
+% establish state space vectors and variables
 P = 4;                    % prediction horizon
+dt = 0.1;                 % change in time
+T = 0:dt:60;              % time span
 s0 = [0; 0];              % cart position and velocity
-th0 = [pi; 3.1];          % angular position and velocity
+th0 = [pi; 1.5];          % angular position and velocity
 q0 = [s0;th0;0;0];        % initial state space
+um = 1000;                % maximum input change
 
 % Damping Coefficients
+% (interesting behavior when c1 < 20)
 c1 = 50;
 c2 = 2*c1;
 
@@ -31,9 +32,8 @@ c2 = 2*c1;
 % pd = 1;
 
 %% Cost Function
-% linear quadratic regulator (based on error)
-%          ang pos.       cart pos.      ang. vel.     prev. input
-Cq = @(qc) (pi-qc(3)).^2; % + (pd-qc(1))^2; % + (qc(5)-qc(6))^2;
+%           ang pos.        ang. vel.        cart pos.
+Cq = @(qc) (pi-qc(3)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
 
 %% Implementation
 % solve for time dependent solution
@@ -43,19 +43,19 @@ t_opt = toc;
 
 %% Graphing and Evaluation
 fprintf("Final Input on Cart ----------------- %.4f [N]\n", q(length(q),5))
-fprintf("Final Position of Car --------------- %.4f [m]\n", q(length(q),1))
+fprintf("Final Position of Cart -------------- %.4f [m]\n", q(length(q),1))
 fprintf("Final Velocity of Cart -------------- %.4f [m/s]\n", q(length(q),2))
 fprintf("Final Position of Pendulum ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Pendulum ---------- %.4f [rad/s]\n", q(length(q),4))
 
 % percent overshoot
-PO = (abs(min(q(:,3)) / q(length(q),3)) - 1)*100;
+PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
 fprintf("Percent Overshoot ------------------- %.4f [%%]\n", PO)
 
-% comparison to MPC search speed
-t_search = 22.230988;
-PI = t_search / t_opt;
-fprintf("Percent Improvement from Search ----- %.4fx\n\n", PI)
+% % comparison to MPC search speed
+% t_search = 22.230988;
+% PI = t_search / t_opt;
+% fprintf("Percent Improvement from Search ----- %.4fx\n\n", PI)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
