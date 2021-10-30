@@ -23,7 +23,7 @@ th2_0 = [0+adj; 0.1];       % angle 2 - position and vel.
 th0 = [th1_0; th2_0];   % initial state space values
 
 % solve nonlinear function using ode45
-[t, q] = ode45(@(t, q) statespace(q,0,10), [0 T], th0);
+[t, q] = ode45(@(t, q) statespace(q,0,0,0), [0 T], th0);
 
 % % plot values for theta 1 and 2
 % % theta 1

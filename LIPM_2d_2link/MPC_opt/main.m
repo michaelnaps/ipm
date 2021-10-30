@@ -25,8 +25,8 @@ um = 1000;                % maximum input change
 
 % Damping Coefficients
 % (interesting behavior when c1 < 20)
-c1 = 50;
-c2 = 2*c1;
+c1 = 20;
+c2 = c1;
 
 % Desired Final Position (cart)
 % pd = 1;
@@ -67,6 +67,7 @@ ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,2))
 ylabel('Vel [rad/s]')
+xlabel('Time')
 title('Link 1')
 legend('Pos', 'Vel')
 
@@ -78,13 +79,14 @@ ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,4))
 ylabel('Vel [rad/s]')
+xlabel('Time')
 title('Link 2')
 legend('Angular Position', 'Angular Velocity')
 
 % plot input variable
 subplot(2,2,3)
 plot(T, q(:,5))
-title('Input vs. Time')
+title('Input')
 ylabel('Input [N]')
 xlabel('Time')
 
@@ -96,6 +98,6 @@ ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 
-% % animate link motion
-% adj = pi/2;
-% animation([q(:,1)-adj, q(:,3), q(:,2)-adj, q(:,4)]', 0.01);
+% animate link motion
+adj = pi/2;
+animation([q(:,1)-adj, q(:,2), q(:,3)-adj, q(:,4)]', 0.01);
