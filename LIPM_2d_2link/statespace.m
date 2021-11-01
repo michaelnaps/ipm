@@ -1,24 +1,43 @@
-function dq = statespace(q, u, c1, c2)
-    %% Setup
-    l1 = 1;   l2 = 1;       % [m]
-    m1 = 10;  m2 = 10;      % [kg]
-    g = 9.81;               % [m/s^2]
-    
-    q1 = q(1);
-    q2 = q(2);
-    q3 = q(3);
-    q4 = q(4);
-    
-    %% State Space
-    den = l1*(2*m1 + m2 - 2*cos(2*q1 - 2*q3));
-    
-    dq = [
-         (q2);
-         (u - c1*q2*l1 - g*(2*m1 + m2) * sin(q1) - m2*g*sin(q1-2*q3)...
-          - 2*sin(q1-q3)*m2*(q4^2*l2 + q2^2*l1*cos(q1-q3))) / den;
-         (q4);
-         (-c2*q4 + 2*sin(q1-q3)*(q2^2*l1*(m1 + m2) + g*(m1 + m2)*cos(q1)...
-          + q4^2*l2*m2*cos(q1 - q3))) / den;
-         ];
+function dq = dynFunc(x,u)
+
+m1 = 1.0;% kg
+m2 = 1.0;% kg
+I1 = 0.1;
+I2 = 0.1;
+l1 = 0.5;
+l2 = 0.5;
+r1 = l1/2;
+r2 = l2/2;
+g = 9.81;%
+
+
+q1 = x(1);
+q2 = x(2);
+dq1 = x(3);
+dq2 = x(4);
+
+a = I1 + I2 + m1*r1^2 + m2*(l1^2 + r2^2);
+b = m2*l1*r2;
+c = I2 + m2*r2^2;
+
+M = [a + 2*b*cos(q2), c + b*cos(q2);
+    c + b*cos(q2), c];
+
+C = [-b*sin(q2)*dq1*dq2 - b*sin(q2)*(dq1+dq2)*dq2;
+    b*sin(q2)*dq1^2];
+
+G = [m1*r1*g*cos(q1) + m2*g*(l1*cos(q1) + r2*cos(q1+q2));
+    m2*g*r2*cos(q1+q2)];
+
+
+
+
+U = [0;u];
+
+ddq = M\(U - C - G);
+
+dq = [dq1;dq2;ddq];
+dq(:,1)
+
 end
 

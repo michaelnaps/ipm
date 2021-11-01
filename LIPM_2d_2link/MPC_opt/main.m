@@ -15,17 +15,17 @@ close all;
 
 %% Variable Setup
 % establish state space vectors and variables
-P = 4;                    % prediction horizon
-dt = 0.1;                 % change in time
-T = 0:dt:60;              % time span
-s0 = [0; 0];              % cart position and velocity
-th0 = [pi; 1.5];          % angular position and velocity
-q0 = [s0;th0;0;0];        % initial state space
-um = 1000;                % maximum input change
+P = 4;                      % prediction horizon
+dt = 0.1;                   % change in time
+T = 0:dt:20;                % time span
+th1_1 = [pi; 1.5];            % cart position and velocity
+th2_0 = [0; 0.0];          % angular position and velocity
+q0 = [th1_1;th2_0;0;0];     % initial state space
+um = 1000;                     % maximum input change
 
 % Damping Coefficients
 % (interesting behavior when c1 < 20)
-c1 = 20;
+c1 = 100;
 c2 = c1;
 
 % Desired Final Position (cart)
@@ -33,29 +33,24 @@ c2 = c1;
 
 %% Cost Function
 %           ang pos.        ang. vel.        cart pos.
-Cq = @(qc) (pi-qc(3)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+Cq = @(qc) (pi-qc(1)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
 
 %% Implementation
 % solve for time dependent solution
-% tic
+tic
 [T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
-% t_opt = toc;
+toc
 
 %% Graphing and Evaluation
-fprintf("Final Input on Base --------------- %.4f [N]\n", q(length(q),5))
+fprintf("Final Input at Base --------------- %.4f [N]\n", q(length(q),5))
 fprintf("Final Position of Link 1 ---------- %.4f [m]\n", q(length(q),1))
 fprintf("Final Velocity of Link 1 ---------- %.4f [m/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 
-% percent overshoot
-PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
-fprintf("Percent Overshoot ------------------- %.4f [%%]\n", PO)
-
-% % comparison to MPC search speed
-% t_search = 22.230988;
-% PI = t_search / t_opt;
-% fprintf("Percent Improvement from Search ----- %.4fx\n\n", PI)
+% % percent overshoot
+% PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
+% fprintf("Percent Overshoot ----------------- %.4f [%%]\n", PO)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
@@ -98,6 +93,6 @@ ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 
-% animate link motion
-adj = pi/2;
-animation([q(:,1)-adj, q(:,2), q(:,3)-adj, q(:,4)]', 0.01);
+% % animate link motion
+% adj = pi/2;
+% animation([q(:,1)-adj, q(:,3), q(:,2), q(:,4)]', dt);
