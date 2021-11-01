@@ -32,8 +32,9 @@ c2 = 2*c1;
 % pd = 1;
 
 %% Cost Function
-%           ang pos.        ang. vel.        cart pos.
-Cq = @(qc) (pi-qc(3)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+%           ang pos.        cart pos.         ang. vel.
+pd = 4;
+Cq = @(qc) (pi-qc(3)).^2; % + (pd-qc(1))^2; % + (0-qc(4)).^2;
 
 %% Implementation
 % solve for time dependent solution
