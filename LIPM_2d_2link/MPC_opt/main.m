@@ -1,13 +1,13 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: Cart (actuated by cart movement)
+%  Complexity: 2 Links (actuated at ground)
 %  Created by: Michael Napoli
-%  Created on: 9/13/2021
 
-%  Purpose: Model an underactuated linear inverted 
-%           pendulum system connected to a moving
-%           block with the goal of reaching equilibrium
-%            by adjusting the force applied to said
-%           block.
+%  Purpose: Model and stabilize an underactuated
+%           linear inverted pendulum system made up
+%           of two connected rods.
+%
+%           The system will be contrtolled via
+%           the torque input on the bottom rod.
 
 clc;clear;
 close all;

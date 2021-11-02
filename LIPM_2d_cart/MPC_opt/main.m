@@ -6,7 +6,7 @@
 %  Purpose: Model an underactuated linear inverted 
 %           pendulum system connected to a moving
 %           block with the goal of reaching equilibrium
-%            by adjusting the force applied to said
+%           by adjusting the force applied to said
 %           block.
 
 clc;clear;
