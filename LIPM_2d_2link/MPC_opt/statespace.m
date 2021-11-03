@@ -12,8 +12,8 @@ function dq = statespace(q, u, c1, c2)
 
     q1 = q(1);
     q2 = q(2);
-    dq1 = q(3);
-    dq2 = q(4);
+    q3 = q(3);
+    q4 = q(4);
     
     %% State Space Equations
     a = I1 + I2 + m1*r1^2 + m2*(l1^2 + r2^2);
@@ -23,8 +23,8 @@ function dq = statespace(q, u, c1, c2)
     M = [a + 2*b*cos(q2), c + b*cos(q2);
         c + b*cos(q2), c];
 
-    C = [-b*sin(q2)*dq1*dq2 - b*sin(q2)*(dq1+dq2)*dq2;
-        b*sin(q2)*dq1^2];
+    C = [-b*sin(q2)*q3*q4 - b*sin(q2)*(q3+q4)*q4;
+        b*sin(q2)*q3^2];
 
     G = [m1*r1*g*cos(q1) + m2*g*(l1*cos(q1) + r2*cos(q1+q2));
         m2*g*r2*cos(q1+q2)];
@@ -33,7 +33,7 @@ function dq = statespace(q, u, c1, c2)
 
     ddq = M\(U - C - G);
 
-    dq = [dq1;dq2;ddq];
+    dq = [q3;q4;ddq];
     dq = [dq(1); dq(3); dq(2); dq(4)];
 
 end
