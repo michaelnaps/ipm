@@ -17,15 +17,15 @@ close all;
 % establish state space vectors and variables
 P = 4;                      % prediction horizon
 dt = 0.1;                   % change in time
-T = 0:dt:20;                % time span
-th1_1 = [pi; 1.5];            % cart position and velocity
-th2_0 = [0; 0.0];          % angular position and velocity
+T = 0:dt:10;                % time span
+th1_1 = [pi; 1.5];          % cart position and velocity
+th2_0 = [0; 0.0];           % angular position and velocity
 q0 = [th1_1;th2_0;0;0];     % initial state space
-um = 1000;                     % maximum input change
+um = 1000;                  % maximum input change
 
 % Damping Coefficients
 % (interesting behavior when c1 < 20)
-c1 = 100;
+c1 = 50;
 c2 = c1;
 
 % Desired Final Position (cart)
