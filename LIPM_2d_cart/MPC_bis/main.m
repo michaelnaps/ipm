@@ -17,9 +17,9 @@ close all;
 % establish state space vectors and variables
 P = 4;                    % prediction horizon
 dt = 0.1;                 % change in time
-T = 0:dt:60;              % time span
+T = 0:dt:20;              % time span
 s0 = [0; 0];              % cart position and velocity
-th0 = [pi; 1.5];          % angular position and velocity
+th0 = [pi; 0.5];          % angular position and velocity
 q0 = [s0;th0;0;0];        % initial state space
 um = 1000;                % maximum input change
 
@@ -53,10 +53,10 @@ fprintf("Final Velocity of Pendulum ---------- %.4f [rad/s]\n", q(length(q),4))
 PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
 fprintf("Percent Overshoot ------------------- %.4f [%%]\n", PO)
 
-% % comparison to MPC search speed
-% t_search = 22.230988;
-% PI = t_search / t_opt;
-% fprintf("Percent Improvement from Search ----- %.4fx\n\n", PI)
+% comparison to MPC search speed
+t_search = 22.230988;
+PI = t_search / t_opt;
+fprintf("Percent Improvement from Search ----- %.4fx\n\n", PI)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
