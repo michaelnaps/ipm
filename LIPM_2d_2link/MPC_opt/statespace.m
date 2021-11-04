@@ -1,4 +1,4 @@
-function dq = statespace_test(q, u, c1, c2)
+function dq = statespace(q, u, c1, c2)
     %% Setup
     l1 = 1;   l2 = 1;       % [m]
     m1 = 10;  m2 = 10;      % [kg]
