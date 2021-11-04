@@ -1,4 +1,4 @@
-function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, e)
+function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
     %% Bisection Method to Solve for Input
     ua = -um;
     ub =  um;
@@ -8,7 +8,7 @@ function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, e)
     Cb = cost(P, dt, q0, ub, c1, c2, Cq);
     Cave = cost(P, dt, q0, uave, c1, c2, Cq);
     dC = Inf;
-    while (dC > e)
+    while (dC > eps)
 
         if(Ca < Cb)
             ub = uave;
