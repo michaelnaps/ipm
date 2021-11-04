@@ -10,7 +10,7 @@ function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, e)
     dC = Inf;
     while (dC > e)
 
-        if(abs(Ca-Cave) < abs(Cb-Cave))
+        if(Ca < Cb)
             ub = uave;
             Cb = Cave;
             dC = abs(Ca-Cave);
