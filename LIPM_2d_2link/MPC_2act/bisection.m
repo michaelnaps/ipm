@@ -1,7 +1,7 @@
-function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, e)
+function [u1, u2, C] = bisection(P, dt, q0, um1, um2, c1, c2, Cq, e)
     %% Bisection Method to Solve for Input
-    ua = -um;
-    ub =  um;
+    ua = -um2;
+    ub =  um2;
     uave = 0;
     
     Ca = cost(P, dt, q0, ua, c1, c2, Cq);
@@ -25,6 +25,7 @@ function [u, C] = bisection(P, dt, q0, um, c1, c2, Cq, e)
 
     end
 
-    u = uave;
+    u1 = uave;
+    u2 = um2;
     C = Cave;
 end

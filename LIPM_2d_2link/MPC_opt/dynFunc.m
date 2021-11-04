@@ -1,7 +1,7 @@
-function dq = statespace(q, u1, u2, c1, c2)
+function dq = dynFunc(q, u, c1, c2)
     %% Setup
-    m1 = 1.0;% kg
-    m2 = 1.0;% kg
+    m1 = 1.0;
+    m2 = 1.0;
     I1 = 0.1;
     I2 = 0.1;
     l1 = 0.5;
@@ -29,12 +29,10 @@ function dq = statespace(q, u1, u2, c1, c2)
     G = [m1*r1*g*cos(q1) + m2*g*(l1*cos(q1) + r2*cos(q1+q2));
         m2*g*r2*cos(q1+q2)];
 
-    U = [u1-c1*q2; u2-c2*q4];
+    U = [-c1*q2; u-c2*q4];
 
     ddq = M\(U - C - G);
 
     dq = [q3;q4;ddq];
-    dq = [dq(1); dq(3); dq(2); dq(4)];  % reorder for formatting
-
+    dq = [dq(1); dq(3); dq(2); dq(4)];
 end
-
