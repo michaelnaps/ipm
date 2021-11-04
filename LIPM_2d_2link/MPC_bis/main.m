@@ -20,7 +20,7 @@ dt = 0.1;                   % change in time
 T = 0:dt:10;                % time span
 th1_0 = [pi; 1.5];          % cart position and velocity
 th2_0 = [0; 0.0];           % angular position and velocity
-q0 = [th1_0;th2_0;0;0];     % initial state space
+q0 = [th1_0;th2_0;0;0;0];   % initial state space
 um = 1000;                  % maximum input change
 
 % Damping Coefficients
@@ -32,8 +32,8 @@ c2 = c1;
 % pd = 1;
 
 %% Cost Function
-%           ang pos.        ang. vel.        cart pos.
-Cq = @(qc) (pi-qc(1)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+%           ang pos.                     ang. vel.        cart pos.
+Cq = @(qc) (cos(pi)-cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
 
 %% Implementation
 % solve for time dependent solution
@@ -47,6 +47,7 @@ fprintf("Final Position of Link 1 ---------- %.4f [m]\n", q(length(q),1))
 fprintf("Final Velocity of Link 1 ---------- %.4f [m/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
+fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,7))/length(q));
 
 % % percent overshoot
 % PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
