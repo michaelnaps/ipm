@@ -1,4 +1,4 @@
-Pseudocode for Optimization of MPC Controller
+Pseudocode for Optimization of MPC Controller Using Bisection Method
 _________________________________________________________________________
 
 - create model of system (predefined)
@@ -10,13 +10,13 @@ _________________________________________________________________________
 4). calculate the input force required to reach optimal conditions
 
 Process with respect to input:
-[q0, u] -> q(q0, u) -> C(q) -> Cd(q)
+[q0, u] -> q(q0, u) -> C(q) -> dC(q)
 such that...
-Cd(q) < e
+dC(q) < e
 where...
 q0 = initial state     q = next state
 u = tested input
-C = cost of state      Cd = change in cost
+C = cost of state      dC = change in cost
 e = absolute tolerance
 _________________________________________________________________________
 
