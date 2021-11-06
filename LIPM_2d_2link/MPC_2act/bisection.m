@@ -9,6 +9,10 @@ function [u1, u2, C] = bisection(P, dt, q0, um1, um2, c1, c2, Cq, e)
     Cave = cost(P, dt, q0, uave, c1, c2, Cq);
     dC = Inf;
     while (dC > e)
+        
+        if (Cave < eps)
+            break;
+        end
 
         if(abs(Ca-Cave) < abs(Cb-Cave))
             ub = uave;
