@@ -1,8 +1,8 @@
 function [u1, u2, C] = bisection(P, dt, q0, um1, um2, c1, c2, Cq, e)
     %% Bisection Method to Solve for Input
-    ua = -um2;
-    ub =  um2;
-    uave = 0;
+    ua = -[um1; um2];
+    ub =  [um1; um2];
+    uave = [0; 0];
     
     Ca = cost(P, dt, q0, ua, c1, c2, Cq);
     Cb = cost(P, dt, q0, ub, c1, c2, Cq);
