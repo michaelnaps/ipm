@@ -16,7 +16,7 @@ close all;
 %% Variable Setup
 % establish state space vectors and variables
 P = 4;                      % prediction horizon
-dt = 0.1;                   % change in time
+dt = 0.05;                   % change in time
 T = 0:dt:10;                % time span
 th1_0 = [pi; 1.5];          % cart position and velocity
 th2_0 = [0; 0.0];           % angular position and velocity
@@ -32,8 +32,7 @@ c2 = c1;
 % pd = 1;
 
 %% Cost Function
-%           ang pos.        ang. vel.        cart pos.
-Cq = @(qc) (pi-qc(1)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+Cq = @(qc) 100*abs(cos(pi) - cos(qc(1))); % + (0-qc(4)).^2; % + (pd-qc(1))^2;
 
 %% Implementation
 % solve for time dependent solution
@@ -49,9 +48,9 @@ fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,7))/length(q));
 
-% % percent overshoot
-% PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
-% fprintf("Percent Overshoot ----------------- %.4f [%%]\n", PO)
+% percent overshoot
+PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
+fprintf("Percent Overshoot ----------------- %.4f [%%]\n", PO)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
