@@ -37,7 +37,25 @@ Pseudocode for Multivariate Bisection Method
 Note: target is the local minimum (unknown)
       calculate until the change in cost is small
 
-01|  choose acceptable absolute tolerance (eps)
-02|  initialize initial starting range (-um, um)
-03|  initialize average of range (uave)
-04|  initialize difference in values to Inf (arbitrary)
+01| choose acceptable absolute tolerance (eps)
+02| create initial guess for each control point (maximum torques)
+03| calculate the center of each guess range
+04| initialize states at current values of input (range, and centers)
+05| calculate the cost of each state calculated in (04)
+  |
+06| while (change in cost is above error)
+07|   if (sum of center cost is zero)
+08|     break out of loop and exit
+  |   end if
+  |
+10|   for (number of control points)
+11|     if (cost of current input is lower than previous)
+12|       update center point to new value
+  |     end if
+  |   end for
+  |
+13|   calculate the new average value for all control points
+14|   calculate the new cost for next state to check
+  | end while
+  |
+15| return optimized inputs 
