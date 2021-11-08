@@ -2,7 +2,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
     %% Bisection Method to Solve for Input
     ua = -um;
     ub =  um;
-    uave = [0; 0];
+    uave = zeros(length(um), 1);
     
     Ca = cost(P, dt, q0, ua, c1, c2, Cq);
     Cb = cost(P, dt, q0, ub, c1, c2, Cq);
