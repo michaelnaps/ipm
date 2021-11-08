@@ -20,7 +20,7 @@ dt = 0.1;                       % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi; 1.5];              % cart position and velocity
 th2_0 = [0; 0.0];               % angular position and velocity
-q0 = [th1_0;th2_0;0;0;0;0];     % initial state space
+q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
 um = [1000; 1000];              % maximum input change
 
 % Damping Coefficients
@@ -34,8 +34,8 @@ c2 = c1;
 %% Cost Function
 %           ang pos.        ang. vel.        cart pos.
 Cq = {
-      @(qc) 100*(cos(pi)-cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
-      @(qc) 100*(cos(pi)-cos(qc(3))).^2;
+      @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+      @(qc) (10*cos(pi)-10*cos(qc(3))).^2;
      };
 
 %% Implementation
@@ -45,12 +45,13 @@ tic
 toc
 
 %% Graphing and Evaluation
-fprintf("Final Input at Base --------------- %.4f [N]\n", q(length(q),5))
+fprintf("Final Input at Link 1 ------------- %.4f [N]\n", q(length(q),5))
+fprintf("Final Input at Link 2 ------------- %.4f [N]\n", q(length(q),6))
 fprintf("Final Position of Link 1 ---------- %.4f [m]\n", q(length(q),1))
 fprintf("Final Velocity of Link 1 ---------- %.4f [m/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,7))/length(q));
+fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,9))/length(q));
 
 % % percent overshoot
 % PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
@@ -61,7 +62,7 @@ figure('Position', [0 0 1400 800])
 hold on
 subplot(2,2,1)
 yyaxis left
-plot(T, q(:,1))
+plot(T, cos(q(:,1)))
 ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,2))
@@ -73,7 +74,7 @@ legend('Pos', 'Vel')
 % angular position and velocity of pendulum
 subplot(2,2,2)
 yyaxis left
-plot(T, q(:,3))
+plot(T, cos(q(:,3)))
 ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,4))
@@ -85,14 +86,31 @@ legend('Angular Position', 'Angular Velocity')
 % plot input variable
 subplot(2,2,3)
 plot(T, q(:,5))
-title('Input')
+title('Input on Link 1')
 ylabel('Input [N]')
 xlabel('Time')
 
 % plot cost from mpc controller
 subplot(2,2,4)
 plot(T, q(:,6))
-title('Cost')
+title('Input on Link 2')
+ylabel('Input [N]')
+xlabel('Time')
+hold off
+
+% plot cost of link 1
+figure('Position', [0 0 700 400])
+subplot(1,2,1)
+plot(T, q(:,7))
+title('Cost of Link 1')
+ylabel('Cost [unitless]')
+xlabel('Time')
+hold off
+
+% plot cost of link 2
+subplot(1,2,2)
+plot(T, q(:,8))
+title('Cost of Link 2')
 ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
