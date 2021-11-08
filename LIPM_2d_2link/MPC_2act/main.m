@@ -18,7 +18,7 @@ close all;
 P = 4;                          % prediction horizon
 dt = 0.1;                       % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi; 1.5];              % cart position and velocity
+th1_0 = [pi; 0.0];              % cart position and velocity
 th2_0 = [0; 0.0];               % angular position and velocity
 q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
 um = [1000; 1000];              % maximum input change
