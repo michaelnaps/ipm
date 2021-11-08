@@ -20,7 +20,7 @@ dt = 0.1;                       % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi; 0.0];              % cart position and velocity
 th2_0 = [0; 0.0];               % angular position and velocity
-q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
+q0 = [th1_0;th2_0;zeros(5,1)];  % initial state space
 um = [1000; 1000];              % maximum input change
 
 % Damping Coefficients
@@ -35,13 +35,13 @@ c2 = c1;
 %           ang pos.        ang. vel.        cart pos.
 Cq = {
       @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
-      @(qc) (10*cos(pi)-10*cos(qc(3))).^2;
+      @(qc) (10*cos(0.)-10*cos(qc(3))).^2;
      };
 
 %% Implementation
 % solve for time dependent solution
 tic
-[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
+[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-3);
 toc
 
 %% Graphing and Evaluation
