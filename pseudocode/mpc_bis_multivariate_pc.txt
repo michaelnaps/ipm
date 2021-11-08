@@ -1,0 +1,43 @@
+Pseudocode for MPC of Multiple Input System Using Bisection Method
+_________________________________________________________________________
+
+- create model of system (predefined)
+- create prediction horizon (predefined)
+
+1). evaluate the model in the range of the prediction horizon
+2). calculate cost for each component of the prediction output
+3). optimal point is that where the overall cost is lowest
+4). calculate the input force required to reach optimal conditions
+
+Process with respect to input:
+[q0, u] -> q(q0, u) -> C(q) -> dC(q)
+such that...
+dC(q) < eps
+where...
+q0 = initial state         q = next state
+u = tested input
+C = cost of state          dC = change in cost
+eps = absolute tolerance
+_________________________________________________________________________
+
+Notes:
+  - For multiple inputs, independent cost functions will be developed
+     for each control point
+  - Bisection method has calculation depth, 'O(n)', of...
+      O(n) = log(n)^k
+    where 'n' is the range of possible inputs and 'k' is the number
+    of control points
+  - Goal of the 'Parallel' calculation architecture is to adjust the
+    above depth to the following...
+      O(n) = k*log(n)
+    which is depending on the same inputs as above.
+_________________________________________________________________________
+
+Pseudocode for Multivariate Bisection Method
+Note: target is the local minimum (unknown)
+      calculate until the change in cost is small
+
+01|  choose acceptable absolute tolerance (eps)
+02|  initialize initial starting range (-um, um)
+03|  initialize average of range (uave)
+04|  initialize difference in values to Inf (arbitrary)
