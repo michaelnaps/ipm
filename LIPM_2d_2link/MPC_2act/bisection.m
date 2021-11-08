@@ -11,11 +11,11 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
     count = 0;
     while (dC > eps)
         
-        if (Cave < eps)
+        if (sum(Cave) < eps)
             break;
         end
         
-        if(Ca < Cb)
+        if(sum(Ca) < sum(Cb))
             ub = uave;
             Cb = Cave;
             dC = abs(Ca-Cave);
