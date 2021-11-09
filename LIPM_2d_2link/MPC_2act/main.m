@@ -1,13 +1,14 @@
 %% Project: Linear Inverted Pendulum Model
 %  Complexity: 2 Links (actuated at ground)
 %  Created by: Michael Napoli
+%  Created on: 11/5/2021
 
-%  Purpose: Model and stabilize an underactuated
-%           linear inverted pendulum system made up
-%           of two connected rods.
+%  Purpose: Model and stabilize an actuated
+%           linear inverted pendulum system made 
+%           up of two connected rods.
 %
 %           The system will be contrtolled via
-%           the torque input on the bottom rod.
+%           the torque at both pendulum joints.
 
 clc;clear;
 close all;
