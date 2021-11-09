@@ -1,56 +1,76 @@
 %% Project: Linear Inverted Pendulum Model
 %  Complexity: 2 Links (actuated at ground)
 %  Created by: Michael Napoli
+%  Created on: 11/5/2021
 
-%  Purpose: Model and stabilize an underactuated
-%           linear inverted pendulum system made up
-%           of two connected rods.
+%  Purpose: Model and stabilize an actuated
+%           linear inverted pendulum system made 
+%           up of two connected rods.
 %
 %           The system will be contrtolled via
-%           the torque input on the bottom rod.
+%           the torque at both pendulum joints.
 
 clc;clear;
 close all;
 
 
+%% Cost Function
+%           ang pos.        ang. vel.        cart pos.
+% Cq = {
+%       @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+%       @(qc) (10*cos(0.)-10*cos(qc(3))).^2;
+%      };
+
+Cq = {
+      @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
+      @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
+      @(qc) (0.0-qc(5)).^2;  % cost of position of Link 3
+     };
+
+ 
 %% Variable Setup
 % establish state space vectors and variables
-P = 4;                      % prediction horizon
-dt = 0.05;                   % change in time
-T = 0:dt:10;                % time span
-th1_0 = [pi; 1.5];          % cart position and velocity
-th2_0 = [0; 0.0];           % angular position and velocity
-q0 = [th1_0;th2_0;0;0;0];     % initial state space
-um = 1000;                  % maximum input change
+P = 4;                    % prediction horizon
+dt = 0.05;                % change in time
+T = 0:dt:10;              % time span
+th1_0 = [pi; 0.0];        % link 1 position and velocity
+th2_0 = [0.; 0.0];        % link 2 position and velocity
+th3_0 = [0.; 0.0];        % link 3 position and velocity
+um = [500; 500; 500];     % maximum input to joints
+
+% create initial states
+q0 = [
+        th1_0;th2_0;th3_0;...             % joint states
+        zeros(length(um),1);...     % return for inputs
+        zeros(length(Cq),1);...     % return for cost
+        0                           % iteration count
+     ];
 
 % Damping Coefficients
 % (interesting behavior when c1 < 20)
 c1 = 50;
 c2 = c1;
+c3 = c2;
 
-% Desired Final Position (cart)
-% pd = 1;
-
-%% Cost Function
-Cq = @(qc) 100*abs(cos(pi) - cos(qc(1))); % + (0-qc(4)).^2; % + (pd-qc(1))^2;
 
 %% Implementation
-% solve for time dependent solution
 tic
-[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
+[T, q] = mpc_control(P, T, q0, um, c1, c2, c3, Cq, 1e-6);
 toc
 
+
 %% Graphing and Evaluation
-fprintf("Final Input at Base --------------- %.4f [N]\n", q(length(q),5))
+fprintf("Final Input at Link 1 ------------- %.4f [N]\n", q(length(q),5))
+fprintf("Final Input at Link 2 ------------- %.4f [N]\n", q(length(q),6))
 fprintf("Final Position of Link 1 ---------- %.4f [m]\n", q(length(q),1))
 fprintf("Final Velocity of Link 1 ---------- %.4f [m/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,7))/length(q));
+fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,9))/length(q));
 
 % percent overshoot
 PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
-fprintf("Percent Overshoot ----------------- %.4f [%%]\n", PO)
+fprintf("Percent Overshoot on Link 1 ------- %.4f [%%]\n", PO)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
@@ -81,14 +101,31 @@ legend('Angular Position', 'Angular Velocity')
 % plot input variable
 subplot(2,2,3)
 plot(T, q(:,5))
-title('Input')
-ylabel('Input [N]')
+title('Input on Link 1')
+ylabel('Input [Nm]')
 xlabel('Time')
 
 % plot cost from mpc controller
 subplot(2,2,4)
 plot(T, q(:,6))
-title('Cost')
+title('Input on Link 2')
+ylabel('Input [Nm]')
+xlabel('Time')
+hold off
+
+% plot cost of link 1
+figure('Position', [0 0 700 400])
+subplot(1,2,1)
+plot(T, q(:,7))
+title('Cost of Link 1')
+ylabel('Cost [unitless]')
+xlabel('Time')
+hold off
+
+% plot cost of link 2
+subplot(1,2,2)
+plot(T, q(:,8))
+title('Cost of Link 2')
 ylabel('Cost [unitless]')
 xlabel('Time')
 hold off

@@ -40,9 +40,9 @@ M(3,3) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
 
 % right hand side 
 E = [
-     g*m3*r3*cos(q1 + q2 + q3) - l*c1*dq1 - u3 + L1*m3*r3*dq1^2*sin(q2 + q3) + L2*m3*r3*dq1^2*sin(q3) + L2*m3*r3*dq2^2*sin(q3) + 2*L2*m3*r3*dq1*dq2*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u2 - l*c2*dq2 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*dq1^2*sin(q2 + q3) + L1*L2*m3*dq1^2*sin(q2) + L1*m2*r2*dq1^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u1 - l*c3*dq3 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*dq2^2*sin(q2 + q3) - L1*m3*r3*dq3^2*sin(q2 + q3) - L1*L2*m3*dq2^2*sin(q2) - L1*m2*r2*dq2^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L1*m3*r3*dq1*dq2*sin(q2 + q3) - 2*L1*m3*r3*dq1*dq3*sin(q2 + q3) - 2*L1*m3*r3*dq2*dq3*sin(q2 + q3) - 2*L1*L2*m3*dq1*dq2*sin(q2) - 2*L1*m2*r2*dq1*dq2*sin(q2) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3)
+     g*m3*r3*cos(q1 + q2 + q3) - L1*c1*dq1 - u3 + L1*m3*r3*dq1^2*sin(q2 + q3) + L2*m3*r3*dq1^2*sin(q3) + L2*m3*r3*dq2^2*sin(q3) + 2*L2*m3*r3*dq1*dq2*sin(q3);
+     L2*g*m3*cos(q1 + q2) - u2 - L2*c2*dq2 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*dq1^2*sin(q2 + q3) + L1*L2*m3*dq1^2*sin(q2) + L1*m2*r2*dq1^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3);
+     L2*g*m3*cos(q1 + q2) - u1 - L3*c3*dq3 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*dq2^2*sin(q2 + q3) - L1*m3*r3*dq3^2*sin(q2 + q3) - L1*L2*m3*dq2^2*sin(q2) - L1*m2*r2*dq2^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L1*m3*r3*dq1*dq2*sin(q2 + q3) - 2*L1*m3*r3*dq1*dq3*sin(q2 + q3) - 2*L1*m3*r3*dq2*dq3*sin(q2 + q3) - 2*L1*L2*m3*dq1*dq2*sin(q2) - 2*L1*m2*r2*dq1*dq2*sin(q2) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3)
     ];
  
 ddq = M\E; % equivalently, we can say = inv(M)*E;
