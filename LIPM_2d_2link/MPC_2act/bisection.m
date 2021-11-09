@@ -38,10 +38,10 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
         count = count + 1;
         
         if (count > 1000)
-            fprintf("ERROR: Bisection method diverged at 1000 iterations:\n")
+            fprintf("ERROR: Larger input than 1000 [Nm] needed:\n")
             fprintf("u1 = %.3f    u2 = %.3f\n", uave(1), uave(2))
             fprintf("C1 = %.3f    C2 = %.3f\n", Cave(1), Cave(2))
-            fprintf("Final change in cost (sum): %.3f\n\n", sum(dC))
+            fprintf("dC1 = %.3f    dC2 = %.3f\n\n", dC(i), dC(i))
             break;
         end
 

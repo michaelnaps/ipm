@@ -53,7 +53,7 @@ fprintf("Final Velocity of Pendulum ------ %.4f [rad/s]\n", q(length(q),4))
 fprintf("Average Number of Iterations ---- %.4f [n]\n", sum(q(:,9))/length(q));
 
 % percent overshoot
-PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
+PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
 fprintf("Percent Overshoot on Pendulum --- %.4f [%%]\n", PO)
 
 % velocity and position of cart
