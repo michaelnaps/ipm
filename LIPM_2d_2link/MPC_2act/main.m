@@ -18,7 +18,7 @@ close all;
 P = 4;                          % prediction horizon
 dt = 0.05;                      % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi; 10.];              % cart position and velocity
+th1_0 = [pi; 1.5];              % cart position and velocity
 th2_0 = [0.; 0.0];              % angular position and velocity
 q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
 um = [1000; 1000];              % maximum input change
@@ -46,7 +46,7 @@ Cq = {
 %% Implementation
 % solve for time dependent solution
 tic
-[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-3);
+[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
 toc
 
 %% Graphing and Evaluation
@@ -58,9 +58,9 @@ fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,9))/length(q));
 
-% % percent overshoot
-% PO = (abs(max(q(:,3)) / q(length(q),3)) - 1)*100;
-% fprintf("Percent Overshoot ----------------- %.4f [%%]\n", PO)
+% percent overshoot
+PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
+fprintf("Percent Overshoot on Link 1 ------- %.4f [%%]\n", PO)
 
 % velocity and position of cart
 figure('Position', [0 0 1400 800])
