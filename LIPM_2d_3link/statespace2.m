@@ -1,4 +1,4 @@
-function ddq = statespace2(q, dq, u, c1, c2, c3)
+function ddq = statespace2(q, u, c1, c2, c3)
 % this program computes ThetaDotDot, using the equations of motion
 % given the current angles Theta, current angular rate ThetaDot, and the
 % current torques tau 
@@ -13,8 +13,8 @@ g = 9.81;  % [m/s^2]
 
 % unpacking the arrays Theta, ThetaDot, and Tau into their respective
 % components 
-q1  = q(1);   q2  = q(2);   q3  = q(3);
-dq1  = dq(1); dq2  = dq(2); dq3  = dq(3);
+q1 = q(1); q2 = q(3); q3 = q(5);
+q4 = q(2); q5 = q(4); q6 = q(6);
 
 % joint torques are set to zero
 u1 = u(1); u2 = u(2); u3 = u(3);
@@ -40,9 +40,9 @@ M(3,3) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
 
 % right hand side 
 E = [
-     g*m3*r3*cos(q1 + q2 + q3) - L1*c1*dq1 - u3 + L1*m3*r3*dq1^2*sin(q2 + q3) + L2*m3*r3*dq1^2*sin(q3) + L2*m3*r3*dq2^2*sin(q3) + 2*L2*m3*r3*dq1*dq2*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u2 - L2*c2*dq2 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*dq1^2*sin(q2 + q3) + L1*L2*m3*dq1^2*sin(q2) + L1*m2*r2*dq1^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u1 - L3*c3*dq3 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*dq2^2*sin(q2 + q3) - L1*m3*r3*dq3^2*sin(q2 + q3) - L1*L2*m3*dq2^2*sin(q2) - L1*m2*r2*dq2^2*sin(q2) - L2*m3*r3*dq3^2*sin(q3) - 2*L1*m3*r3*dq1*dq2*sin(q2 + q3) - 2*L1*m3*r3*dq1*dq3*sin(q2 + q3) - 2*L1*m3*r3*dq2*dq3*sin(q2 + q3) - 2*L1*L2*m3*dq1*dq2*sin(q2) - 2*L1*m2*r2*dq1*dq2*sin(q2) - 2*L2*m3*r3*dq1*dq3*sin(q3) - 2*L2*m3*r3*dq2*dq3*sin(q3)
+     g*m3*r3*cos(q1 + q2 + q3) - L1*c1*q4 - u3 + L1*m3*r3*q4^2*sin(q2 + q3) + L2*m3*r3*q4^2*sin(q3) + L2*m3*r3*q5^2*sin(q3) + 2*L2*m3*r3*q4*q5*sin(q3);
+     L2*g*m3*cos(q1 + q2) - u2 - L2*c2*q5 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*q4^2*sin(q2 + q3) + L1*L2*m3*q4^2*sin(q2) + L1*m2*r2*q4^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3);
+     L2*g*m3*cos(q1 + q2) - u1 - L3*c3*q6 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*q5^2*sin(q2 + q3) - L1*m3*r3*q6^2*sin(q2 + q3) - L1*L2*m3*q5^2*sin(q2) - L1*m2*r2*q5^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L1*m3*r3*q4*q5*sin(q2 + q3) - 2*L1*m3*r3*q4*q6*sin(q2 + q3) - 2*L1*m3*r3*q5*q6*sin(q2 + q3) - 2*L1*L2*m3*q4*q5*sin(q2) - 2*L1*m2*r2*q4*q5*sin(q2) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3)
     ];
  
 ddq = M\E; % equivalently, we can say = inv(M)*E;
