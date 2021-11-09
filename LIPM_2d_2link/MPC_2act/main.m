@@ -16,10 +16,10 @@ close all;
 %% Variable Setup
 % establish state space vectors and variables
 P = 4;                          % prediction horizon
-dt = 0.1;                       % change in time
+dt = 0.05;                       % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi; 0.0];              % cart position and velocity
-th2_0 = [0; 0.0];               % angular position and velocity
+th1_0 = [pi; 10.];              % cart position and velocity
+th2_0 = [0.; 0.0];              % angular position and velocity
 q0 = [th1_0;th2_0;zeros(5,1)];  % initial state space
 um = [1000; 1000];              % maximum input change
 
@@ -33,9 +33,14 @@ c2 = c1;
 
 %% Cost Function
 %           ang pos.        ang. vel.        cart pos.
+% Cq = {
+%       @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+%       @(qc) (10*cos(0.)-10*cos(qc(3))).^2;
+%      };
+
 Cq = {
-      @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
-      @(qc) (10*cos(0.)-10*cos(qc(3))).^2;
+      @(qc) (pi-qc(1)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
+      @(qc) (0.-qc(3)).^2;
      };
 
 %% Implementation
@@ -62,7 +67,7 @@ figure('Position', [0 0 1400 800])
 hold on
 subplot(2,2,1)
 yyaxis left
-plot(T, cos(q(:,1)))
+plot(T, q(:,1))
 ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,2))
@@ -74,7 +79,7 @@ legend('Pos', 'Vel')
 % angular position and velocity of pendulum
 subplot(2,2,2)
 yyaxis left
-plot(T, cos(q(:,3)))
+plot(T, q(:,3))
 ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,4))

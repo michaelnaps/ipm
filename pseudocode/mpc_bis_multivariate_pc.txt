@@ -56,6 +56,12 @@ Note: target is the local minimum (unknown)
   |
 13|   calculate the new average value for all control points
 14|   calculate the new cost for next state to check
+  |
+15|   if (iteration count diverges)
+16|     output error message and applicable data
+17|     break loop
+  |   end if
+  |
   | end while
   |
-15| return optimized inputs 
+15| return optimized inputs
