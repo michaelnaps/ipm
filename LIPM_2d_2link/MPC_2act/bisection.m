@@ -7,7 +7,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
     Ca = cost(P, dt, q0, ua, c1, c2, Cq);
     Cb = cost(P, dt, q0, ub, c1, c2, Cq);
     Cave = cost(P, dt, q0, uave, c1, c2, Cq);
-    dC = [Inf; Inf];
+    dC = Inf(length(Cq), 1);
     count = 1;
     while (sum(dC > eps) == length(dC))
         
@@ -15,7 +15,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
             break;
         end
         
-        for i = 1:length(um)
+        for i = 1:length(Cq)
             
             if (dC(i) < eps)
                 break;
@@ -32,16 +32,17 @@ function [u, C, n] = bisection(P, dt, q0, um, c1, c2, Cq, eps)
             end
             
         end
-        
         uave = (ua + ub) ./ 2;
         Cave = cost(P, dt, q0, uave, c1, c2, Cq);
         count = count + 1;
         
         if (count > 1000)
             fprintf("ERROR: Bisection exited - 1000 iterations reached:\n")
-            fprintf("u1 = %.3f    u2 = %.3f\n", uave(1), uave(2))
-            fprintf("C1 = %.3f    C2 = %.3f\n", Cave(1), Cave(2))
-            fprintf("dC1 = %.3f    dC2 = %.3f\n\n", dC(i), dC(i))
+            for i = 1:length(Cq)
+                fprintf("u%i = %.3f  C%i = %.3f  dC%i = %.3f\n",...
+                        i, uave(i), i, Cave(i), i, dC(i))
+            end
+            fprintf("\n")
             break;
         end
 

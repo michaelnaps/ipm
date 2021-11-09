@@ -13,25 +13,6 @@
 clc;clear;
 close all;
 
-
-%% Variable Setup
-% establish state space vectors and variables
-P = 4;                          % prediction horizon
-dt = 0.05;                      % change in time
-T = 0:dt:10;                    % time span
-th1_0 = [pi; 1.5];              % cart position and velocity
-th2_0 = [0.; 0.0];              % angular position and velocity
-q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
-um = [1000; 1000];              % maximum input change
-
-% Damping Coefficients
-% (interesting behavior when c1 < 20)
-c1 = 50;
-c2 = c1;
-
-% Desired Final Position (cart)
-% pd = 1;
-
 %% Cost Function
 %           ang pos.        ang. vel.        cart pos.
 % Cq = {
@@ -40,9 +21,34 @@ c2 = c1;
 %      };
 
 Cq = {
-      @(qc) (pi-qc(1)).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
-      @(qc) (0.-qc(3)).^2;
+      @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
+      @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
      };
+
+%% Variable Setup
+% establish state space vectors and variables
+P = 4;                    % prediction horizon
+dt = 0.05;                % change in time
+T = 0:dt:10;              % time span
+th1_0 = [pi; 0.0];        % cart position and velocity
+th2_0 = [pi; 0.0];        % angular position and velocity
+um = [1000; 1000];        % maximum input change
+
+% create initial states
+q0 = [
+        th1_0;th2_0;...             % joint states
+        zeros(length(um),1);...     % return for inputs
+        zeros(length(Cq),1);...     % return for cost
+        0                           % iteration count
+     ];
+
+% Damping Coefficients
+% (interesting behavior when c1 < 20)
+c1 = 50;
+c2 = c1;
+
+% Desired Final Position (cart)
+% pd = 1;
 
 %% Implementation
 % solve for time dependent solution
