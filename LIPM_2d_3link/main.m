@@ -36,7 +36,7 @@ T = 0:dt:10;              % time span
 th1_0 = [pi; 0.0];        % link 1 position and velocity
 th2_0 = [0.; 0.0];        % link 2 position and velocity
 th3_0 = [0.; 0.0];        % link 3 position and velocity
-um = [0; 0; 0];  % maximum input to joints
+um = [0; 0; 0];           % maximum input to joints
 
 % create initial states
 q0 = [
@@ -47,15 +47,12 @@ q0 = [
      ];
 
 % Damping Coefficients
-% (interesting behavior when c1 < 20)
-c1 = 50;
-c2 = c1;
-c3 = c2;
+c = [50; 50; 50];
 
 
 %% Implementation
 tic
-[T, q] = mpc_control(P, T, q0, um, c1, c2, c3, Cq, 1e-6);
+[T, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6);
 toc
 
 

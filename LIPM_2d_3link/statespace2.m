@@ -1,4 +1,4 @@
-function ddq = statespace2(q, u, c1, c2, c3)
+function ddq = statespace2(q, u, c)
 % this program computes ThetaDotDot, using the equations of motion
 % given the current angles Theta, current angular rate ThetaDot, and the
 % current torques tau 
@@ -13,6 +13,7 @@ g = 9.81;  % [m/s^2]
 
 % unpacking the arrays Theta, ThetaDot, and Tau into their respective
 % components 
+c1 = c(1); c2 = c(2); c3 = c(3);
 q1 = q(1); q2 = q(3); q3 = q(5);
 q4 = q(2); q5 = q(4); q6 = q(6);
 

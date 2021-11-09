@@ -1,4 +1,4 @@
-function dq = statespace1(q, u, c1, c2, c3)
+function dq = statespace1(q, u, c)
 % we write the equations of motion in the form dstateVar/dt = H(t,stateVar), where 
 % stateVar = [Theta; ThetaDot] is the list of all state variables. 
 % This function is H, the RHS of this first order ODE, obtained by adding 
@@ -13,7 +13,7 @@ q0  = [q1;q2;q3];
 dq0 = [dq1;dq2;dq3];
 
 % use the equations of motion to get ThetaDotDot
-ddq = statespace2(q, u, c1, c2, c3);
+ddq = statespace2(q, u, c);
 
 dq = [
       q(2); ddq(1);...
