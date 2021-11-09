@@ -93,14 +93,14 @@ legend('Angular Position', 'Angular Velocity')
 subplot(2,2,3)
 plot(T, q(:,5))
 title('Input on Link 1')
-ylabel('Input [N]')
+ylabel('Input [Nm]')
 xlabel('Time')
 
 % plot cost from mpc controller
 subplot(2,2,4)
 plot(T, q(:,6))
 title('Input on Link 2')
-ylabel('Input [N]')
+ylabel('Input [Nm]')
 xlabel('Time')
 hold off
 
