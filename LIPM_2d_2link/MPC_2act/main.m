@@ -13,6 +13,7 @@
 clc;clear;
 close all;
 
+
 %% Cost Function
 %           ang pos.        ang. vel.        cart pos.
 % Cq = {
@@ -21,18 +22,19 @@ close all;
 %      };
 
 Cq = {
-      @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
+      @(qc) (pi -qc(1)).^2;     % cost of position of Link 1
       @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
      };
 
+ 
 %% Variable Setup
 % establish state space vectors and variables
 P = 4;                    % prediction horizon
 dt = 0.05;                % change in time
 T = 0:dt:10;              % time span
-th1_0 = [pi; 0.0];        % cart position and velocity
-th2_0 = [pi; 0.0];        % angular position and velocity
-um = [1000; 1000];        % maximum input change
+th1_0 = [pi; 2.3];        % cart position and velocity
+th2_0 = [0.; 0.0];        % angular position and velocity
+um = [1000; 1000];        % maximum input to joints
 
 % create initial states
 q0 = [
@@ -47,14 +49,12 @@ q0 = [
 c1 = 50;
 c2 = c1;
 
-% Desired Final Position (cart)
-% pd = 1;
 
 %% Implementation
-% solve for time dependent solution
 tic
 [T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
 toc
+
 
 %% Graphing and Evaluation
 fprintf("Final Input at Link 1 ------------- %.4f [N]\n", q(length(q),5))
