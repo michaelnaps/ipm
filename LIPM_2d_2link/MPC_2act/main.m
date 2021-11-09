@@ -16,11 +16,11 @@ close all;
 %% Variable Setup
 % establish state space vectors and variables
 P = 4;                          % prediction horizon
-dt = 0.05;                       % change in time
+dt = 0.05;                      % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi; 10.];              % cart position and velocity
 th2_0 = [0.; 0.0];              % angular position and velocity
-q0 = [th1_0;th2_0;zeros(5,1)];  % initial state space
+q0 = [th1_0;th2_0;0;0;0;0;0];   % initial state space
 um = [1000; 1000];              % maximum input change
 
 % Damping Coefficients
