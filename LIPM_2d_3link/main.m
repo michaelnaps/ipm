@@ -23,7 +23,7 @@ Cq = {
 % establish state space vectors and variables
 P = 1;                    % prediction horizon
 dt = 0.05;                % change in time
-T = 0:dt:10;              % time span
+T = 0:dt:60;              % time span
 th1_0 = [pi; 0.0];        % link 1 position and velocity
 th2_0 = [0.; 0.0];        % link 2 position and velocity
 th3_0 = [0.; 0.0];        % link 3 position and velocity
@@ -146,6 +146,7 @@ xlabel('Time')
 hold off
 hold off
 
-% % animate link motion
-% adj = pi/2;
-% animation_2link([q(:,1)-adj, q(:,3), q(:,2), q(:,4)]', dt);
+% animation of 3-link pendulum
+figure(3)
+adj = pi/2;
+animation_3link(q, T, 3);
