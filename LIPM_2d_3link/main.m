@@ -21,7 +21,7 @@ Cq = {
 
 %% Variable Setup
 % establish state space vectors and variables
-P = 4;                    % prediction horizon
+P = 1;                    % prediction horizon
 dt = 0.05;                % change in time
 T = 0:dt:10;              % time span
 th1_0 = [pi; 0.0];        % link 1 position and velocity
@@ -62,7 +62,7 @@ fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q)
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
 hold on
-subplot(3,3,1)
+subplot(2,3,1)
 yyaxis left
 plot(T, q(:,1))
 ylabel('Pos [rad]')
@@ -74,7 +74,7 @@ title('Link 1')
 legend('Pos', 'Vel')
 
 % velocity and position of link 2
-subplot(3,3,2)
+subplot(2,3,2)
 yyaxis left
 plot(T, q(:,3))
 ylabel('Pos [rad]')
@@ -86,7 +86,7 @@ title('Link 2')
 legend('Pos', 'Vel')
 
 % velocity and position of link 3
-subplot(3,3,3)
+subplot(2,3,3)
 yyaxis left
 plot(T, q(:,5))
 ylabel('Pos [rad]')
@@ -98,8 +98,7 @@ title('Link 3')
 legend('Pos', 'Vel')
 
 % plot input on link 1
-subplot(3,3,4)
-yyaxis left
+subplot(2,3,4)
 plot(T, q(:,7))
 title('Input on Link 1')
 ylabel('Input [Nm]')
