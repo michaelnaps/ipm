@@ -145,3 +145,7 @@ ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 hold off
+
+% % animate link motion
+% adj = pi/2;
+% animation_2link([q(:,1)-adj, q(:,3), q(:,2), q(:,4)]', dt);

@@ -6,7 +6,7 @@ function dq = statespace(q, u, c)
 % parameter values
 g = 9.81;  % [m/s^2]
 m1 = 10;        m2 = 10;        m3 = 10;
-L1 = 2;         L2 = 2;         L3 = 4;
+L1 = 2;         L2 = 2;         L3 = 2;
 r1 = L1/2;      r2 = L2/2;      r3 = L3/2;
 I1 = m1*L1/12;  I2 = m2*L2/12;  I3 = m3*L3/12;
 
