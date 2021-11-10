@@ -6,12 +6,6 @@ function dq = statespace1(q, u, c)
 % note that because this is used by ODE45, it needs to have the first
 % variable 
 
-q1  = q(1);  q2  = q(3);  q3  = q(5);
-dq1 = q(2);  dq2 = q(4);  dq3 = q(6);
-
-q0  = [q1;q2;q3];
-dq0 = [dq1;dq2;dq3];
-
 % use the equations of motion to get ThetaDotDot
 ddq = statespace2(q, u, c);
 

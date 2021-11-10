@@ -1,15 +1,14 @@
-function ddq = statespace2(q, u, c)
+function dq = statespace(q, u, c)
 % this program computes ThetaDotDot, using the equations of motion
 % given the current angles Theta, current angular rate ThetaDot, and the
 % current torques tau 
 
-% just some generic numbers for all the parameters
-m1 = 10; m2 = 10; m3 = 10;
-L1 = 2; L2 = 2; L3 = 4;
-r1 = L1/2; r2 = L2/2; r3 = L3/2;
-I1 = m1*L1/12; I2 = m2*L2/12; I3 = m3*L3/12;
-
+% parameter values
 g = 9.81;  % [m/s^2]
+m1 = 10;        m2 = 10;        m3 = 10;
+L1 = 2;         L2 = 2;         L3 = 4;
+r1 = L1/2;      r2 = L2/2;      r3 = L3/2;
+I1 = m1*L1/12;  I2 = m2*L2/12;  I3 = m3*L3/12;
 
 % unpacking the arrays Theta, ThetaDot, and Tau into their respective
 % components 
@@ -17,7 +16,6 @@ c1 = c(1); c2 = c(2); c3 = c(3);
 q1 = q(1); q2 = q(3); q3 = q(5);
 q4 = q(2); q5 = q(4); q6 = q(6);
 
-% joint torques are set to zero
 u1 = u(1); u2 = u(2); u3 = u(3);
 % if you want to use a simple feedback control, change the above zeros into
 % whatever function  you want to use for the feedback controller, e.g., 
@@ -47,6 +45,12 @@ E = [
     ];
  
 ddq = M\E; % equivalently, we can say = inv(M)*E;
+
+dq = [
+      q4; ddq(1);
+      q5; ddq(2);
+      q6; ddq(3);
+     ];
 
 % Note: thetaDotDot = inv(M)*E is correct. when M is invertible, M\E gives
 % the same answer as inv(M)*E, and is faster and more accurate.
