@@ -1,26 +1,19 @@
-function [] = animation_3link(q, t, k)
+function [] = animation_3link(q, T, k)
     %% body parameters. 
-    % 1 = shank, 2 = thigh, 3 = torso/upper body
-    % meant to be roughly plausible, while being somewhat round numbers :)
     L1 = 2; L2 = 2; L3 = 2;
     
     %% unpacking
-    adj = pi/2;
-    theta1List = q(:,1)-adj;
+    theta1List = q(:,1);
     theta2List = q(:,3);
     theta3List = q(:,5);
-
-    % with no controller, the simulation will be generally chaotic: 
-    % deterministic non-periodic motion with sensitive dependence on initial
-    % conditions
     
-    dt = t(2) - t(1);
-    numFrames = length(t);
+    %% Delay
+    dt = T(2) - T(1);
 
     %% animation
     figure(k);
     hold on
-    for iFrame = 1:numFrames
+    for iFrame = 1:length(T)
         th1 = theta1List(iFrame);
         th2 = theta2List(iFrame);
         th3 = theta3List(iFrame);
@@ -38,7 +31,7 @@ function [] = animation_3link(q, t, k)
 
         axis equal; % do axis equal before mentioning the xlim ylim
         xlim([-(L1+L2) (L1+L2)]); ylim([-(L1+L2+L3+0.5) (L1+L2+L3+0.5)]);
-        pause(dt);
+        pause(dt/10);
         
         hold off
     end

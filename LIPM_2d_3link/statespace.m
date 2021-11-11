@@ -1,63 +1,36 @@
 function dq = statespace(q, u, c)
-% this program computes ThetaDotDot, using the equations of motion
-% given the current angles Theta, current angular rate ThetaDot, and the
-% current torques tau 
+    %% Setup
+    m1 = 10;        m2 = 10;        m3 = 10;
+    L1 = 2;         L2 = 2;         L3 = 2;
+    r1 = L1/2;      r2 = L2/2;      r3 = L3/2;
+    I1 = m3*L1/12;  I2 = m2*L2/12;  I3 = m3*L3/12;
+    g = 9.81;
+    
+    q1 = q(1);  q2 = q(3);  q3 = q(5);
+    q4 = q(2);  q5 = q(4);  q6 = q(6);
+    
+    u1 = u(1); u2 = u(2); u3 = u(3);
+    c1 = c(1); c2 = c(2); c3 = c(3);
 
-% parameter values
-g = 9.81;  % [m/s^2]
-m1 = 10;        m2 = 10;        m3 = 10;
-L1 = 2;         L2 = 2;         L3 = 2;
-r1 = L1/2;      r2 = L2/2;      r3 = L3/2;
-I1 = m1*L1/12;  I2 = m2*L2/12;  I3 = m3*L3/12;
+    %% State Space Equations
+    % Equation: E*ddq = M (rearrange for ddq)
+    M(1,1) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
+    M(1,2) = -m3*r3^2 - L2*m3*cos(q3)*r3 - I3;
+    M(1,3) = -m3*r3^2 - I3;
+    M(2,1) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - L1*m3*cos(q2)*L2 - m2*r2^2 - L1*m2*cos(q2)*r2 - m3*r3^2 - L1*m3*cos(q2 + q3)*r3 - I2 - I3;
+    M(2,2) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - m2*r2^2 - m3*r3^2 - I2 - I3;
+    M(2,3) = -m3*r3^2 - L2*m3*cos(q3)*r3 - I3;
+    M(3,1) = -I1 - I2 - I3 - L1^2*m2 - L1^2*m3 - L2^2*m3 - m1*r1^2 - m2*r2^2 - m3*r3^2 - 2*L1*m3*r3*cos(q2 + q3) - 2*L1*L2*m3*cos(q2) - 2*L1*m2*r2*cos(q2) - 2*L2*m3*r3*cos(q3);
+    M(3,2) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - L1*m3*cos(q2)*L2 - m2*r2^2 - L1*m2*cos(q2)*r2 - m3*r3^2 - L1*m3*cos(q2 + q3)*r3 - I2 - I3;
+    M(3,3) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
 
-% unpacking the arrays Theta, ThetaDot, and Tau into their respective
-% components 
-c1 = c(1); c2 = c(2); c3 = c(3);
-q1 = q(1); q2 = q(3); q3 = q(5);
-q4 = q(2); q5 = q(4); q6 = q(6);
+    E = [
+         g*m3*r3*cos(q1 + q2 + q3) + c3*L3*q6 - u3 + L1*m3*r3*q4^2*sin(q2 + q3) + L2*m3*r3*q4^2*sin(q3) + L2*m3*r3*q5^2*sin(q3) + 2*L2*m3*r3*q4*q5*sin(q3);
+         L2*g*m3*cos(q1 + q2) + c2*L2*q5 - u2 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*q4^2*sin(q2 + q3) + L1*L2*m3*q4^2*sin(q2) + L1*m2*r2*q4^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3);
+         L2*g*m3*cos(q1 + q2) + c1*L1*q4 - u1 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*q5^2*sin(q2 + q3) - L1*m3*r3*q6^2*sin(q2 + q3) - L1*L2*m3*q5^2*sin(q2) - L1*m2*r2*q5^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L1*m3*r3*q4*q5*sin(q2 + q3) - 2*L1*m3*r3*q4*q6*sin(q2 + q3) - 2*L1*m3*r3*q5*q6*sin(q2 + q3) - 2*L1*L2*m3*q4*q5*sin(q2) - 2*L1*m2*r2*q4*q5*sin(q2) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3)
+        ];
 
-u1 = u(1); u2 = u(2); u3 = u(3);
-% if you want to use a simple feedback control, change the above zeros into
-% whatever function  you want to use for the feedback controller, e.g., 
-% tau1 = -kp*(theta1-theta_0)-kd*theta1dot etc  
+    ddq = M\E;
 
-% the equations of motion are of the form:
-% M*ThetaDotDot = E, where M is a 3x3 mass matrix and E is a 3x1 right hand
-% side of the ODE
-
-% mass matrix, copy-pasted from the derive_threelink.m program. run the
-% program and get this from the last couple of lines of the code
-M(1,1) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
-M(1,2) = -m3*r3^2 - L2*m3*cos(q3)*r3 - I3;
-M(1,3) = -m3*r3^2 - I3;
-M(2,1) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - L1*m3*cos(q2)*L2 - m2*r2^2 - L1*m2*cos(q2)*r2 - m3*r3^2 - L1*m3*cos(q2 + q3)*r3 - I2 - I3;
-M(2,2) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - m2*r2^2 - m3*r3^2 - I2 - I3;
-M(2,3) = -m3*r3^2 - L2*m3*cos(q3)*r3 - I3;
-M(3,1) = -I1 - I2 - I3 - L1^2*m2 - L1^2*m3 - L2^2*m3 - m1*r1^2 - m2*r2^2 - m3*r3^2 - 2*L1*m3*r3*cos(q2 + q3) - 2*L1*L2*m3*cos(q2) - 2*L1*m2*r2*cos(q2) - 2*L2*m3*r3*cos(q3);
-M(3,2) = -m3*L2^2 - 2*m3*cos(q3)*L2*r3 - L1*m3*cos(q2)*L2 - m2*r2^2 - L1*m2*cos(q2)*r2 - m3*r3^2 - L1*m3*cos(q2 + q3)*r3 - I2 - I3;
-M(3,3) = -I3 - m3*r3^2 - L1*m3*r3*cos(q2 + q3) - L2*m3*r3*cos(q3);
-
-% right hand side 
-E = [
-     g*m3*r3*cos(q1 + q2 + q3) - L1*c1*q4 - u3 + L1*m3*r3*q4^2*sin(q2 + q3) + L2*m3*r3*q4^2*sin(q3) + L2*m3*r3*q5^2*sin(q3) + 2*L2*m3*r3*q4*q5*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u2 - L2*c2*q5 + g*m2*r2*cos(q1 + q2) + g*m3*r3*cos(q1 + q2 + q3) + L1*m3*r3*q4^2*sin(q2 + q3) + L1*L2*m3*q4^2*sin(q2) + L1*m2*r2*q4^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3);
-     L2*g*m3*cos(q1 + q2) - u1 - L3*c3*q6 + g*m2*r2*cos(q1 + q2) + L1*g*m2*cos(q1) + L1*g*m3*cos(q1) + g*m1*r1*cos(q1) + g*m3*r3*cos(q1 + q2 + q3) - L1*m3*r3*q5^2*sin(q2 + q3) - L1*m3*r3*q6^2*sin(q2 + q3) - L1*L2*m3*q5^2*sin(q2) - L1*m2*r2*q5^2*sin(q2) - L2*m3*r3*q6^2*sin(q3) - 2*L1*m3*r3*q4*q5*sin(q2 + q3) - 2*L1*m3*r3*q4*q6*sin(q2 + q3) - 2*L1*m3*r3*q5*q6*sin(q2 + q3) - 2*L1*L2*m3*q4*q5*sin(q2) - 2*L1*m2*r2*q4*q5*sin(q2) - 2*L2*m3*r3*q4*q6*sin(q3) - 2*L2*m3*r3*q5*q6*sin(q3)
-    ];
- 
-ddq = M\E; % equivalently, we can say = inv(M)*E;
-
-dq = [
-      q4; ddq(1);
-      q5; ddq(2);
-      q6; ddq(3);
-     ];
-
-% Note: thetaDotDot = inv(M)*E is correct. when M is invertible, M\E gives
-% the same answer as inv(M)*E, and is faster and more accurate.
-% for these problems M will be invertible, so its fine.
-
-% more generally, the backslash operator in matlab, \ is very sophisticated
-% and solves the appropriat least squares problems when M is not invertible
-% someone said that you could teach a whole course on the \ operator.
-
+    dq = [q(2); ddq(1); q(4); ddq(2); q(6); ddq(3)];
 end
