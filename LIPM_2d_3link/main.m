@@ -13,22 +13,22 @@ close all;
 
 %% Cost Function
 Cq = {
-      @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
-      @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
-      @(qc) (0.0-qc(5)).^2;  % cost of position of Link 3
+      @(qc) (pi/2     - qc(1))^2;  % cost of position of Link 1
+      @(qc) (cos(0.0) - cos(qc(3)))^2;  % cost of position of Link 2
+      @(qc) (cos(0.0) - cos(qc(5)))^2;  % cost of position of Link 3
      };
 
 
 %% Variable Setup
 % establish state space vectors and variables
-P = 5;                    % prediction horizon
+P = 4;                    % prediction horizon [s]
 dt = 0.05;                % change in time
-T = 0:dt:100;              % time span
-th1_0 = [pi/2; 0.0];        % link 1 position and velocity
-th2_0 = [0.; 0.0];        % link 2 position and velocity
-th3_0 = [0.; 0.0];        % link 3 position and velocity
-um = [0; 0; 0];           % maximum input to joints
-c = [1; 1; 1];            % damping coefficients
+T = 0:dt:30;              % time span
+th1_0 = [pi/2;0.0];       % link 1 position and velocity
+th2_0 = [0.0; 0.0];       % link 2 position and velocity
+th3_0 = [0.0; 0.0];       % link 3 position and velocity
+um = [8000; 4000; 2000];  % maximum input to joints
+c = [1; 10; 100];         % damping coefficients
 
 % create initial states
 q0 = [
@@ -46,11 +46,11 @@ toc
 
 
 %% Graphing and Evaluation
-fprintf("Final Input at Link 1 ------------- %.4f [N]\n", q(length(q),7))
-fprintf("Final Input at Link 2 ------------- %.4f [N]\n", q(length(q),8))
-fprintf("Final Input at Link 3 ------------- %.4f [N]\n", q(length(q),9))
-fprintf("Final Position of Link 1 ---------- %.4f [m]\n", q(length(q),1))
-fprintf("Final Velocity of Link 1 ---------- %.4f [m/s]\n", q(length(q),2))
+fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
+fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
+fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
+fprintf("Final Position of Link 1 ---------- %.4f [rad]\n", q(length(q),1))
+fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
@@ -120,6 +120,7 @@ hold off
 
 % plot cost of link 1
 figure('Position', [0 0 1400 400])
+hold on
 subplot(1,3,1)
 plot(T, q(:,10))
 title('Cost of Link 1')
@@ -128,7 +129,6 @@ xlabel('Time')
 hold off
 
 % plot cost of link 2
-hold on
 subplot(1,3,2)
 plot(T, q(:,11))
 title('Cost of Link 2')
@@ -141,7 +141,6 @@ plot(T, q(:,12))
 title('Cost of Link 3')
 ylabel('Cost [unitless]')
 xlabel('Time')
-hold off
 hold off
 
 % % animation of 3-link pendulum
