@@ -3,7 +3,8 @@ function [] = animation_3link(q, T, k)
     L1 = 2; L2 = 2; L3 = 2;
     
     %% unpacking
-    theta1List = q(:,1);
+    adj = pi/2;
+    theta1List = q(:,1)-adj;
     theta2List = q(:,3);
     theta3List = q(:,5);
     
@@ -11,7 +12,7 @@ function [] = animation_3link(q, T, k)
     dt = T(2) - T(1);
 
     %% animation
-    figure(k);
+    figure('Position', [0 0 700 800]);
     hold on
     for iFrame = 1:length(T)
         th1 = theta1List(iFrame);
