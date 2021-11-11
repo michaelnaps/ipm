@@ -6,7 +6,7 @@ function [T, q] = mpc_control(P, T, q0, um, c, Cq, eps)
     for i = 2:length(T)
         
         [u, C, n] = bisection(P, dt, q(i-1,1:6), um, c, Cq, eps);
-        [~, qc] = ode45(@(t,q) statespace(q, u, c), 0:dt:P*dt, q(i-1,1:6));
+        [~, qc] = ode45(@(t,q) statespace(q, u, c), 0:dt:P, q(i-1,1:6));
         q(i,:) = [qc(2,:), u', C', n];
         
     end

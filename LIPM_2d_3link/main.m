@@ -21,14 +21,14 @@ Cq = {
 
 %% Variable Setup
 % establish state space vectors and variables
-P = 1;                    % prediction horizon
+P = 5;                    % prediction horizon
 dt = 0.05;                % change in time
-T = 0:dt:10;              % time span
+T = 0:dt:100;              % time span
 th1_0 = [pi/2; 0.0];        % link 1 position and velocity
 th2_0 = [0.; 0.0];        % link 2 position and velocity
 th3_0 = [0.; 0.0];        % link 3 position and velocity
 um = [0; 0; 0];           % maximum input to joints
-c = [0; 0; 0];            % damping coefficients
+c = [1; 1; 1];            % damping coefficients
 
 % create initial states
 q0 = [
@@ -144,5 +144,5 @@ xlabel('Time')
 hold off
 hold off
 
-% animation of 3-link pendulum
-animation_3link(q, T, 3);
+% % animation of 3-link pendulum
+% animation_3link(q, T, 3);

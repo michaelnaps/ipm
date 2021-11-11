@@ -3,8 +3,8 @@ function [] = animation_3link(q, T, k)
     L1 = 2; L2 = 2; L3 = 2;
     
     %% unpacking
-    adj = pi/2;
-    theta1List = q(:,1)-adj;
+    % adj = pi/2;
+    theta1List = q(:,1);
     theta2List = q(:,3);
     theta3List = q(:,5);
     
