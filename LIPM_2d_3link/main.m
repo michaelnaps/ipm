@@ -13,22 +13,22 @@ close all;
 
 %% Cost Function
 Cq = {
-      @(qc) (pi/2     - qc(1))^2;  % cost of position of Link 1
-      @(qc) (cos(0.0) - cos(qc(3)))^2;  % cost of position of Link 2
-      @(qc) (cos(0.0) - cos(qc(5)))^2;  % cost of position of Link 3
+      @(qc) (pi/2-qc(1))^2;  % cost of position of Link 1
+      @(qc) (0.0 -qc(3))^2;  % cost of position of Link 2
+      @(qc) (0.0 -qc(5))^2;  % cost of position of Link 3
      };
 
 
 %% Variable Setup
 % establish state space vectors and variables
-P = 4;                    % prediction horizon [s]
+P = 10;                   % prediction horizon [s]
 dt = 0.05;                % change in time
-T = 0:dt:30;              % time span
+T = 0:dt:200;              % time span
 th1_0 = [pi/2;0.0];       % link 1 position and velocity
 th2_0 = [0.0; 0.0];       % link 2 position and velocity
 th3_0 = [0.0; 0.0];       % link 3 position and velocity
-um = [8000; 4000; 2000];  % maximum input to joints
-c = [1; 10; 100];         % damping coefficients
+um = [0; 0; 0];  % maximum input to joints
+c = [1; 1; 1];            % damping coefficients
 
 % create initial states
 q0 = [
@@ -41,7 +41,7 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-3);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6);
 toc
 
 

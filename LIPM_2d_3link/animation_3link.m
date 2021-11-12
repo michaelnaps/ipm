@@ -26,7 +26,7 @@ function [] = animation_3link(q, T, k)
 
         plot([xAnkle xKnee],[yAnkle yKnee],'r','linewidth',3); hold on;
         plot([xKnee xHip],[yKnee yHip],'b','linewidth',3); hold on;
-        plot([xHip xHead],[yHip yHead],'color',[0.1 0.3 1],'linewidth',3); hold on;
+        plot([xHip xHead],[yHip yHead],'color',[0.4660 0.6740 0.1880],'linewidth',3); hold on;
 
         plot([-1 1],[0 0],'color',[0 0 0],'linewidth',2);
 
