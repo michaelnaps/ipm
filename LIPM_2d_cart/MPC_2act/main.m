@@ -21,7 +21,7 @@ P = 4;                      % prediction horizon
 dt = 0.05;                  % change in time
 T = 0:dt:10;                % time span
 s0  = [0.; 0.0];            % cart position and velocity
-th0 = [pi; 1.5];            % angular position and velocity
+th0 = [pi; 5.0];            % angular position and velocity
 q0 = [s0;th0;0;0;0;0;0];    % initial state space
 um = [1000; 1000];          % maximum input change
 
@@ -112,7 +112,7 @@ ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 
-% % animate link motion
-% adj = pi/2;
-% n = length(q(:,1));
-% animation([q(:,3)-adj, zeros(n,1), q(:,4)-adj, zeros(n,1)]', dt);
+% animate link motion
+adj = pi/2;
+n = length(q(:,1));
+animation([q(:,3)-adj, zeros(n,1), q(:,4)-adj, zeros(n,1)]', dt);

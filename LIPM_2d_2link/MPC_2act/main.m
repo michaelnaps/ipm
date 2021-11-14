@@ -32,9 +32,9 @@ Cq = {
 P = 4;                    % prediction horizon
 dt = 0.05;                % change in time
 T = 0:dt:10;              % time span
-th1_0 = [pi; 2.3];        % cart position and velocity
-th2_0 = [0.; 0.0];        % angular position and velocity
-um = [1000; 1000];        % maximum input to joints
+th1_0 = [pi; 3.5];        % cart position and velocity
+th2_0 = [pi; 1.5];        % angular position and velocity
+um = [500; 500];          % maximum input to joints
 % minimum maximum inputs for full range ~ [400 300]
 
 % create initial states
