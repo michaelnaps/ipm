@@ -22,7 +22,7 @@ close all;
 %      };
 
 Cq = {
-      @(qc) (pi -qc(1)).^2;     % cost of position of Link 1
+      @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
       @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
      };
 
