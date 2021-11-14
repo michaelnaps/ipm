@@ -1,6 +1,6 @@
 function dq = statespace(q, u, c)
     %% Setup
-    m1 = 10;        m2 = 5;        m3 = 2;
+    m1 = 10;        m2 = 5;         m3 = 2;
     L1 = 2;         L2 = 2;         L3 = 2;
     r1 = L1/2;      r2 = L2/2;      r3 = L3/2;
     I1 = m3*L1/12;  I2 = m2*L2/12;  I3 = m3*L3/12;
