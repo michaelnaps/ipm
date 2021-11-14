@@ -129,5 +129,4 @@ xlabel('Time')
 hold off
 
 % % animate link motion
-% adj = pi/2;
-% animation([q(:,1)-adj, q(:,3), q(:,2), q(:,4)]', dt);
+% animation_2link(q, dt);

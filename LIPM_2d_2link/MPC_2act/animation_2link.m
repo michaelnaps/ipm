@@ -1,18 +1,21 @@
-function disp = animation(q,deltaT)
+function disp = animation_2link(q, dt)
+
+adj = pi/2;
+q_plot = [q(:,1)-adj, q(:,3), q(:,2), q(:,4)]';
 
 if nargin < 2
-    deltaT = 0.1;
+    dt = 0.1;
 end
 
 l1 = 0.5;
 l2 = 0.5;
 
-n = size(q,2);
+n = size(q_plot,2);
 p1 = zeros(2,n); % center of cart position
 p2 = zeros(2,n); % pole position
 for i=1:n
-    p1(:,i) = [l1*cos(q(1,i));l1*sin(q(1,i))];
-    p2(:,i) = p1(:,i) + [l2*cos(q(1,i)+q(2,i));l2*sin(q(1,i)+q(2,i))];
+    p1(:,i) = [l1*cos(q_plot(1,i));l1*sin(q_plot(1,i))];
+    p2(:,i) = p1(:,i) + [l2*cos(q_plot(1,i)+q_plot(2,i));l2*sin(q_plot(1,i)+q_plot(2,i))];
     
     
 end
@@ -47,7 +50,7 @@ for i=1:n
     
     drawnow;
     
-    pause(deltaT);
+    pause(dt);
 end
 
 
