@@ -23,7 +23,7 @@ Cq = {
 % establish state space vectors and variables
 P = 10;                   % prediction horizon [s]
 dt = 0.05;                % change in time
-T = 0:dt:10;              % time span
+T = 0:dt:8;              % time span
 th1_0 = [pi/4;0.0];       % link 1 position and velocity
 th2_0 = [0.0; 0.0];       % link 2 position and velocity
 th3_0 = [0.0; 0.0];       % link 3 position and velocity
@@ -56,6 +56,14 @@ fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
 fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
 fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q));
+
+% percent overshoot
+PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
+fprintf("Percent Overshoot on Link 1 ------- %.4f [%%]\n\n", PO)
+% PO = (abs(min(q(:,3)) / q(length(q),3)) - 1)*100;
+% fprintf("Percent Overshoot on Link 2 ------- %.4f [%%]\n", PO)
+% PO = (abs(min(q(:,5)) / q(length(q),5)) - 1)*100;
+% fprintf("Percent Overshoot on Link 3 ------- %.4f [%%]\n\n", PO)
 
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
