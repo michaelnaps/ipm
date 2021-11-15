@@ -1,4 +1,4 @@
-function disp = animation_2link(q, dt)
+function [] = animation_2link(q, dt)
 
 adj = pi/2;
 q_plot = [q(:,1)-adj, q(:,3), q(:,2), q(:,4)]';
@@ -20,7 +20,7 @@ for i=1:n
     
 end
 
-disp = figure;clf;
+figure("Position", [0 0 700 800]);
 hold on;
 
 % axis off;
