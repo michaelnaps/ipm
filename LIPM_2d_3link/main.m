@@ -22,10 +22,10 @@ Cq = {
 %% Variable Setup
 % establish state space vectors and variables
 P = 10;                   % prediction horizon [s]
-dt = 0.05;                % change in time
-T = 0:dt:8;              % time span
-th1_0 = [pi/4;0.0];       % link 1 position and velocity
-th2_0 = [0.0; 0.0];       % link 2 position and velocity
+dt = 0.025;               % change in time
+T = 0:dt:10;              % time span
+th1_0 = [pi/2;0.0];       % link 1 position and velocity
+th2_0 = [0.0; 5.0];       % link 2 position and velocity
 th3_0 = [0.0; 0.0];       % link 3 position and velocity
 um = [1000; 500; 250];    % maximum input to joints
 c = [30; 30; 30];         % damping coefficients
