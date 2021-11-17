@@ -28,7 +28,7 @@ function [] = animation_3link(q, T, k)
         plot([xKnee xHip],[yKnee yHip],'b','linewidth',3); hold on;
         plot([xHip xHead],[yHip yHead],'color',[0.4660 0.6740 0.1880],'linewidth',3); hold on;
 
-        plot([-1 1],[0 0],'color',[0 0 0],'linewidth',2);
+        plot([-L1/2 L1/2],[0 0],'color',[0 0 0],'linewidth',2);
 
         axis equal; % do axis equal before mentioning the xlim ylim
         xlim([-(L1+L2) (L1+L2)]); ylim([-(L1+L2+L3+0.5) (L1+L2+L3+0.5)]);

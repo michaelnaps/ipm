@@ -27,7 +27,7 @@ T = 0:dt:10;              % time span
 th1_0 = [pi/2;0.0];       % link 1 position and velocity
 th2_0 = [0.0; 0.0];       % link 2 position and velocity
 th3_0 = [0.0; 0.0];       % link 3 position and velocity
-um = [1000; 500; 250];    % maximum input to joints
+um = [2000; 1000; 500];    % maximum input to joints
 c = [30; 30; 30];         % damping coefficients
 
 % create initial states
