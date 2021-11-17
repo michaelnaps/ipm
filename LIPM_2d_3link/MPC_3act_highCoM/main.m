@@ -15,7 +15,7 @@ close all;
 Cq = {
       @(qc) (pi/2-qc(1))^2;  % cost of position of Link 1
       @(qc) (0.0 -qc(3))^2;  % cost of position of Link 2
-      @(qc) (0.0 -qc(5))^2;  % cost of position of Link 3
+      @(qc) (0); % (0.0 -qc(5))^2;  % cost of position of Link 3
      };
 
 
@@ -23,12 +23,12 @@ Cq = {
 % establish state space vectors and variables
 P = 10;                   % prediction horizon [s]
 dt = 0.025;               % change in time
-T = 0:dt:20;              % time span
-th1_0 = [3*pi/2;0.0];       % link 1 position and velocity
+T = 0:dt:10;              % time span
+th1_0 = [pi/2;0.0];       % link 1 position and velocity
 th2_0 = [0.0; 0.0];       % link 2 position and velocity
-th3_0 = [0.0; 0.0];       % link 3 position and velocity
-um = [1500; 0; 0];    % maximum input to joints
-c = [50; 50; 50];         % damping coefficients
+th3_0 = [pi;  0.0];       % link 3 position and velocity
+um = [2000; 1000; 0];    % maximum input to joints
+c = [30; 30; 30];         % damping coefficients
 
 % create initial states
 q0 = [
