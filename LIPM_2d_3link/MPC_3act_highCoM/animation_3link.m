@@ -1,6 +1,6 @@
 function [] = animation_3link(q, T, k)
     %% body parameters. 
-    L1 = 2; L2 = 2; L3 = 2;
+    L1 = 0.5; L2 = 0.5; L3 = 1;
     
     %% unpacking
     % adj = pi/2;
