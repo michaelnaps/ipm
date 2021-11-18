@@ -47,8 +47,8 @@ tic
 [~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
 toc
 
-%% Map Center of Mass
-% CoM = map_CoM(q, L, m);
+%% Map Center of Mass for Animation
+CoM = map_CoM(q, m, L);
 
 %% Graphing and Evaluation
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
@@ -157,4 +157,4 @@ xlabel('Time')
 hold off
 
 % % animation of 3-link pendulum
-% animation_3link(q, T, 3);
+% animation_3link(q, T, L, CoM);
