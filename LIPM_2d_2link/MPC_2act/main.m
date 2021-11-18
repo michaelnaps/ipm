@@ -2,7 +2,7 @@
 %  Complexity: 2 Links (fully actuated)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
-
+%
 %  Purpose: Model and stabilize an actuated
 %           linear inverted pendulum system made 
 %           up of two connected rods.

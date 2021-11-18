@@ -2,7 +2,7 @@
 %  Complexity: 3 Links (actuated at ground)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
-
+%
 %  Purpose: Model and control a 3-link
 %           pendulum via the model predictive
 %           control (MPC) architecture.

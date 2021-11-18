@@ -2,7 +2,7 @@
 %  Complexity: Cart and Pendulum Model with 2 Control Points
 %  Created by: Michael Napoli
 %  Created on: 11/8/2021
-
+%
 %  Purpose: Model and stabilize an actuated
 %           linear inverted pendulum system made up
 %           of a pendulum connected to a moving 
