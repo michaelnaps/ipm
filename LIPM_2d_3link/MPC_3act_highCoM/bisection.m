@@ -1,12 +1,12 @@
-function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps)
+function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps, m, L)
     %% Bisection Method to Solve for Input
     ua = -um;
     ub =  um;
     uave = zeros(length(um), 1);
     
-    Ca = cost(P, dt, q0, ua, c, Cq);
-    Cb = cost(P, dt, q0, ub, c, Cq);
-    Cave = cost(P, dt, q0, uave, c, Cq);
+    Ca = cost(P, dt, q0, ua, c, Cq, m, L);
+    Cb = cost(P, dt, q0, ub, c, Cq, m, L);
+    Cave = cost(P, dt, q0, uave, c, Cq, m, L);
     du = Inf(length(Cq), 1);
     count = 1;
     while (sum(du > eps) == length(du))
@@ -33,7 +33,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps)
             
         end
         uave = (ua + ub) ./ 2;
-        Cave = cost(P, dt, q0, uave, c, Cq);
+        Cave = cost(P, dt, q0, uave, c, Cq, m, L);
         count = count + 1;
         
         if (count > 1000)

@@ -15,19 +15,22 @@ close all;
 Cq = {
       @(qc) (pi/2-qc(1))^2;  % cost of position of Link 1
       @(qc) (0.0 -qc(3))^2;  % cost of position of Link 2
-      @(qc) (0); % (0.0 -qc(5))^2;  % cost of position of Link 3
+      @(qc) (0.0 -qc(5))^2;  % cost of position of Link 3
      };
 
 
 %% Variable Setup
+% parameters for mass and length
+m = [20; 20; 60];
+L = [1; 1; 2];
 % establish state space vectors and variables
 P = 10;                   % prediction horizon [s]
 dt = 0.025;               % change in time
-T = 0:dt:10;              % time span
+T = 0:dt:20;              % time span
 th1_0 = [pi/2;0.0];       % link 1 position and velocity
 th2_0 = [0.0; 0.0];       % link 2 position and velocity
-th3_0 = [pi;  0.0];       % link 3 position and velocity
-um = [2000; 1000; 0];    % maximum input to joints
+th3_0 = [0.0; 0.0];       % link 3 position and velocity
+um = [2000; 1000; 0];   % maximum input to joints
 c = [30; 30; 30];         % damping coefficients
 
 % create initial states
@@ -41,9 +44,11 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
 toc
 
+%% Map Center of Mass for Animation
+CoM = map_CoM(q, m, L);
 
 %% Graphing and Evaluation
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
@@ -152,4 +157,4 @@ xlabel('Time')
 hold off
 
 % % animation of 3-link pendulum
-% animation_3link(q, T, 3);
+% animation_3link(q, T, L, CoM);

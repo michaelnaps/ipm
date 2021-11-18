@@ -1,12 +1,15 @@
-function [] = animation_3link(q, T, k)
+function [] = animation_3link(q, T, L, CoM)
     %% body parameters. 
-    L1 = 0.5; L2 = 0.5; L3 = 1;
+    L1 = L(1); L2 = L(2); L3 = L(3);
     
     %% unpacking
     % adj = pi/2;
     theta1List = q(:,1);
     theta2List = q(:,3);
     theta3List = q(:,5);
+    
+    xCoM = CoM(:,1);
+    yCoM = CoM(:,2);
     
     %% Delay
     dt = T(2) - T(1);
@@ -27,6 +30,7 @@ function [] = animation_3link(q, T, k)
         plot([xAnkle xKnee],[yAnkle yKnee],'r','linewidth',3); hold on;
         plot([xKnee xHip],[yKnee yHip],'b','linewidth',3); hold on;
         plot([xHip xHead],[yHip yHead],'color',[0.4660 0.6740 0.1880],'linewidth',3); hold on;
+        plot(xCoM(iFrame), yCoM(iFrame), '.', 'color', [0 0 0], 'markersize', 30); hold on;
 
         plot([-L1/2 L1/2],[0 0],'color',[0 0 0],'linewidth',2);
 
