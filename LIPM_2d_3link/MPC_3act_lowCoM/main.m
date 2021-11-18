@@ -20,6 +20,9 @@ Cq = {
 
 
 %% Variable Setup
+% parameters for mass and length
+m = [10; 5; 2];
+L = [2; 2; 2];
 % establish state space vectors and variables
 P = 10;                   % prediction horizon [s]
 dt = 0.025;               % change in time
@@ -41,9 +44,11 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
 toc
 
+%% Map Center of Mass
+% CoM = map_CoM(q, L, m);
 
 %% Graphing and Evaluation
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
