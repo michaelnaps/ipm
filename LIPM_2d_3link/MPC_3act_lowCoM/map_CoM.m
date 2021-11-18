@@ -1,6 +1,6 @@
 function CoM = map_CoM(q, m, L)
     %% Parameters
-    q1 = q(:,1);  q2 = q(:,3);  q3 = q(:,5);
+    q1 = q(:,1);  q3 = q(:,3);  q5 = q(:,5);
     m1 = m(1);    m2 = m(2);    m3 = m(3);
     L1 = L(1);    L2 = L(2);    L3 = L(3);
     
@@ -8,8 +8,8 @@ function CoM = map_CoM(q, m, L)
     CoM = zeros(length(q(:,1)), 2);
     for i = 1:length(q(:,1))
         th1 = q1(i);
-        th2 = q2(i);
-        th3 = q3(i);
+        th2 = q3(i);
+        th3 = q5(i);
         
         xAnkle = 0; yAnkle = 0;
         
