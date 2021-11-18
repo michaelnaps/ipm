@@ -1,5 +1,5 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: 2 Links (actuated at ground)
+%  Complexity: 2 Links (fully actuated)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
 
@@ -15,12 +15,6 @@ close all;
 
 
 %% Cost Function
-%           ang pos.        ang. vel.        cart pos.
-% Cq = {
-%       @(qc) (10*cos(pi)-10*cos(qc(1))).^2; % + (0-qc(4)).^2; % + (pd-qc(1))^2;
-%       @(qc) (10*cos(0.)-10*cos(qc(3))).^2;
-%      };
-
 Cq = {
       @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
       @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
@@ -32,8 +26,8 @@ Cq = {
 P = 4;                    % prediction horizon
 dt = 0.05;                % change in time
 T = 0:dt:10;              % time span
-th1_0 = [pi; 3.5];        % cart position and velocity
-th2_0 = [pi; 1.5];        % angular position and velocity
+th1_0 = [pi; 3.5];        % link 1 position and velocity
+th2_0 = [pi; 1.5];        % link 2 position and velocity
 um = [500; 500];          % maximum input to joints
 % minimum maximum inputs for full range ~ [400 300]
 
