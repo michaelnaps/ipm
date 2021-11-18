@@ -28,8 +28,8 @@ dt = 0.05;                % change in time
 T = 0:dt:10;              % time span
 th1_0 = [pi; 3.5];        % link 1 position and velocity
 th2_0 = [pi; 1.5];        % link 2 position and velocity
-um = [500; 500];          % maximum input to joints
-% minimum maximum inputs for full range ~ [400 300]
+um = [500; 400];          % maximum input to joints
+% minimum inputs for full range ~ [400 300]
 
 % create initial states
 q0 = [
