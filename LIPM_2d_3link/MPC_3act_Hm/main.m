@@ -13,25 +13,25 @@ close all;
 
 %% Cost Function
 Cq = {
-      @(qc) 10*(pi/2-qc(1))^2 + (0.0 -qc(2))^2;  % cost of position of Link 1
-      @(qc) 10*(0.0 -qc(3))^2 + (0.0 -qc(4))^2;  % cost of position of Link 2
-      @(qc) 10*(0.0 -qc(5))^2 + (0.0 -qc(6))^2;  % cost of position of Link 3
+      @(qc) 100*(pi/2-qc(1))^2 + (0.0-qc(2))^2;  % cost of Link 1
+      @(qc) 100*(0.0 -qc(3))^2 + (0.0-qc(4))^2;  % cost of Link 2
+      @(qc) 100*(0.0 -qc(5))^2 + (0.0-qc(6))^2;  % cost of Link 3
      };
 
 
 %% Variable Setup
 % parameters for mass and length
-m = [10; 5; 2];
-L = [2; 2; 2];
+m = [30; 30; 40];
+L = [1; 1; 1];
 % establish state space vectors and variables
-P = 10;                   % prediction horizon [s]
-dt = 0.025;               % change in time
-T = 0:dt:10;              % time span
-th1_0 = [pi/2;5.0];       % link 1 position and velocity
-th2_0 = [0.0; 0.0];       % link 2 position and velocity
-th3_0 = [0.0; 0.0];       % link 3 position and velocity
-um = [1000; 500; 250];   % maximum input to joints
-c = [30; 30; 30];      % damping coefficients
+P = 10;                    % prediction horizon [windows]
+dt = 0.025;                % change in time
+T = 0:dt:10;               % time span
+th1_0 = [pi/2;0.0];        % link 1 position and velocity
+th2_0 = [0.0; 5.0];        % link 2 position and velocity
+th3_0 = [0.0; 0.0];        % link 3 position and velocity
+um = [10000; 5000; 2500];  % maximum input to joints
+c = [500; 500; 500];       % damping coefficients
 
 % create initial states
 q0 = [
@@ -47,7 +47,7 @@ tic
 [~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
 toc
 
-%% Map Center of Mass for Animation
+%% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
 
 %% Graphing and Evaluation
@@ -108,15 +108,39 @@ xlabel('Time')
 title('Link 3')
 legend('Pos', 'Vel')
 
-% plot input on link 1
+% plot cost of link 1
 subplot(2,3,4)
+plot(T, q(:,10))
+title('Cost of Link 1')
+ylabel('Cost [unitless]')
+xlabel('Time')
+
+% plot cost of link 2
+subplot(2,3,5)
+plot(T, q(:,11))
+title('Cost of Link 2')
+ylabel('Cost [unitless]')
+xlabel('Time')
+
+% plot cost of link 3
+subplot(2,3,6)
+plot(T, q(:,12))
+title('Cost of Link 3')
+ylabel('Cost [unitless]')
+xlabel('Time')
+hold off
+
+% plot input on link 1
+figure('Position', [0 0 1400 400])
+hold on
+subplot(1,3,1)
 plot(T, q(:,7))
 title('Input on Link 1')
 ylabel('Input [Nm]')
 xlabel('Time')
 
 % plot input on link 2
-subplot(2,3,5)
+subplot(1,3,2)
 plot(T, q(:,8))
 title('Input on Link 2')
 ylabel('Input [Nm]')
@@ -124,35 +148,10 @@ xlabel('Time')
 hold off
 
 % plot input on link 3
-subplot(2,3,6)
+subplot(1,3,3)
 plot(T, q(:,9))
 title('Input on Link 3')
 ylabel('Input [Nm]')
-xlabel('Time')
-hold off
-
-% plot cost of link 1
-figure('Position', [0 0 1400 400])
-hold on
-subplot(1,3,1)
-plot(T, q(:,10))
-title('Cost of Link 1')
-ylabel('Cost [unitless]')
-xlabel('Time')
-hold off
-
-% plot cost of link 2
-subplot(1,3,2)
-plot(T, q(:,11))
-title('Cost of Link 2')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 3
-subplot(1,3,3)
-plot(T, q(:,12))
-title('Cost of Link 3')
-ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 
