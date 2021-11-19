@@ -10,6 +10,7 @@
 clc;clear;
 close all;
 
+addpath ../.
 
 %% Cost Function
 Cq = {
