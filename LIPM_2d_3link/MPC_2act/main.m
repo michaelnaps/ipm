@@ -15,7 +15,7 @@ addpath ../.
 %% Cost Function
 Cq = {
       @(qc) (pi/2-qc(1))^2;  % cost of position of Link 1
-      @(qc) (pi/2-qc(1))^2;%(0.0 -qc(3))^2;                   % cost of position of Link 2
+      @(qc) (pi/2-qc(1))^2;  % cost of position of Link 2
       @(qc) (0.0 -qc(5))^2;  % cost of position of Link 3
      };
 
