@@ -19,6 +19,11 @@ Cq = {
       @(qc) (pi -qc(1)).^2;  % cost of position of Link 1
       @(qc) (0.0-qc(3)).^2;  % cost of position of Link 2
      };
+ 
+Jq = {
+      @(qc) -2*qc(1), 0;
+      0               @(qc) -2*qc(3);
+     };
 
  
 %% Variable Setup
@@ -47,7 +52,7 @@ c2 = c1;
 
 %% Implementation
 tic
-[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, 1e-6);
+[T, q] = mpc_control(P, T, q0, um, c1, c2, Cq, Jq, 1e-6);
 toc
 
 
