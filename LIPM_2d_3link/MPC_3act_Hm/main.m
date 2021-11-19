@@ -22,7 +22,7 @@ Cq = {
 
 %% Variable Setup
 % parameters for mass and length
-m = [20; 20; 60];
+m = [15; 15; 60];
 L = [0.5; 0.5; 1];
 % establish state space vectors and variables
 P = 10;                         % prediction horizon [time steps]
