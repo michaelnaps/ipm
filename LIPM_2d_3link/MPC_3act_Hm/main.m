@@ -13,25 +13,25 @@ close all;
 
 %% Cost Function
 Cq = {
-      @(qc) 100*(pi/2-qc(1))^2 + (0.0-qc(2))^2;  % cost of Link 1
-      @(qc) 100*(0.0 -qc(3))^2 + (0.0-qc(4))^2;  % cost of Link 2
-      @(qc) 100*(0.0 -qc(5))^2 + (0.0-qc(6))^2;  % cost of Link 3
+      @(qc) (cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2;  % + (0.0-qc(2))^2;  % cost of Link 1
+      @(qc) (cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2;  % + (0.0-qc(4))^2;  % cost of Link 2
+      @(qc) (cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2;  % + (0.0-qc(6))^2;  % cost of Link 3
      };
 
 
 %% Variable Setup
 % parameters for mass and length
-m = [30; 30; 40];
-L = [1; 1; 1];
+m = [20; 40; 40];
+L = [0.5; 0.5; 1];
 % establish state space vectors and variables
-P = 10;                    % prediction horizon [windows]
-dt = 0.025;                % change in time
-T = 0:dt:10;               % time span
-th1_0 = [pi/2;0.0];        % link 1 position and velocity
-th2_0 = [0.0; 5.0];        % link 2 position and velocity
-th3_0 = [0.0; 0.0];        % link 3 position and velocity
-um = [10000; 5000; 2500];  % maximum input to joints
-c = [500; 500; 500];       % damping coefficients
+P = 10;                         % prediction horizon [time steps]
+dt = 0.025;                     % change in time
+T = 0:dt:10;                    % time span
+th1_0 = [pi/2;0.0];             % link 1 position and velocity
+th2_0 = [0.0; 5.0];             % link 2 position and velocity
+th3_0 = [0.0; 0.0];             % link 3 position and velocity
+um = [10000; 10000; 10000];     % maximum input to joints
+c = [500; 500; 500];            % damping coefficients
 
 % create initial states
 q0 = [
