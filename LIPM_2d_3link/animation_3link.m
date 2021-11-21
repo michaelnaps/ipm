@@ -30,10 +30,10 @@ function [] = animation_3link(q, T, m, L)
         xHead = xHip + L3*cos(th1+th2+th3); yHead = yHip + L3*sin(th1+th2+th3);
 
         plot([xAnkle xKnee],[yAnkle yKnee],'r','linewidth',3); hold on;
-        plot(xKnee, yKnee, '.', 'color', 'k', 'markersize', m1); hold on;
         plot([xKnee xHip],[yKnee yHip],'b','linewidth',3); hold on;
-        plot(xHip, yHip, '.', 'color', 'k', 'markersize', m2); hold on;
         plot([xHip xHead],[yHip yHead],'color',[0.4660 0.6740 0.1880],'linewidth',3); hold on;
+        plot(xKnee, yKnee, '.', 'color', 'k', 'markersize', m1); hold on;
+        plot(xHip, yHip, '.', 'color', 'k', 'markersize', m2); hold on;
         plot(xHead, yHead, '.', 'color', 'k', 'markersize', m3); hold on;
         plot(xCoM(iFrame), yCoM(iFrame), '-s', 'markersize', 8, 'color', '#7E2F8E', 'markerfacecolor', '#7E2F8E'); hold on;
 
