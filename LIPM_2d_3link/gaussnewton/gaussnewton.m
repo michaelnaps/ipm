@@ -1,54 +1,48 @@
-function [u, C, n] = gaussnewton(P, dt, q0, um, c, Cq, Jq, eps, m, L)
-    %% Bisection Method to Solve for Input
-    ua = -um;
-    ub =  um;
-    uave = zeros(length(um),1);
+function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
+    %% Gauss Newton Method to Solve for Next Input
+    %  notation: subscript 'c' - current
+    %            subscript 'n' - next
     
-    Ca = cost(P, dt, q0, ua, c, Cq, Jq, m, L);
-    Cb = cost(P, dt, q0, ub, c, Cq, Jq, m, L);
-    Cave = cost(P, dt, q0, uave, c, Cq, Jq, m, L);
-    du = Inf(length(Cq), 1);
+    % constraints
+    umin = -um;
+    umax = um;
+    
+    % initial guess is set to previous input
+    uc = u0';
+    [Cc, Jc] = cost(P, dt, q0, uc, c, Cq, Jq, m, L);
+    
     count = 1;
-    while (sum(du > eps) > 0)
+    while (sum(Cc > eps) > 0)
+        un = uc - Cc\Jc;
         
-        if (sum(Cave) < eps)
+        if (sum(abs(un-uc) < eps) > 0)
             break;
         end
         
-        for i = 1:length(Cq)
-            
-            if (du(i) < eps)
-                break;
-            end
-
-            if(Ca(i) < Cb(i))
-                ub(i) = uave(i);
-                Cb(i) = Cave(i);
-                du(i) = abs(ua(i)-uave(i));
-            else
-                ua(i) = uave(i);
-                Ca(i) = Cave(i);
-                du(i) = abs(ub(i)-uave(i));
-            end
-            
-        end
-        uave = (ua + ub) ./ 2;
-        Cave = cost(P, dt, q0, uave, c, Cq, Jq, m, L);
+        uc = un;
+        [Cc, Jc] = cost(P, dt, q0, uc, c, Cq, Jq, m, L);
         count = count + 1;
         
+        for i = 1:length(uc)
+            if (uc(i) > umax(i))
+                uc(i) = umax(i);
+            elseif (uc(i) < umin(i))
+                uc(i) = umin(i);
+            end
+        end
+        
         if (count > 1000)
-            fprintf("ERROR: Bisection exited - 1000 iterations reached:\n")
+            fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
             for i = 1:length(Cq)
-                fprintf("u%i = %.3f  C%i = %.3f  du%i = %.3f\n",...
-                        i, uave(i), i, Cave(i), i, du(i))
+                fprintf("u%i = %.3f  Cc%i = %.3f  Jc%i,%i = %.3f\n",...
+                        i, uc(i), i, Cc(i), i, i, Jc(i,i))
             end
             fprintf("\n")
             break;
         end
-
     end
-
-    u = uave;
-    C = Cave;
+    
+    u = uc';
+    C = Cc;
     n = count;
 end

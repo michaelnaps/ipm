@@ -5,7 +5,7 @@ function [T, q] = mpc_control(P, T, q0, um, c, Cq, Jq, eps, m, L)
     q(1,:) = q0;
     for i = 2:length(T)
         
-        [u, C, n] = gaussnewton(P, dt, q(i-1,1:6), um, c, Cq, Jq, eps, m, L);
+        [u, C, n] = gaussnewton(P, dt, q(i-1,1:6), q(i-1,7:9)', um, c, Cq, Jq, eps, m, L);
         [~, qc] = ode45(@(t,q) statespace(q, u, c, m, L), 0:dt:P*dt, q(i-1,1:6));
         q(i,:) = [qc(2,:), u', C', n];
         

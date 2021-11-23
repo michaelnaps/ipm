@@ -10,6 +10,7 @@
 clc;clear;
 close all;
 
+restoredefaultpath
 addpath ../.
 addpath ../gaussnewton
 
@@ -21,9 +22,9 @@ Cq = {
      };
  
 Jq = {
-      @(qc) -200*sin(qc(1))*cos(qc(1)), @(qc) -2*qc(2), 0, 0, 0, 0;
-      0, 0, @(qc) -200*sin(qc(3))*cos(qc(3)), @(qc) -2*qc(4), 0, 0;
-      0, 0, 0, 0, @(qc) -200*sin(qc(5))*cos(qc(5)), @(qc) -2*qc(6);
+      @(qc) -200*cos(qc(1)), @(qc) 0, @(qc) 0;
+      @(qc) 0, @(qc)  200*sin(qc(3)), @(qc) 0;
+      @(qc) 0, @(qc) 0,  @(qc) 200*sin(qc(5));
      };
 
 
@@ -34,9 +35,9 @@ L = [0.5; 0.5; 1];
 % establish state space vectors and variables
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
-T = 0:dt:10;                    % time span
-th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 5.0];             % link 2 position and velocity
+T = 0:dt:30;                    % time span
+th1_0 = [pi/2;0.1];             % link 1 position and velocity
+th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 2000; 1500];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
@@ -52,7 +53,7 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, Jq, 1e-6, m, L);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, Jq, 1e-3, m, L);
 toc
 
 %% Calculate Center of Mass for Animation
