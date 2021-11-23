@@ -43,11 +43,6 @@ Note: Method is problematic because it requires previous state data. At
 
 Function for derivative around current state is dependent on the cost of
 state variables at the current position.
-
-01|
-02|
-03|
-04|
 ____________________________________________________________________________
 
 Calculating the Jacobian Matrix
