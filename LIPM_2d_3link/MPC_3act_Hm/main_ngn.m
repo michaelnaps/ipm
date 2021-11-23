@@ -11,13 +11,19 @@ clc;clear;
 close all;
 
 addpath ../.
-addpath ../bisection
+addpath ../gaussnewton
 
 %% Cost Function
 Cq = {
       @(qc) 100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
       @(qc) 100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
       @(qc) 100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
+     };
+ 
+Jq = {
+      @(qc) -200*sin(qc(1))*cos(qc(1)), @(qc) -2*qc(2), 0, 0, 0, 0;
+      0, 0, @(qc) -200*sin(qc(3))*cos(qc(3)), @(qc) -2*qc(4), 0, 0;
+      0, 0, 0, 0, @(qc) -200*sin(qc(5))*cos(qc(5)), @(qc) -2*qc(6);
      };
 
 
@@ -46,7 +52,7 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, Jq, 1e-6, m, L);
 toc
 
 %% Calculate Center of Mass for Animation

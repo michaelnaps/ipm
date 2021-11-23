@@ -4,9 +4,9 @@ function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps, m, L)
     ub =  um;
     uave = zeros(length(um),1);
     
-    Ca = cost_bis(P, dt, q0, ua, c, Cq, m, L);
-    Cb = cost_bis(P, dt, q0, ub, c, Cq, m, L);
-    Cave = cost_bis(P, dt, q0, uave, c, Cq, m, L);
+    Ca = cost(P, dt, q0, ua, c, Cq, m, L);
+    Cb = cost(P, dt, q0, ub, c, Cq, m, L);
+    Cave = cost(P, dt, q0, uave, c, Cq, m, L);
     du = Inf(length(Cq), 1);
     count = 1;
     while (sum(du > eps) > 0)
@@ -33,7 +33,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps, m, L)
             
         end
         uave = (ua + ub) ./ 2;
-        Cave = cost_bis(P, dt, q0, uave, c, Cq, m, L);
+        Cave = cost(P, dt, q0, uave, c, Cq, m, L);
         count = count + 1;
         
         if (count > 1000)
