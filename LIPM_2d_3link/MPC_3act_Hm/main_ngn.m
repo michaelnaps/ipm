@@ -27,6 +27,12 @@ Jq = {
       @(qc) 0, @(qc) 0, @(qc) 10*(sin(2*qc(5)) + 2*sin(qc(5))*(1 - cos(qc(5))));
      };
 
+% Jq = {
+%       @(qc) 10*(-2*cos(qc(1))*(1 - sin(qc(1))) - sin(2*qc(1))), @(qc) -2*qc(2), @(qc) 0, @(qc) 0, @(qc) 0, @(qc) 0;
+%       @(qc) 0, @(qc) 0, @(qc) 10*(sin(2*qc(3)) + 2*sin(qc(3))*(1 - cos(qc(3)))), @(qc) -2*qc(4), @(qc) 0, @(qc) 0;
+%       @(qc) 0, @(qc) 0, @(qc) 0, @(qc) 0, @(qc) 10*(sin(2*qc(5)) + 2*sin(qc(5))*(1 - cos(qc(5)))), @(qc) -2*qc(6);
+%      };
+
 
 %% Variable Setup
 % parameters for mass and length
@@ -53,7 +59,7 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, Jq, 1e-6, m, L);
+[~, q] = mpc_control(P, T, q0, um, c, Cq, Jq, 1e-3, m, L);
 toc
 
 %% Calculate Center of Mass for Animation

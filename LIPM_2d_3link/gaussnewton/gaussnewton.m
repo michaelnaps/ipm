@@ -17,10 +17,10 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
         
         % constraints
         for i = 1:length(uc)
-            if (uc(i) > umax(i))
-                uc(i) = umax(i);
-            elseif (uc(i) < umin(i))
-                uc(i) = umin(i);
+            if (un(i) > umax(i))
+                un(i) = umax(i);
+            elseif (un(i) < umin(i))
+                un(i) = umin(i);
             end
         end
         
