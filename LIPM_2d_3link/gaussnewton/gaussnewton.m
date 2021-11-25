@@ -23,15 +23,23 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
                 un(i) = umin(i);
             end
         end
-        
+
+        [Cn, Jc] = cost(P, dt, q0, un, c, Cq, Jq, m, L);
+        count = count + 1;
+
         du = abs(un - uc);
         if (sum(du < eps) == length(du))
+            fprintf("Change in input break.\n")
             break;
         end
-        
-        uc = un;
-        [Cc, Jc] = cost(P, dt, q0, uc, c, Cq, Jq, m, L);
-        count = count + 1;
+
+        dC = abs(Cn - Cc);
+        if (sum(dC > eps) == length(dC))
+            fprintf("Change in cost break.\n")
+            break;
+        end
+
+        uc = un;  Cc = Cn;
         
         % iteration break
         if (count > 1000)
@@ -45,7 +53,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
         end
     end
     
-    u = uc';
-    C = Cc;
+    u = un';
+    C = Cn;
     n = count;
 end
