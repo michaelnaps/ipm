@@ -10,6 +10,7 @@
 clc;clear;
 close all;
 
+restoredefaultpath
 addpath ../.
 addpath ../bisection
 
