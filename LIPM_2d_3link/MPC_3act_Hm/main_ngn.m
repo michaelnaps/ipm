@@ -32,7 +32,7 @@ Jq = {
 %       @(qc) 10*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2);% + (0.0-qc(4))^2;  % cost of Link 2
 %       @(qc) 10*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2);% + (0.0-qc(6))^2;  % cost of Link 3
 %      };
- 
+%  
 % Jq = {
 %       @(qc) 10*(-2*cos(qc(1))*(1 - sin(qc(1))) - sin(2*qc(1))), @(qc) 0, @(qc) 0;
 %       @(qc) 0, @(qc) 10*(sin(2*qc(3)) + 2*sin(qc(3))*(1 - cos(qc(3)))), @(qc) 0;
@@ -53,7 +53,7 @@ L = [0.5; 0.5; 1];
 % establish state space vectors and variables
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
-T = 0:dt:10;                    % time span
+T = 0:dt:5;                    % time span
 th1_0 = [pi/2;0.1];             % link 1 position and velocity
 th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
@@ -63,8 +63,8 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      zeros(length(um),1);...     % return for inputs
-      zeros(length(Cq),1);...     % return for cost
+      zeros(size(um));...         % initial inputs
+      zeros(size(um));...         % return for cost
       0                           % iteration count
      ];
 

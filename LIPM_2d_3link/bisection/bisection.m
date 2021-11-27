@@ -11,7 +11,7 @@ function [u, C, n] = bisection(P, dt, q0, um, c, Cq, eps, m, L)
     count = 1;
     while (sum(du > eps) > 0)
         
-        if (sum(Cave) < eps)
+        if (sum(Cave < eps) == length(Cave))
             break;
         end
         
