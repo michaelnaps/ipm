@@ -24,19 +24,25 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
                 un(i) = umin(i);
             end
         end
+
+        [Cn, Jc] = cost(P, dt, q0, un, c, m, L, Cq, Jq);
+        count = count + 1;
+
+        if (count == 1000)
+            break;
+        end
         
         udn = abs(un - uc);
         if (sum(udn < eps) == length(udn))
             break;
         end
 
-        if (count == 1000)
+        Cdn = abs(Cn - Cc);
+        if (sum(Cdn < eps) == length(Cdn))
             break;
         end
 
-        [Cn, Jc] = cost(P, dt, q0, un, c, m, L, Cq, Jq);
         uc = un;  Cc = Cn;
-        count = count + 1;
     end
     
     % iteration break
