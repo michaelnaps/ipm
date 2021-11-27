@@ -14,7 +14,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
 
     count = 1;
     while (sum(Cc > eps) > 0)
-        un = uc - Jc\Cc;
+        un = uc - (Cc\Jc)';
         
         % check constraints
         for i = 1:length(uc)
@@ -27,13 +27,6 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
         
         udn = abs(un - uc);
         if (sum(udn < eps) == length(udn))
-            fprintf("Change in input break. ")
-            fprintf("iterations: %.0f\n", count)
-            for i = 1:length(Cq)
-                fprintf("u%i = %.3f  Cc%i = %.3f  Jc%i,%i = %.3f\n",...
-                    i, uc(i), i, Cc(i), i, i, Jc(i,i))
-            end
-            fprintf("\n")
             break;
         end
 
