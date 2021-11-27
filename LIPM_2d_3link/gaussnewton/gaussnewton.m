@@ -1,4 +1,4 @@
-function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
+function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     %% Gauss Newton Method to Solve for Next Input
     %  notation: subscript 'c' - current
     %            subscript 'n' - next
@@ -9,7 +9,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
     
     % initial guess is set to previous input
     uc = u0;
-    [Cc, Jc] = cost(P, dt, q0, uc, c, Cq, Jq, m, L);
+    [Cc, Jc] = cost(P, dt, q0, uc, c, m, L, Cq, Jq);
     un = uc;  Cn = Cc;
 
     count = 1;
@@ -41,7 +41,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, Cq, Jq, eps, m, L)
             break;
         end
 
-        [Cn, Jc] = cost(P, dt, q0, un, c, Cq, Jq, m, L);
+        [Cn, Jc] = cost(P, dt, q0, un, c, m, L, Cq, Jq);
         uc = un;  Cc = Cn;
         count = count + 1;
     end

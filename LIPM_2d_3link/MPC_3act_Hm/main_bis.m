@@ -47,7 +47,7 @@ q0 = [
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, Cq, 1e-6, m, L);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
 toc
 
 %% Calculate Center of Mass for Animation

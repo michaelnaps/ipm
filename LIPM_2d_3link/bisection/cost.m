@@ -1,4 +1,4 @@
-function C = cost(P, dt, q0, u, c, Cq, m, L)
+function C = cost(P, dt, q0, u, c, m, L, Cq)
     % calculate the state over the desired prediction horizon
     % with constant input
     [~, qc] = ode45(@(t,q) statespace(q, u, c, m, L), 0:dt:P*dt, q0);
