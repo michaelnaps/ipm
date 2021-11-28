@@ -49,8 +49,8 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     if (count == 1000)
         fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
         for i = 1:length(Cq)
-            fprintf("u%i = %.3f  Cc%i = %.3f  Jc%i,%i = %.3f\n",...
-                    i, uc(i), i, Cc(i), i, i, Jc(i,i))
+            fprintf("u%i,0 = %.3f  u%i,1 = %.3f  Cc%i,0 = %.3f  Cc%i,1 = %.3f\n",...
+                    i, uc(i), i, un(i), i, Cc(i), i, Cn(i))
         end
         fprintf("\n")
     end
