@@ -12,7 +12,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     [Cc, Jc] = cost(P, dt, q0, uc, c, m, L, Cq, Jq);
     un = uc;  Cn = Cc;
 
-    ui = [0;0;0];
+    ui = [0;0;0];  % treated as boolean
     for i = 1:length(uc)
         if (abs(uc(i)) < eps && Cc(i) > eps)
             ui(i) = 1;
@@ -62,7 +62,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
         fprintf("\n")
     end
 
-    if ((sum(ui) > 0 || sum(abs(u0-un) > 100) > 0) && count < 1000)
+    if ((sum(ui) > 0 || sum(abs(u0-un) > 100) > 0 || count > 35) && count < 1000)
         fprintf("ERROR: Bad initial guess - iterations: %i\n", count)
         for i = 1:length(ui)
 %             if (ui(i))
