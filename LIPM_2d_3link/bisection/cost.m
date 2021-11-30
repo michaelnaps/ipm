@@ -4,10 +4,8 @@ function C = cost(P, dt, q0, u, c, m, L, Cq)
     [~, qc] = ode45(@(t,q) statespace(q, u, c, m, L), 0:dt:P*dt, q0);
     
     % sum of cost over the prediction horizon states
-    C = zeros(length(Cq), 1);
-    for i = 1:length(Cq)
-        for j = 1:P+1
-            C(i) = C(i) + Cq{i}(qc(j,:));
-        end
+    C = zeros(size(u));
+    for i = 1:P+1
+        C = C + Cq(qc(i,:));
     end
 end

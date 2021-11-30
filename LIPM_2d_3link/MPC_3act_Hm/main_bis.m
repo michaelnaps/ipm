@@ -15,11 +15,11 @@ addpath ../.
 addpath ../bisection
 
 %% Cost Function
-Cq = {
-      @(qc) 100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
-      @(qc) 100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
-      @(qc) 100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
-     };
+Cq = @(qc) [
+      100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
+      100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
+      100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
+     ];
 
 
 %% Variable Setup
@@ -39,8 +39,8 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      zeros(length(um),1);...     % return for inputs
-      zeros(length(Cq),1);...     % return for cost
+      zeros(size(um));...     % return for inputs
+      zeros(size(um));...     % return for cost
       0                           % iteration count
      ];
 
