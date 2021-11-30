@@ -27,17 +27,17 @@ Jq = @(qc) [
        0.0,  0.0,  20*qc(5) + 2*qc(6);
      ];
 
-% Cq = {
+% Cq = @(qc) [
 %        100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
 %        100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
 %        100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
-%      };
+%      ];
 %  
-% Jq = {
+% Jq = @(qc) [
 %        100*(-2*cos(qc(1))*(1 - sin(qc(1))) - sin(2*qc(1))) - 2*qc(2),  0,  0;
 %        0,  100*(sin(2*qc(3)) + 2*sin(qc(3))*(1 - cos(qc(3)))) - 2*qc(4),  0;
 %        0,  0,  100*(sin(2*qc(5)) + 2*sin(qc(5))*(1 - cos(qc(5)))) - 2*qc(6);
-%      };
+%      ];
 
 
 %% Variable Setup
@@ -49,8 +49,8 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 0.0];             % link 2 position and velocity
-th3_0 = [0.0; 0.1];             % link 3 position and velocity
+th2_0 = [0.0; 0.1];             % link 2 position and velocity
+th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 2000; 1500];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
