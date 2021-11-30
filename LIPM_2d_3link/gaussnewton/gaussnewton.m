@@ -55,14 +55,14 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     % iteration break
     if (count == 1000)
         fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
-        for i = 1:length(Cq)
+        for i = 1:length(uc)
             fprintf("u%i,0 = %.3f  u%i,1 = %.3f  Cc%i,0 = %.3f  Cc%i,1 = %.3f\n",...
                     i, uc(i), i, un(i), i, Cc(i), i, Cn(i))
         end
         fprintf("\n")
     end
 
-    if ((sum(ui) > 0 || sum(abs(u0-un) > 100) > 0 || count > 35) && count < 1000)
+    if ((sum(ui) > 0 || count > 35) && count < 1000)
         fprintf("ERROR: Bad initial guess - iterations: %i\n", count)
         for i = 1:length(ui)
 %             if (ui(i))
