@@ -12,6 +12,13 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     [Cc, Jc] = cost(P, dt, q0, uc, c, m, L, Cq, Jq);
     un = uc;  Cn = Cc;
 
+    ui = [0;0;0];
+    for i = 1:length(uc)
+        if (abs(uc(i)) < eps && Cc(i) > eps)
+            ui(i) = 1;
+        end
+    end
+
     count = 1;
     while (sum(Cc > eps) > 0)
         un = uc - (Cc\Jc)';
@@ -51,6 +58,16 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
         for i = 1:length(Cq)
             fprintf("u%i,0 = %.3f  u%i,1 = %.3f  Cc%i,0 = %.3f  Cc%i,1 = %.3f\n",...
                     i, uc(i), i, un(i), i, Cc(i), i, Cn(i))
+        end
+        fprintf("\n")
+    end
+
+    if (ui)
+        fprintf("ERROR: Bad initial guess - iterations: %i\n", count)
+        for i = 1:length(ui)
+            if (ui(i))
+                fprintf("ui%i = %.3f  uf%i = %.3f\n", i, u0(i), i, un(i))
+            end
         end
         fprintf("\n")
     end
