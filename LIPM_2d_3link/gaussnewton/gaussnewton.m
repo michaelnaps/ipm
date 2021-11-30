@@ -62,12 +62,12 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
         fprintf("\n")
     end
 
-    if (ui)
+    if ((sum(ui) > 0 || sum(abs(u0-un) > 100) > 0) && count < 1000)
         fprintf("ERROR: Bad initial guess - iterations: %i\n", count)
         for i = 1:length(ui)
-            if (ui(i))
+%             if (ui(i))
                 fprintf("ui%i = %.3f  uf%i = %.3f\n", i, u0(i), i, un(i))
-            end
+%             end
         end
         fprintf("\n")
     end
