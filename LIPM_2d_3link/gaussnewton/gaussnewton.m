@@ -1,4 +1,4 @@
-function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
+function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps, tstep)
     %% Gauss Newton Method to Solve for Next Input
     %  notation: subscript 'c' - current
     %            subscript 'n' - next
@@ -48,6 +48,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
     % iteration break
     if (count == 1000)
         fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
+        fprintf("Time: %0.3f\n", tstep)
         for i = 1:length(un)
             fprintf("ui%i = %.3f  uf%i = %.3f\n", i, u0(i), i, un(i))
         end
@@ -58,6 +59,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, Jq, eps)
         fprintf("\n")
     elseif (count > 35)
         fprintf("ERROR: Bad initial guess - iterations: %i\n", count)
+        fprintf("Time: %0.3f\n", tstep)
         for i = 1:length(un)
             fprintf("ui%i = %.3f  uf%i = %.3f\n", i, u0(i), i, un(i))
         end
