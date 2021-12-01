@@ -1,5 +1,5 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: 3 Links (actuated at ground)
+%  Complexity: 3 Links (fully actuated)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
 
