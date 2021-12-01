@@ -14,6 +14,7 @@ restoredefaultpath
 addpath ../.
 addpath ../bisection
 
+
 %% Cost Function
 Cq = @(qc) [
       100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
