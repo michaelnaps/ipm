@@ -1,4 +1,4 @@
-function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, eps)    
+function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, eps)
     %% MPC Controller
     dt = T(2) - T(1);
     q = NaN(length(T), length(q0));
