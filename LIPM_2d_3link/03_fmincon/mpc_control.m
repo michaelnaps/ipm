@@ -1,4 +1,4 @@
-function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, eps)
+function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq)
     %% MPC Controller
     options = optimoptions('fmincon','Display','off');
     dt = T(2) - T(1);
