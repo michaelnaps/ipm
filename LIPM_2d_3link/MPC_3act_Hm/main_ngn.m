@@ -12,7 +12,7 @@ close all;
 
 restoredefaultpath
 addpath ../.
-addpath ../gaussnewton
+addpath ../02_gaussnewton
 
 %% Cost Function
 Cq = @(qc) [

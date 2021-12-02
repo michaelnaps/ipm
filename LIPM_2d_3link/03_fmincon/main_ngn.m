@@ -1,5 +1,5 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: 3 Links (fully actuated)
+%  Complexity: 3 Links (actuated at ground)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
 
@@ -10,17 +10,37 @@
 clc;clear;
 close all;
 
-restoredefaultpath
-addpath ../.
-addpath ../01a_bisection
-
 
 %% Cost Function
 Cq = @(qc) [
-      100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
-      100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
-      100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
+      100*(pi/2 - qc(1))^2 + (0.0 - qc(2))^2;
+      100*(0.0 - qc(3))^2 + (0.0 - qc(4))^2;
+      100*(0.0 - qc(5))^2 + (0.0 - qc(6))^2;
      ];
+ 
+Jq = @(qc) [
+       10*(2*qc(1) - pi) + 2*qc(2),  0.0,  0.0;
+       0.0,  20*qc(3) + 2*qc(4),  0.0;
+       0.0, 0.0,  20*qc(5) + 2*qc(6);
+     ];
+
+% Jq = @(qc) [
+%        10*(2*qc(1) - pi) + 2*qc(2),  0.0,  0.0;
+%        10*(2*qc(1) - pi) + 2*qc(2),  20*qc(3) + 2*qc(4),  0.0;
+%        10*(2*qc(1) - pi) + 2*qc(2),  20*qc(3) + 2*qc(4),  20*qc(5) + 2*qc(6);
+%      ];
+
+% Cq = @(qc) [
+%        100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
+%        100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
+%        100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
+%      ];
+%  
+% Jq = @(qc) [
+%        100*(-2*cos(qc(1))*(1 - sin(qc(1))) - sin(2*qc(1))) - 2*qc(2),  0,  0;
+%        0,  100*(sin(2*qc(3)) + 2*sin(qc(3))*(1 - cos(qc(3)))) - 2*qc(4),  0;
+%        0,  0,  100*(sin(2*qc(5)) + 2*sin(qc(5))*(1 - cos(qc(5)))) - 2*qc(6);
+%      ];
 
 
 %% Variable Setup
@@ -40,15 +60,15 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      zeros(size(um));...     % return for inputs
-      zeros(size(um));...     % return for cost
+      zeros(size(um));...         % initial inputs
+      zeros(size(um));...         % return for cost
       0                           % iteration count
      ];
 
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, 1e-3);
 toc
 
 %% Calculate Center of Mass for Animation
@@ -64,7 +84,7 @@ fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
 fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q));
+% fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q));
 
 % percent overshoot
 % PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
@@ -112,27 +132,27 @@ xlabel('Time')
 title('Link 3')
 legend('Pos', 'Vel')
 
-% plot cost of link 1
-subplot(2,3,4)
-plot(T, q(:,10))
-title('Cost of Link 1')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 2
-subplot(2,3,5)
-plot(T, q(:,11))
-title('Cost of Link 2')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 3
-subplot(2,3,6)
-plot(T, q(:,12))
-title('Cost of Link 3')
-ylabel('Cost [unitless]')
-xlabel('Time')
-hold off
+% % plot cost of link 1
+% subplot(2,3,4)
+% plot(T, q(:,10))
+% title('Cost of Link 1')
+% ylabel('Cost [unitless]')
+% xlabel('Time')
+% 
+% % plot cost of link 2
+% subplot(2,3,5)
+% plot(T, q(:,11))
+% title('Cost of Link 2')
+% ylabel('Cost [unitless]')
+% xlabel('Time')
+% 
+% % plot cost of link 3
+% subplot(2,3,6)
+% plot(T, q(:,12))
+% title('Cost of Link 3')
+% ylabel('Cost [unitless]')
+% xlabel('Time')
+% hold off
 
 % plot input on link 1
 figure('Position', [0 0 1400 400])
