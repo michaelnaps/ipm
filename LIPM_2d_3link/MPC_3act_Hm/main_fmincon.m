@@ -10,6 +10,9 @@
 clc;clear;
 close all;
 
+restoredefaultpath
+addpath ../03_fmincon
+
 
 %% Cost Function
 Cq = @(qc) [
@@ -134,7 +137,6 @@ plot(T, q(:,10))
 title('Calculation time of fmincon')
 ylabel('Calculation Time [s]')
 xlabel('Runtime [s]')
-hold off
 
 % % animation of 3-link pendulum
 % animation_3link(q, T, m, L);

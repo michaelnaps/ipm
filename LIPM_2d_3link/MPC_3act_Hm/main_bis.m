@@ -40,16 +40,15 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      zeros(size(um));...     % return for inputs
-      zeros(size(um));...     % return for cost
-      0                           % iteration count
+      zeros(size(um));...         % return for inputs
+      zeros(size(um));...         % return for cost
+      0;                          % iteration count
+      0                           % calculation time
      ];
 
 
 %% Implementation
-tic
 [~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
-toc
 
 %% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
@@ -158,6 +157,14 @@ title('Input on Link 3')
 ylabel('Input [Nm]')
 xlabel('Time')
 hold off
+
+% calculation time of fmincon
+figure('Position', [0 0 700 800])
+plot(T, q(:,14))
+% plot(q(:,13), q(:,14), '.', 'markersize', 10)
+title('Calculation time of fmincon')
+ylabel('Calculation Time [s]')
+xlabel('Runtime [s]')
 
 % % animation of 3-link pendulum
 % animation_3link(q, T, m, L);
