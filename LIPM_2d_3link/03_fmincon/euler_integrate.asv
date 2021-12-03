@@ -1,0 +1,13 @@
+function [q] = euler_integrate(q0, u, c, m, L)
+    %% Initialize Arrays
+    qc = zeros(P+1, length(q0));
+    dq = zeros(P, length(q0));
+
+    %% Enter 
+    qc(1,:) = q0';
+    for i = 2:P
+        dq(i,:) = statespace(qc(i,:), u, c, m, L);
+        qc(i+1,:) = qc(i,:) + dt*dq(i,:);
+    end
+end
+

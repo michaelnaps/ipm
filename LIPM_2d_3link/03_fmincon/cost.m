@@ -1,8 +1,9 @@
 function Ct = cost(P, dt, q0, u, c, m, L, Cq)
     %% Cost of Constant Input
     % calculate the state over the desired prediction horizon
-    [~, qc] = ode45(@(t,q) statespace(q, u, c, m, L), 0:dt:P*dt, q0);
-    
+%     [~, qc] = ode45(@(t,q) statespace(q, u, c, m, L), 0:dt:P*dt, q0);
+    qc = euler_integrate(P, dt, q0, u, c, m, L);
+
 %     u = reshape(u,3,4)
 %     u = [...
 %         u11, u12, u13, u14;...
