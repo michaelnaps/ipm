@@ -6,7 +6,8 @@ restoredefaultpath
 addpath ../.
 
 %% Variable Setup
-T = 0:0.025:20;
+dt = 0.025
+T = 0:dt:20;
 
 c = [500; 500; 500];            % damping coefficients
 m = [15; 15; 60];
@@ -21,4 +22,4 @@ q0 = [th1_0;th2_0;th3_0];
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
 [~,q_ode45] = ode45(@(t,q) statespace(q,[0;0;0],c,m,L), T, q0);
-q_euler = ode_euler(
+q_euler = ode_euler(20/dt, dt, q0, [0;0;0], c, m, L);
