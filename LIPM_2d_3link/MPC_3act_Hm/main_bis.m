@@ -161,11 +161,20 @@ hold off
 
 % calculation time of fmincon
 figure('Position', [0 0 700 800])
+hold on
+subplot(2,1,1)
 plot(T, q(:,14))
-% plot(q(:,13), q(:,14), '.', 'markersize', 10)
-title('Calculation time of fmincon')
+title('Calculation time of Bisection')
 ylabel('Calculation Time [s]')
 xlabel('Runtime [s]')
+
+% calculation time vs. integration count
+subplot(2,1,2)
+plot(q(:,13), q(:,14), '.', 'markersize', 10)
+title('Bisection Time vs. Iteration Count')
+ylabel('Calculation Time [s]')
+xlabel('Iteration Count [n]')
+hold off
 
 % % animation of 3-link pendulum
 % animation_3link(q, T, m, L);
