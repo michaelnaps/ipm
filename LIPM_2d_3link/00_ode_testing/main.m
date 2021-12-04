@@ -6,7 +6,7 @@ restoredefaultpath
 addpath ../.
 
 %% Variable Setup
-dt = 0.025
+dt = 0.025;
 T = 0:dt:20;
 
 c = [500; 500; 500];            % damping coefficients

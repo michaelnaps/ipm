@@ -8,7 +8,7 @@ function [q] = ode_euler(P, dt, q0, u, c, m, L)
         % calculation low approximation
         dq1 = statespace(q(i,:), u, c, m, L)';
         
-        %calculate high approximation
+        % calculate high approximation
         qeu = q(i,:) + dq1*dt;
         dq2 = statespace(qeu, u, c, m, L)';
         
