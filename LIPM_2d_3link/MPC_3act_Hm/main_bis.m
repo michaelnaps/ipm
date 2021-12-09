@@ -53,6 +53,10 @@ q0 = [
 %% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
 
+%% Linear Calc. Time Trend
+[a0, a1, err] = linear_ls(q(:,13), q(:,14));
+bistime = @(n) a1*n + a0;
+
 %% Graphing and Evaluation
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,14)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
@@ -159,7 +163,7 @@ ylabel('Input [Nm]')
 xlabel('Time')
 hold off
 
-% calculation time of fmincon
+% calculation time of bisection
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
@@ -168,9 +172,12 @@ title('Calculation time of Bisection')
 ylabel('Calculation Time [s]')
 xlabel('Runtime [s]')
 
-% calculation time vs. integration count
+% calculation time vs. iteration count
 subplot(2,1,2)
+hold on
 plot(q(:,13), q(:,14), '.', 'markersize', 10)
+fplot(bistime, [0 max(q(:,13))+2])
+hold off
 title('Bisection Time vs. Iteration Count')
 ylabel('Calculation Time [s]')
 xlabel('Iteration Count [n]')
