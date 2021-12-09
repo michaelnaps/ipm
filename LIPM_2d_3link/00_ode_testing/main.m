@@ -23,3 +23,10 @@ q0 = [th1_0;th2_0;th3_0];
 % statespace(q, u, c, m, L)
 [~,q_ode45] = ode45(@(t,q) statespace(q,[0;0;0],c,m,L), T, q0);
 q_euler = ode_euler(20/dt, dt, q0, [0;0;0], c, m, L);
+
+%% Plot results to compare
+figure('position', [0 0 800 800])
+hold on
+% plot(T, q_ode45(:,1))
+plot(T, q_euler(:,1))
+hold off
