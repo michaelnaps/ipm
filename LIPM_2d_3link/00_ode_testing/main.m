@@ -12,6 +12,8 @@ T_euler = 0:dt_euler:50*dt_euler;
 dt_ode45 = 0.025;
 T_ode45 = 0:dt_ode45:5*dt_ode45;
 
+u = [3000; 2000; 1500];
+
 c = [500; 500; 500];            % damping coefficients
 m = [15; 15; 60];
 L = [0.5; 0.5; 1];
@@ -25,11 +27,11 @@ q0 = [th1_0;th2_0;th3_0];
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
 tic
-[~,q_ode45] = ode45(@(t,q) statespace(q,[0;0;0],c,m,L), T_ode45, q0);
+[~,q_ode45] = ode45(@(t,q) statespace(q,u,c,m,L), T_ode45, q0);
 toc
 
 tic
-q_euler = ode_euler(50, dt_euler, q0, [0;0;0], c, m, L);
+q_euler = ode_euler(50, dt_euler, q0, u, c, m, L);
 toc
 
 %% Plot results to compare
