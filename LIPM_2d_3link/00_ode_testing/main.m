@@ -26,13 +26,28 @@ q0 = [th1_0;th2_0;th3_0];
 
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
-tic
-[~,q_ode45] = ode45(@(t,q) statespace(q,u,c,m,L), T_ode45, q0);
-toc
 
-tic
-q_euler = ode_euler(50, dt_euler, q0, u, c, m, L);
-toc
+n = 10000;
+t = Inf(n, 3);
+for i = 1:n
+    tic
+    q_euler = ode_euler(50, dt_euler, q0, u, c, m, L);
+    t_euler = toc;
+
+    tic
+    q_meuler = modeuler(50, dt_euler, q0, u, c, m, L);
+    t_meuler = toc;
+
+    tic
+    [~,q_ode45] = ode45(@(t,q) statespace(q,u,c,m,L), T_ode45, q0);
+    t_ode45 = toc;
+    
+    t(i,:) = [t_euler, t_meuler, t_ode45];
+end
+
+fprintf("Average Runtime for Euler Method ------------ %f [ms]\n", 1000*sum(t(:,1))/n)
+fprintf("Average Runtime for Modified Euler Method --- %f [ms]\n", 1000*sum(t(:,2))/n)
+fprintf("Average Runtime for ode45 ------------------- %f [ms]\n", 1000*sum(t(:,3))/n)
 
 %% Plot results to compare
 % velocity and position of link 1
@@ -41,31 +56,34 @@ hold on
 subplot(1,3,1)
 hold on
 plot(T_euler, q_euler(:,1))
+plot(T_euler, q_meuler(:,1))
 plot(T_ode45, q_ode45(:,1))
 hold off
 ylabel('Pos [rad]')
 xlabel('Time')
 title('Link 1')
-legend('euler', 'ode45')
+legend('euler', 'modeuler', 'ode45')
 
 % velocity and position of link 2
 subplot(1,3,2)
 hold on
 plot(T_euler, q_euler(:,3))
+plot(T_euler, q_meuler(:,3))
 plot(T_ode45, q_ode45(:,3))
 hold off
 ylabel('Pos [rad]')
 xlabel('Time')
 title('Link 2')
-legend('euler', 'ode45')
+legend('euler', 'modeuler', 'ode45')
 
 % velocity and position of link 3
 subplot(1,3,3)
 hold on
 plot(T_euler, q_euler(:,5))
+plot(T_euler, q_meuler(:,5))
 plot(T_ode45, q_ode45(:,5))
 hold off
 ylabel('Pos [rad]')
 xlabel('Time')
 title('Link 3')
-legend('euler', 'ode45')
+legend('euler', 'modeuler', 'ode45')
