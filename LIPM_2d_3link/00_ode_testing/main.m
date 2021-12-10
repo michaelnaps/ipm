@@ -6,8 +6,11 @@ restoredefaultpath
 addpath ../.
 
 %% Variable Setup
-dt = 0.025;
-T = 0:dt:20;
+dt_euler = 0.0025;
+T_euler = 0:dt_euler:50*dt_euler;
+
+dt_ode45 = 0.025;
+T_ode45 = 0:dt_ode45:5*dt_ode45;
 
 c = [500; 500; 500];            % damping coefficients
 m = [15; 15; 60];
@@ -21,12 +24,46 @@ q0 = [th1_0;th2_0;th3_0];
 
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
-[~,q_ode45] = ode45(@(t,q) statespace(q,[0;0;0],c,m,L), T, q0);
-q_euler = ode_euler(20/dt, dt, q0, [0;0;0], c, m, L);
+tic
+[~,q_ode45] = ode45(@(t,q) statespace(q,[0;0;0],c,m,L), T_ode45, q0);
+toc
+
+tic
+q_euler = ode_euler(50, dt_euler, q0, [0;0;0], c, m, L);
+toc
 
 %% Plot results to compare
-figure('position', [0 0 800 800])
+% velocity and position of link 1
+figure('Position', [0 0 1400 800])
 hold on
-% plot(T, q_ode45(:,1))
-plot(T, q_euler(:,1))
+subplot(1,3,1)
+hold on
+plot(T_euler, q_euler(:,1))
+plot(T_ode45, q_ode45(:,1))
 hold off
+ylabel('Pos [rad]')
+xlabel('Time')
+title('Link 1')
+legend('euler', 'ode45')
+
+% velocity and position of link 2
+subplot(1,3,2)
+hold on
+plot(T_euler, q_euler(:,3))
+plot(T_ode45, q_ode45(:,3))
+hold off
+ylabel('Pos [rad]')
+xlabel('Time')
+title('Link 2')
+legend('euler', 'ode45')
+
+% velocity and position of link 3
+subplot(1,3,3)
+hold on
+plot(T_euler, q_euler(:,5))
+plot(T_ode45, q_ode45(:,5))
+hold off
+ylabel('Pos [rad]')
+xlabel('Time')
+title('Link 3')
+legend('euler', 'ode45')
