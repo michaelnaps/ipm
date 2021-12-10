@@ -19,7 +19,7 @@ m = [15; 15; 60];
 L = [0.5; 0.5; 1];
 
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 2.0];             % link 2 position and velocity
+th2_0 = [0.0; -2.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 
 q0 = [th1_0;th2_0;th3_0];
