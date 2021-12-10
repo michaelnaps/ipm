@@ -22,14 +22,12 @@
 %   'u' - inputs for each applicable joint
 %   'C' - cost of the links for each window of PH
 %   'n' - number of iterations needed
-
 function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Setup
     ua = -um;
     ub =  um;
     uave = zeros(size(um));
     du = Inf(size(um));
-    
     Ca = cost(P, dt, q0, u0, ua, c, m, L, Cq);
     Cb = cost(P, dt, q0, u0, ub, c, m, L, Cq);
     Cave = cost(P, dt, q0, u0, uave, c, m, L, Cq);
