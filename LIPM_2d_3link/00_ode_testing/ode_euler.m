@@ -1,6 +1,6 @@
 function [q] = ode_euler(P, dt, q0, u, c, m, L)
     %% Initialize Arrays
-    q = zeros(P+1, length(q0));
+    q = Inf(P+1, length(q0));
 
     %% Euler Method
     q(1,:) = q0';

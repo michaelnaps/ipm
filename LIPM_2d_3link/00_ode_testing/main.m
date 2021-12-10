@@ -6,11 +6,13 @@ restoredefaultpath
 addpath ../.
 
 %% Variable Setup
-dt_euler = 0.0025;
-T_euler = 0:dt_euler:50*dt_euler;
+T = 0.1;
 
-dt_ode45 = 0.025;
-T_ode45 = 0:dt_ode45:5*dt_ode45;
+dt_euler = 0.0025;
+T_euler = 0:dt_euler:T;
+
+dt_ode45 = 0.0025;
+T_ode45 = 0:dt_ode45:T;
 
 u = [3000; 2000; 1500];
 
@@ -31,11 +33,11 @@ n = 1000;
 t = Inf(n, 3);
 for i = 1:n
     tic
-    q_euler = ode_euler(50, dt_euler, q0, u, c, m, L);
+    q_euler = ode_euler(T/dt_euler, dt_euler, q0, u, c, m, L);
     t_euler = toc;
 
     tic
-    q_meuler = modeuler(50, dt_euler, q0, u, c, m, L);
+    q_meuler = modeuler(T/dt_euler, dt_euler, q0, u, c, m, L);
     t_meuler = toc;
 
     tic
@@ -43,6 +45,10 @@ for i = 1:n
     t_ode45 = toc;
     
     t(i,:) = [t_euler, t_meuler, t_ode45];
+    
+    if (sum(q_euler(:,1) == Inf) > 0 || sum(q_meuler(:,1) == Inf) > 0)
+        break;
+    end
 end
 
 fprintf("Average Runtime for Euler Method ------------ %f [ms]\n", 1000*sum(t(:,1))/n)
