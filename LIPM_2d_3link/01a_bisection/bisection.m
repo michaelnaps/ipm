@@ -24,6 +24,7 @@
 %   'n' - number of iterations needed
 function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Setup
+    N = length(u0);
     ua = -um;
     ub =  um;
     uave = zeros(size(um));
@@ -37,7 +38,7 @@ function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
     while (sum(Cave > eps) > 0)
         
         % update boundary variables
-        for i = 1:length(uave)
+        for i = 1:N
             
             if (du(i) < eps)
                 break;
@@ -56,7 +57,7 @@ function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
         end
         
         % check change in input
-        if (sum(du < eps) == length(du))
+        if (sum(du < eps) == N)
             break;
         end
         
@@ -75,7 +76,7 @@ function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Post-Loop Processes/Checks
     if (count == 1000)
         fprintf("ERROR: Bisection exited - 1000 iterations reached:\n")
-        for i = 1:length(Cq)
+        for i = 1:N
             fprintf("u%i = %.3f  C%i = %.3f  du%i = %.3f\n",...
                     i, uave(i), i, Cave(i), i, du(i))
         end
