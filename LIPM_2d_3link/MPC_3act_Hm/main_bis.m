@@ -16,10 +16,10 @@ addpath ../01a_bisection
 
 
 %% Cost Function
-Cq = @(qc, uc) [
-      100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2 + 0*(uc(1))^2;  % cost of Link 1
-      100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
-      100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
+Cq = @(q, du) [
+      100*((cos(pi/2)-cos(q(1)))^2 + (sin(pi/2)-sin(q(1)))^2) + (0.0-q(2))^2 + 5e-8*(du(1))^2;  % cost of Link 1
+      100*((cos(0.0) -cos(q(3)))^2 + (sin(0.0) -sin(q(3)))^2) + (0.0-q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(0.0) -cos(q(5)))^2 + (sin(0.0) -sin(q(5)))^2) + (0.0-q(6))^2 + 5e-7*(du(3))^2;  % cost of Link 3
      ];
 
 
@@ -116,39 +116,15 @@ xlabel('Time')
 title('Link 3')
 legend('Pos', 'Vel')
 
-% plot cost of link 1
-subplot(2,3,4)
-plot(T, q(:,10))
-title('Cost of Link 1')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 2
-subplot(2,3,5)
-plot(T, q(:,11))
-title('Cost of Link 2')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 3
-subplot(2,3,6)
-plot(T, q(:,12))
-title('Cost of Link 3')
-ylabel('Cost [unitless]')
-xlabel('Time')
-hold off
-
 % plot input on link 1
-figure('Position', [0 0 1400 400])
-hold on
-subplot(1,3,1)
+subplot(2,3,4)
 plot(T, q(:,7))
 title('Input on Link 1')
 ylabel('Input [Nm]')
 xlabel('Time')
 
 % plot input on link 2
-subplot(1,3,2)
+subplot(2,3,5)
 plot(T, q(:,8))
 title('Input on Link 2')
 ylabel('Input [Nm]')
@@ -156,10 +132,34 @@ xlabel('Time')
 hold off
 
 % plot input on link 3
-subplot(1,3,3)
+subplot(2,3,6)
 plot(T, q(:,9))
 title('Input on Link 3')
 ylabel('Input [Nm]')
+xlabel('Time')
+hold off
+
+% plot cost of link 1
+figure('Position', [0 0 1400 400])
+hold on
+subplot(1,3,1)
+plot(T, q(:,10))
+title('Cost of Link 1')
+ylabel('Cost [unitless]')
+xlabel('Time')
+
+% plot cost of link 2
+subplot(1,3,2)
+plot(T, q(:,11))
+title('Cost of Link 2')
+ylabel('Cost [unitless]')
+xlabel('Time')
+
+% plot cost of link 3
+subplot(1,3,3)
+plot(T, q(:,12))
+title('Cost of Link 3')
+ylabel('Cost [unitless]')
 xlabel('Time')
 hold off
 
