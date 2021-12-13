@@ -5,7 +5,7 @@ function C = cost(P, dt, q0, u0, u, c, m, L, Cq)
     qc = modeuler(10*P, dt/10, q0, u, c, m, L);
     
     % sum of cost of each step of the prediction horizon
-    duc = abs(u0 - u);
+    duc = u0 - u;
     C = zeros(size(u));
 %     for i = 1:P+1
     for i = 1:10*P+1
