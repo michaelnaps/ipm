@@ -12,7 +12,8 @@ close all;
 
 restoredefaultpath
 addpath ../.
-addpath ../03_fmincon
+% addpath ../03_fmincon
+addpath ../04_fmincon_nP
 
 
 %% Cost Function
@@ -41,6 +42,8 @@ c = [500; 500; 500];            % damping coefficients
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
       zeros(size(um));...         % initial inputs
+      0;
+      0;
       0
      ];
 
@@ -51,8 +54,12 @@ q0 = [
 %% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
 
+%% Linear Calc. Time Trend
+[a0, a1, err] = linear_ls(q(:,11), q(:,12));
+itertime = @(n) a1*n + a0;
+
 %% Graphing and Evaluation
-fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,10)))
+fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
 fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
@@ -62,7 +69,7 @@ fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
 fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
 fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
-% fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q));
+fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,11))/length(q));
 
 % percent overshoot
 % PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
@@ -132,12 +139,25 @@ ylabel('Input [Nm]')
 xlabel('Time')
 hold off
 
-% calculation time of fmincon
+% calculation time of bisection
 figure('Position', [0 0 700 800])
-plot(T, q(:,10))
+hold on
+subplot(2,1,1)
+plot(T, q(:,12))
 title('Calculation time of fmincon')
 ylabel('Calculation Time [s]')
 xlabel('Runtime [s]')
+
+% calculation time vs. iteration count
+subplot(2,1,2)
+hold on
+plot(q(:,11), q(:,12), '.', 'markersize', 10)
+fplot(itertime, [0 max(q(:,11))+2])
+hold off
+title('fmincon Time vs. Iteration Count')
+ylabel('Calculation Time [s]')
+xlabel('Iteration Count [n]')
+hold off
 
 % % animation of 3-link pendulum
 % animation_3link(q, T, m, L);
