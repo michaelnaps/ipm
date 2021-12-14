@@ -12,8 +12,8 @@ close all;
 
 restoredefaultpath
 addpath ../.
-% addpath ../03_fmincon
-addpath ../04_fmincon_nP
+addpath ../03_fmincon
+% addpath ../04_fmincon_nP
 
 
 %% Cost Function
