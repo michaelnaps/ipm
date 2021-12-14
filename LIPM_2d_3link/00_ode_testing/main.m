@@ -1,5 +1,5 @@
 %% Environment Setup
-clc;clear;
+clear;
 close all;
 
 restoredefaultpath
@@ -29,7 +29,7 @@ q0 = [th1_0;th2_0;th3_0];
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
 
-n = 1000;
+n = 10000;
 t = Inf(n, 3);
 for i = 1:n
     tic
@@ -51,9 +51,9 @@ for i = 1:n
     end
 end
 
-fprintf("Average Runtime for Euler Method ------------ %f [ms]\n", 1000*sum(t(:,1))/n)
-fprintf("Average Runtime for Modified Euler Method --- %f [ms]\n", 1000*sum(t(:,2))/n)
-fprintf("Average Runtime for ode45 ------------------- %f [ms]\n", 1000*sum(t(:,3))/n)
+fprintf("Average Runtime for Euler Method ------------ %.3f [ms/s]\n", 1000*sum(t(:,1))/(T*n))
+fprintf("Average Runtime for Modified Euler Method --- %.3f [ms/s]\n", 1000*sum(t(:,2))/(T*n))
+fprintf("Average Runtime for ode45 ------------------- %.3f [ms/s]\n", 1000*sum(t(:,3))/(T*n))
 
 %% Plot results to compare
 % velocity and position of link 1
