@@ -16,9 +16,9 @@ addpath ../01a_bisection
 
 
 %% Cost Function
-th1d = pi/2;
-th2d = 0.0; 
-th3d = 0.0;
+th1d =  pi/4;
+th2d =  pi/2; 
+th3d = -pi/4;
 veld = 0;
 Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 5e-8*(du(1))^2;  % cost of Link 1
