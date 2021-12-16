@@ -29,7 +29,7 @@ q0 = [th1_0;th2_0;th3_0];
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
 
-n = 10000;
+n = 1;
 t = Inf(n, 3);
 for i = 1:n
     tic
