@@ -6,7 +6,7 @@ restoredefaultpath
 addpath ../.
 
 %% Variable Setup
-T = 0.1;
+T = 0.15;
 
 dt_euler = 0.0025;
 T_euler = 0:dt_euler:T;
@@ -29,7 +29,7 @@ q0 = [th1_0;th2_0;th3_0];
 %% ODE Comparison Functions
 % statespace(q, u, c, m, L)
 
-n = 1000;
+n = 10000;
 t = Inf(n, 3);
 for i = 1:n
     tic
@@ -51,11 +51,11 @@ for i = 1:n
     end
 end
 
+%% Output and Plot results to compare
 fprintf("Average Runtime for Euler Method ------------ %.3f [ms/s]\n", 1000*sum(t(:,1))/(T*n))
 fprintf("Average Runtime for Modified Euler Method --- %.3f [ms/s]\n", 1000*sum(t(:,2))/(T*n))
 fprintf("Average Runtime for ode45 ------------------- %.3f [ms/s]\n", 1000*sum(t(:,3))/(T*n))
 
-%% Plot results to compare
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
 hold on
