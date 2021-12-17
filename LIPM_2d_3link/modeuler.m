@@ -1,16 +1,23 @@
 function [q] = modeuler(P, dt, q0, u, c, m, L)
     %% Initialize Arrays
+    Pm = 10*P;  dtm = dt/10;
     q = Inf(P+1, length(q0));
+    qm = Inf(Pm+1, length(q0));
 
     %% Euler Method
     q(1,:) = q0';
-    for i = 1:P
-        dq1 = statespace(q(i,:), u, c, m, L)';
-        qeu = q(i,:) + dq1*dt;
+    qm(1,:) = q0';
+    for i = 1:Pm
+        dq1 = statespace(qm(i,:), u, c, m, L)';
+        qeu = qm(i,:) + dq1*dtm;
         dq2 = statespace(qeu, u, c, m, L)';
-        q(i+1,:) = q(i,:) + 1/2*(dq1 + dq2)*dt;
+        qm(i+1,:) = qm(i,:) + 1/2*(dq1 + dq2)*dtm;
 
-        if (sum(isnan(q(i+1,:))) > 0)
+        if (rem(i,10) == 0)
+            q(i/10+1,:) = qm(i+1,:);
+        end
+
+        if (sum(isnan(qm(i+1,:))) > 0)
             fprintf("ERROR: statespace() returned NaN for inputs.\n")
             fprintf("iteration(s): %i\n\n", i)
             break;
