@@ -67,21 +67,13 @@ fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
 fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
-fprintf("Final Position of Link 1 ---------- %.4f [rad]\n", q(length(q),1))
+fprintf("Final Position of Link 1 ---------- %.2fpi [rad]\n", q(length(q),1)/pi)
 fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
-fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
+fprintf("Final Position of Link 2 ---------- %.2fpi [rad]\n", q(length(q),3)/pi)
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
+fprintf("Final Position of Link 3 ---------- %.2fpi [rad]\n", q(length(q),5)/pi)
 fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
 fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,11))/length(q));
-
-% percent overshoot
-% PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
-% fprintf("Percent Overshoot on Link 1 ------- %.4f [%%]\n\n", PO)
-% PO = (abs(min(q(:,3)) / q(length(q),3)) - 1)*100;
-% fprintf("Percent Overshoot on Link 2 ------- %.4f [%%]\n", PO)
-% PO = (abs(min(q(:,5)) / q(length(q),5)) - 1)*100;
-% fprintf("Percent Overshoot on Link 3 ------- %.4f [%%]\n\n", PO)
 
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
