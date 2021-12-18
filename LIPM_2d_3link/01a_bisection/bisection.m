@@ -23,7 +23,7 @@
 %   'C' - cost of the links for each window of PH
 %   'n' - number of iterations needed
 function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
-    %% Setup
+    %% Setup 
     N = length(u0);
     ua = -um;
     ub =  um;
@@ -44,7 +44,7 @@ function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
                 break;
             end
 
-            if(Ca(i) < Cb(i))
+            if (Ca(i) < Cb(i))
                 ub(i) = uave(i);
                 Cb(i) = Cave(i);
                 du(i) = abs(ua(i)-uave(i));
