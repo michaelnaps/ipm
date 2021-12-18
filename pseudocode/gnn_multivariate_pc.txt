@@ -34,17 +34,15 @@ Target: Minimum point for system C(u)
 07| return the acceptable inputs (u = un)
 ____________________________________________________________________________
 
-Calculating the Jacobian Matrix
-Numerical Differentiation - Three-Point Backward Difference
-Target: du around current guess (Jc)
+Target: Jacobian Matrix using Finite Difference Method
 
-Note: Method is problematic because it requires previous state data. At
-      the start of the simulation, the previous states are not available.
-
-Function for derivative around current state is dependent on the cost of
-state variables at the current position.
-____________________________________________________________________________
-
-Calculating the Jacobian Matrix
-Automatic Differentiation
-Target: du around current guess (Jc)
+1| initialize current state and guess input
+2| calculate cost of current state with guess input
+3| for (number of costs)
+4|   for (number of inputs)
+5|     calculate the cost for small change in input (around guess)
+ |   end for
+6|   calculate partial derivatives for each cost/input
+7|   add the partial derivatives to jacobian matrix
+ | end for
+8| return completed jacobian matrix approximation
