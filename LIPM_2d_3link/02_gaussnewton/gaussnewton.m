@@ -1,4 +1,4 @@
-function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, tstep)
+function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Gauss Newton Method to Solve for Next Input
     %  notation: subscript 'c' - current
     %            subscript 'n' - next
