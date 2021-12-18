@@ -33,18 +33,6 @@ Jq = @(qc) [
        10*(2*qc(1) - pi) + 2*qc(2),  20*qc(3) + 2*qc(4),  20*qc(5) + 2*qc(6);
      ];
 
-% Cq = @(qc) [
-%        100*((cos(pi/2)-cos(qc(1)))^2 + (sin(pi/2)-sin(qc(1)))^2) + (0.0-qc(2))^2;  % cost of Link 1
-%        100*((cos(0.0) -cos(qc(3)))^2 + (sin(0.0) -sin(qc(3)))^2) + (0.0-qc(4))^2;  % cost of Link 2
-%        100*((cos(0.0) -cos(qc(5)))^2 + (sin(0.0) -sin(qc(5)))^2) + (0.0-qc(6))^2;  % cost of Link 3
-%      ];
-%  
-% Jq = @(qc) [
-%        100*(-2*cos(qc(1))*(1 - sin(qc(1))) - sin(2*qc(1))) - 2*qc(2),  0,  0;
-%        0,  100*(sin(2*qc(3)) + 2*sin(qc(3))*(1 - cos(qc(3)))) - 2*qc(4),  0;
-%        0,  0,  100*(sin(2*qc(5)) + 2*sin(qc(5))*(1 - cos(qc(5)))) - 2*qc(6);
-%      ];
-
 
 %% Variable Setup
 % parameters for mass and length
