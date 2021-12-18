@@ -1,13 +1,15 @@
-function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, eps)
+function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, eps)
     %% MPC Controller
     dt = T(2) - T(1);
     q = NaN(length(T), length(q0));
     q(1,:) = q0;
     for i = 2:length(T)
         
-        [u, C, n] = gaussnewton(P, dt, q(i-1,1:6)', q(i-1,7:9)', um, c, m, L, Cq, Jq, eps, T(i));
+        tic
+        [u, C, n] = gaussnewton(P, dt, q(i-1,1:6)', q(i-1,7:9)', um, c, m, L, Cq, eps, T(i));
+        t = toc;
         [~, qc] = ode45(@(t, q) statespace(q, u, c, m, L), 0:dt:P*dt, q(i-1,1:6));
-        q(i,:) = [qc(2,:), u', C', n];
+        q(i,:) = [qc(2,:), u', C, n, t];
         
     end
 end

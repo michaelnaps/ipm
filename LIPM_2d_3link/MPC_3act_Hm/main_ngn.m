@@ -15,22 +15,14 @@ addpath ../.
 addpath ../02_gaussnewton
 
 %% Cost Function
-Cq = @(qc) [
-      10*(pi/2 - qc(1))^2 + (0.0 - qc(2))^2;
-      10*(0.0 - qc(3))^2 + (0.0 - qc(4))^2;
-      10*(0.0 - qc(5))^2 + (0.0 - qc(6))^2;
-     ];
- 
-% Jq = @(qc) [
-%        10*(2*qc(1) - pi) + 2*qc(2),  0.0,  0.0;
-%        0.0,  20*qc(3) + 2*qc(4),  0.0;
-%        0.0, 0.0,  20*qc(5) + 2*qc(6);
-%      ];
-
-Jq = @(qc) [
-       10*(2*qc(1) - pi) + 2*qc(2),  0.0,  0.0;
-       10*(2*qc(1) - pi) + 2*qc(2),  20*qc(3) + 2*qc(4),  0.0;
-       10*(2*qc(1) - pi) + 2*qc(2),  20*qc(3) + 2*qc(4),  20*qc(5) + 2*qc(6);
+th1d =  pi/4;
+th2d =  pi/2; 
+th3d = -pi/4;
+veld = 0;
+Cq = @(q) [
+      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2;% + 5e-8*(du(1))^2;  % cost of Link 1
+      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2;% + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2;% + 5e-7*(du(3))^2;  % cost of Link 3
      ];
 
 
@@ -52,38 +44,33 @@ c = [500; 500; 500];            % damping coefficients
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
       zeros(size(um));...         % initial inputs
-      zeros(size(um));...         % return for cost
-      0                           % iteration count
+      0;                          % return for cost
+      0;                          % iteration count
+      0                           % runtime of opt. function
      ];
 
 
 %% Implementation
 tic
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, Jq, 1e-3);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-3);
 toc
 
-%% Calculate Center of Mass for Animation
-CoM = map_CoM(q, m, L);
+%% Linear Calc. Time Trend
+[a0, a1, err] = linear_ls(q(:,11), q(:,12));
+bistime = @(n) a1*n + a0;
 
 %% Graphing and Evaluation
+fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
 fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
-fprintf("Final Position of Link 1 ---------- %.4f [rad]\n", q(length(q),1))
+fprintf("Final Position of Link 1 ---------- %.4fpi [rad]\n", q(length(q),1)/pi)
 fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
-fprintf("Final Position of Link 2 ---------- %.4f [rad]\n", q(length(q),3))
+fprintf("Final Position of Link 2 ---------- %.4fpi [rad]\n", q(length(q),3)/pi)
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Final Position of Link 3 ---------- %.4f [rad]\n", q(length(q),5))
+fprintf("Final Position of Link 3 ---------- %.4fpi [rad]\n", q(length(q),5)/pi)
 fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,13))/length(q));
-
-% percent overshoot
-% PO = (abs(max(q(:,1)) / q(length(q),1)) - 1)*100;
-% fprintf("Percent Overshoot on Link 1 ------- %.4f [%%]\n\n", PO)
-% PO = (abs(min(q(:,3)) / q(length(q),3)) - 1)*100;
-% fprintf("Percent Overshoot on Link 2 ------- %.4f [%%]\n", PO)
-% PO = (abs(min(q(:,5)) / q(length(q),5)) - 1)*100;
-% fprintf("Percent Overshoot on Link 3 ------- %.4f [%%]\n\n", PO)
+fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,11))/length(q));
 
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
@@ -123,39 +110,15 @@ xlabel('Time')
 title('Link 3')
 legend('Pos', 'Vel')
 
-% plot cost of link 1
-subplot(2,3,4)
-plot(T, q(:,10))
-title('Cost of Link 1')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 2
-subplot(2,3,5)
-plot(T, q(:,11))
-title('Cost of Link 2')
-ylabel('Cost [unitless]')
-xlabel('Time')
-
-% plot cost of link 3
-subplot(2,3,6)
-plot(T, q(:,12))
-title('Cost of Link 3')
-ylabel('Cost [unitless]')
-xlabel('Time')
-hold off
-
 % plot input on link 1
-figure('Position', [0 0 1400 400])
-hold on
-subplot(1,3,1)
+subplot(2,3,4)
 plot(T, q(:,7))
 title('Input on Link 1')
 ylabel('Input [Nm]')
 xlabel('Time')
 
 % plot input on link 2
-subplot(1,3,2)
+subplot(2,3,5)
 plot(T, q(:,8))
 title('Input on Link 2')
 ylabel('Input [Nm]')
@@ -163,11 +126,31 @@ xlabel('Time')
 hold off
 
 % plot input on link 3
-subplot(1,3,3)
+subplot(2,3,6)
 plot(T, q(:,9))
 title('Input on Link 3')
 ylabel('Input [Nm]')
 xlabel('Time')
+hold off
+
+% calculation time of bisection
+figure('Position', [0 0 700 800])
+hold on
+subplot(2,1,1)
+plot(T, q(:,12))
+title('Calculation time of Gauss Newton')
+ylabel('Calculation Time [s]')
+xlabel('Runtime [s]')
+
+% calculation time vs. iteration count
+subplot(2,1,2)
+hold on
+plot(q(:,11), q(:,12), '.', 'markersize', 10)
+fplot(bistime, [0 max(q(:,11))+2])
+hold off
+title('Gauss Newton Time vs. Iteration Count')
+ylabel('Calculation Time [s]')
+xlabel('Iteration Count [n]')
 hold off
 
 % % animation of 3-link pendulum

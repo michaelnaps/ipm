@@ -43,6 +43,6 @@ Target: Jacobian Matrix using Finite Difference Method
 5|     calculate the cost for small change in input (around guess)
  |   end for
 6|   calculate partial derivatives for each cost/input
-7|   add the partial derivatives to jacobian matrix
+7|   add the partial derivatives to Jacobian matrix
  | end for
-8| return completed jacobian matrix approximation
+8| return completed Jacobian matrix approximation
