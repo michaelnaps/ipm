@@ -51,9 +51,7 @@ q0 = [
 
 
 %% Implementation
-tic
 [~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-3);
-toc
 
 %% Linear Calc. Time Trend
 [a0, a1, err] = linear_ls(q(:,11), q(:,12));
@@ -133,7 +131,7 @@ ylabel('Input [Nm]')
 xlabel('Time')
 hold off
 
-% calculation time of bisection
+% calculation time of gauss newton
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)

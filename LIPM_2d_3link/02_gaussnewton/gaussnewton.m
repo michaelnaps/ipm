@@ -10,12 +10,12 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
     % initial guess is set to previous input
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq);
-    Jc = cost_jacobian(Cc, P, dt, q0, uc, c, m, L, Cq);
+    Jc = cost_jacobian(P, dt, q0, uc, c, m, L, Cq);
     un = uc;  Cn = Cc;
 
     count = 1;
     while (sum(Cc > eps) > 0)
-        un = uc - Cc\Jc;
+        un = uc - (Cc\Jc);
         
         for i = 1:length(uc)
             if (un(i) > umax(i))
@@ -26,7 +26,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
         end
         
         Cn = cost(P, dt, q0, un, c, m, L, Cq);
-        Jc = cost_jacobian(Cn, P, dt, q0, un, c, m, L, Cq);
+        Jn = cost_jacobian(P, dt, q0, un, c, m, L, Cq);
         
         udn = abs(un - uc);
         Cdn = abs(Cn - Cc);
@@ -44,7 +44,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
             break;
         end
         
-        uc = un;  Cc = Cn;
+        uc = un;  Cc = Cn;  Jc = Jn;
     end
     
     % iteration break
