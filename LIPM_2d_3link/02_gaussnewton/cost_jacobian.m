@@ -1,10 +1,9 @@
 function [J] = cost_jacobian(C, P, dt, q0, u, c, m, L, Cq)
     %% Setup
-    n = length(u);
-    J = Inf(n,n);
+    J = Inf(size(u));
     du = 10;
 
-    for i = 1:n
+    for i = 1:length(u)
         ul = u;
         uh = u;
 
@@ -15,7 +14,7 @@ function [J] = cost_jacobian(C, P, dt, q0, u, c, m, L, Cq)
         Ch = cost(P, dt, q0, uh, c, m, L, Cq);
 
         Cn = 1/2*(Cl + Ch);
-        J(i,i) = (C - Cn) / du;
+        J(i) = (C - Cn) / du;
     end
 end
 
