@@ -129,12 +129,12 @@ ylabel('Input [Nm]')
 xlabel('Time')
 hold off
 
-% calculation time of gauss newton
+% calculation time of Newton-Raphson
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
 plot(T, q(:,12))
-title('Calculation time of Gauss Newton')
+title('Calculation time of Newton-Raphson')
 ylabel('Calculation Time [s]')
 xlabel('Runtime [s]')
 
@@ -144,7 +144,7 @@ hold on
 plot(q(:,11), q(:,12), '.', 'markersize', 10)
 fplot(bistime, [0 max(q(:,11))+2])
 hold off
-title('Gauss Newton Time vs. Iteration Count')
+title('Newton-Raphson Time vs. Iteration Count')
 ylabel('Calculation Time [s]')
 xlabel('Iteration Count [n]')
 hold off

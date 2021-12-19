@@ -4,7 +4,7 @@ function [q] = modeuler(P, dt, q0, u, c, m, L)
     q = Inf(P+1, length(q0));
     qm = Inf(Pm+1, length(q0));
 
-    %% Euler Method
+    %% Modified Euler Method
     q(1,:) = q0';
     qm(1,:) = q0';
     for i = 1:Pm
