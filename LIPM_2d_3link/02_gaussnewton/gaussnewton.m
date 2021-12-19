@@ -15,7 +15,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
 
     count = 1;
     while (sum(Cc > eps) > 0)
-        un = uc - (Cc\Jc);
+        un = uc - (Cc./Jc);
         
         for i = 1:length(uc)
             if (un(i) > umax(i))
@@ -52,7 +52,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps)
         fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
     end
 
-    u = un;
-    C = Cn;
+    u = un
+    C = Cn
     n = count;
 end
