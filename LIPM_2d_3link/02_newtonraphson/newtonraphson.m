@@ -1,4 +1,4 @@
-function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps, iter)
+function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Gauss Newton Method to Solve for Next Input
     %  notation: subscript 'c' - current
     %            subscript 'n' - next
@@ -8,7 +8,7 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps, iter)
     umax = um;
     
     % initial guess is set to previous input
-    a = 0.001;
+    a = 1;
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq);
     Jc = cost_jacobian(P, dt, q0, uc, c, m, L, Cq);
