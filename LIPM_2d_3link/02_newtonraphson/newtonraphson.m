@@ -1,4 +1,4 @@
-function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, pass)
+function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps, iter)
     %% Gauss Newton Method to Solve for Next Input
     %  notation: subscript 'c' - current
     %            subscript 'n' - next
@@ -8,6 +8,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, pass)
     umax = um;
     
     % initial guess is set to previous input
+    a = 0.0001;
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq);
     Jc = cost_jacobian(P, dt, q0, uc, c, m, L, Cq);
@@ -15,7 +16,7 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, pass)
 
     count = 1;
     while (sum(Cc > eps) > 0)
-        un = uc - (Cc./Jc);
+        un = uc - a*(Cc./Jc);
         
         for i = 1:length(uc)
             if (un(i) > umax(i))
@@ -43,15 +44,6 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, pass)
         if (count == 1000)
             break;
         end
-        
-        if (pass == 2)
-            uc
-            un
-            udn
-            Cc
-            Cn
-            Cdns
-        end
 
         uc = un;  Cc = Cn;  Jc = Jn;
     end
@@ -61,7 +53,8 @@ function [u, C, n] = gaussnewton(P, dt, q0, u0, um, c, m, L, Cq, eps, pass)
         fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
     end
 
-    u = un
-    C = Cn
+    iter
+    u = un;
+    C = Cn;
     n = count;
 end

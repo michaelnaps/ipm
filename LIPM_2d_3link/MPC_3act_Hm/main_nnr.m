@@ -12,7 +12,7 @@ close all;
 
 restoredefaultpath
 addpath ../.
-addpath ../02_gaussnewton
+addpath ../02_newtonraphson
 
 %% Cost Function
 th1d =  pi/4;
