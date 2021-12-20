@@ -23,7 +23,16 @@
 %   'C' - cost of the links for each window of PH
 %   'n' - number of iterations needed
 function [u, C, n] = bisection(P, dt, q0, u0, um, c, m, L, Cq, eps)
-    %% Setup 
+    %% Initial Cost Check
+    C0 = cost(P, dt, q0, u0, u0, c, m, L, Cq);
+    if (sum(C0 > eps) < 1)
+        u = u0;
+        C = C0;
+        n = 0;
+        return;
+    end
+
+    %% Setup
     N = length(u0);
     ua = -um;
     ub =  um;

@@ -16,9 +16,9 @@ addpath ../01a_bisection
 
 
 %% Cost Function
-th1d =  pi/4;
-th2d =  pi/2; 
-th3d = -pi/4;
+th1d = pi/2;
+th2d = 0.0; 
+th3d = 0.0;
 veld = 0;
 Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 5e-8*(du(1))^2;  % cost of Link 1
@@ -36,7 +36,7 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [pi/4;0.0];             % link 2 position and velocity
+th2_0 = [0.0; 2.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 2000; 1500];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
