@@ -10,7 +10,7 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     % initial guess is set to previous input
     a = 1;
     uc = u0;
-    Cc = cost(P, dt, q0, uc, c, m, L, Cq);
+    Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'Initial Cost Calculation');
     Jc = cost_jacobian(P, dt, q0, uc, c, m, L, Cq);
     un = uc;  Cn = Cc;
 
@@ -18,7 +18,7 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     while (sum(Cc > eps) > 0)
         un = uc - a*(Cc./Jc);
         
-        Cn = cost(P, dt, q0, un, c, m, L, Cq);
+        Cn = cost(P, dt, q0, un, c, m, L, Cq, 'Optimization Loop');
         Jn = cost_jacobian(P, dt, q0, un, c, m, L, Cq);
         
         udn = abs(un - uc);

@@ -1,4 +1,4 @@
-function [q] = modeuler(P, dt, q0, u, c, m, L)
+function [q] = modeuler(P, dt, q0, u, c, m, L, loc)
     %% Initialize Arrays
     Pm = 10*P;  dtm = dt/10;
     q = Inf(P+1, length(q0));
@@ -19,7 +19,8 @@ function [q] = modeuler(P, dt, q0, u, c, m, L)
 
         if (sum(isnan(qm(i+1,:))) > 0)
             fprintf("ERROR: statespace() returned NaN for inputs.\n")
-            fprintf("iteration(s): %i\n\n", i)
+            fprintf("location: %s\niteration(s): %i\n\n", loc, i)
+            pause(1);
             break;
         end
     end
