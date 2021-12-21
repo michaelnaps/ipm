@@ -18,8 +18,16 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     while (sum(Cc > eps) > 0)
         un = uc - a*(Cc./Jc);
         
-        Cn = cost(P, dt, q0, un, c, m, L, Cq, 'Optimization Loop');
+        Cn = cost(P, dt, q0, un, c, m, L, Cq, "Optimization Loop (iter: " + count + ")");
         Jn = cost_jacobian(P, dt, q0, un, c, m, L, Cq);
+
+        for i = 1:length(uc)
+            if (un(i) > umax(i))
+                un(i) = umax(i);
+            elseif (un(i) < umin(i))
+                un(i) = umin(i);
+            end
+        end
         
         udn = abs(un - uc);
         Cdn = abs(Cn - Cc);
@@ -38,14 +46,6 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
         end
 
         uc = un;  Cc = Cn;  Jc = Jn;
-    end
-
-    for i = 1:length(uc)
-        if (un(i) > umax(i))
-            un(i) = umax(i);
-        elseif (un(i) < umin(i))
-            un(i) = umin(i);
-        end
     end
     
     % iteration break
