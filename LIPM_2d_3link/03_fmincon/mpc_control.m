@@ -7,7 +7,8 @@ function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq)
     for i = 2:length(T)
         
         tic;
-        [u, C, ~, o] = fmincon(@(u) cost(P,dt,q(i-1,1:6),u,c,m,L,Cq),q(i-1,7:9),[],[],[],[],-um,um,[],options);
+        q_opt = q(i-1,1:6)';
+        [u, C, ~, o] = fmincon(@(u) cost(P,dt,q_opt,u,c,m,L,Cq),q(i-1,7:9),[],[],[],[],-um,um,@(u) nlcon(P,dt,q_opt,u,c,m,L),options);
         t = toc;
         [~, qc] = ode45(@(t,q) statespace(q,u,c,m,L), 0:dt:P*dt, q(i-1,1:6));
         q(i,:) = [qc(2,:), u, C, o.iterations, t];
