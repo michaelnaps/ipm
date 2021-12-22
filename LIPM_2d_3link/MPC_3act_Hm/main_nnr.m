@@ -34,7 +34,7 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 2.0];             % link 2 position and velocity
+th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 2000; 1500];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
@@ -42,16 +42,16 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      zeros(size(um));...         % initial inputs
+      10; 10; 10;...         % initial inputs
       0;                          % return for cost
       0;                          % iteration count
       0                           % runtime of opt. function
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-3);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
 
-%% Linear Calc. Time Trend
+%% Linear Calc. Time [s] Trend
 [a0, a1, err] = linear_ls(q(:,11), q(:,12));
 bistime = @(n) a1*n + a0;
 
@@ -78,7 +78,7 @@ ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,2))
 ylabel('Vel [rad/s]')
-xlabel('Time')
+xlabel('Time [s]')
 title('Link 1')
 legend('Pos', 'Vel')
 
@@ -90,7 +90,7 @@ ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,4))
 ylabel('Vel [rad/s]')
-xlabel('Time')
+xlabel('Time [s]')
 title('Link 2')
 legend('Pos', 'Vel')
 
@@ -102,7 +102,7 @@ ylabel('Pos [rad]')
 yyaxis right
 plot(T, q(:,6))
 ylabel('Vel [rad/s]')
-xlabel('Time')
+xlabel('Time [s]')
 title('Link 3')
 legend('Pos', 'Vel')
 
@@ -111,14 +111,14 @@ subplot(2,3,4)
 plot(T, q(:,7))
 title('Input on Link 1')
 ylabel('Input [Nm]')
-xlabel('Time')
+xlabel('Time [s]')
 
 % plot input on link 2
 subplot(2,3,5)
 plot(T, q(:,8))
 title('Input on Link 2')
 ylabel('Input [Nm]')
-xlabel('Time')
+xlabel('Time [s]')
 hold off
 
 % plot input on link 3
@@ -126,8 +126,15 @@ subplot(2,3,6)
 plot(T, q(:,9))
 title('Input on Link 3')
 ylabel('Input [Nm]')
-xlabel('Time')
+xlabel('Time [s]')
 hold off
+
+% Cost vs. Time [s]
+figure('Position', [0 0 1400 400])
+plot(T, q(:,10))
+title('Cost Trend')
+ylabel('Cost')
+xlabel('Time [s]')
 
 % calculation time of Newton-Raphson
 figure('Position', [0 0 700 800])
@@ -136,7 +143,7 @@ subplot(2,1,1)
 plot(T, q(:,12))
 title('Calculation time of Newton-Raphson')
 ylabel('Calculation Time [s]')
-xlabel('Runtime [s]')
+xlabel('RunTime [s]')
 
 % calculation time vs. iteration count
 subplot(2,1,2)
@@ -144,7 +151,7 @@ hold on
 plot(q(:,11), q(:,12), '.', 'markersize', 10)
 fplot(bistime, [0 max(q(:,11))+2])
 hold off
-title('Newton-Raphson Time vs. Iteration Count')
+title('Newton-Raphson Time [s] vs. Iteration Count')
 ylabel('Calculation Time [s]')
 xlabel('Iteration Count [n]')
 hold off
