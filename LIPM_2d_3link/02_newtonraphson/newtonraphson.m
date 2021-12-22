@@ -8,7 +8,7 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     umax = um;
     
     % initial guess is set to previous input
-    a = 1;
+    a = 0.1;
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'Initial Cost Calculation');
     Jc = cost_jacobian(P, dt, q0, uc, c, m, L, Cq);
@@ -17,9 +17,6 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     count = 1;
     while (sum(Cc > eps) > 0)
         un = uc - a*(Cc./Jc);
-        
-        Cn = cost(P, dt, q0, un, c, m, L, Cq, "Optimization Loop (iter: " + count + ")");
-        Jn = cost_jacobian(P, dt, q0, un, c, m, L, Cq);
 
         for i = 1:length(uc)
             if (un(i) > umax(i))
@@ -28,6 +25,9 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
                 un(i) = umin(i);
             end
         end
+        
+        Cn = cost(P, dt, q0, un, c, m, L, Cq, "Optimization Loop (iter: " + count + ")");
+        Jn = cost_jacobian(P, dt, q0, un, c, m, L, Cq);
         
         udn = abs(un - uc);
         Cdn = abs(Cn - Cc);
@@ -50,8 +50,10 @@ function [u, C, n] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     
     % iteration break
     if (count == 1000)
-        fprintf("ERROR: Optimization exited - 1000 iterations reached:\n")
+        fprintf("ERROR: Optimization exited - 1000 iterations reached.\n")
     end
+
+    fprintf("Input found: u1 = %.3f  u2 = %.3f  u3 = %.3f  (%i)\n", un(1), un(2), un(3), count)
 
     u = un;
     C = Cn;
