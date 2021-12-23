@@ -10,8 +10,8 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     count = 1;
     brk = 0;
     while (Cc > eps)
-        udn = Jc/Cc;
-        un = uc - a*udn;
+        udn = -Jc/Cc;
+        un = uc + a*udn;
         
         % check boundary constraints
         for i = 1:N
