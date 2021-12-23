@@ -22,11 +22,12 @@ Goal: Optimize a give cost function by adjusting the input on a
   where U is the new input value to be iterated on.
 ____________________________________________________________________________
 
-Target: Minimum point for system C(u)
+Optimization Method: Newton-Raphson Method
+Target: Minimum cost input for system C(u)
 
 01| create initial guess (set to uc)
 02| calculate cost of initial guess (Cc)
-03| calculate Jacobian around initial guess (Jc)
+03| calculate gradient around initial guess (Jc)
 04| calculate the next guess (un = uc - Inv(Jc)*Cc)
 05| while (difference between un and uc is large)
 06|   repeat steps 1-4
@@ -34,7 +35,8 @@ Target: Minimum point for system C(u)
 07| return the acceptable inputs (u = un)
 ____________________________________________________________________________
 
-Target: Jacobian Matrix using Finite Difference Method
+Method: Finite Difference Method
+Target: Gradient Matrix
 
 1| initialize current state and guess input
 2| calculate cost of current state with guess input
@@ -43,6 +45,6 @@ Target: Jacobian Matrix using Finite Difference Method
 5|     calculate the cost for small change in input (around guess)
  |   end for
 6|   calculate partial derivatives for each cost/input
-7|   add the partial derivatives to Jacobian matrix
+7|   add the partial derivatives to gradient matrix
  | end for
-8| return completed Jacobian matrix approximation
+8| return completed gradient matrix approximation

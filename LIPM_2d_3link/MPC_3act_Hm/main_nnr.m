@@ -32,7 +32,7 @@ L = [0.5; 0.5; 1];
 % establish state space vectors and variables
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
-T = 0:dt:10;                    % time span
+T = 0:dt:2;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
 th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
