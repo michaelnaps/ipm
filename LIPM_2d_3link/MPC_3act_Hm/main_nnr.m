@@ -23,7 +23,7 @@ Cq = @(q) [
       100*(th1d - q(1))^2 + (veld - q(2))^2;  % + 5e-8*(du(1))^2;  % cost of Link 1
       100*(th2d - q(3))^2 + (veld - q(4))^2;  % + 1e-7*(du(2))^2;  % cost of Link 2
       100*(th3d - q(5))^2 + (veld - q(6))^2;  % + 5e-7*(du(3))^2;  % cost of Link 3
-     ];
+     ] + cost_barrier(q, 1e6);
 
 %% Variable Setup
 % parameters for mass and length
@@ -33,7 +33,7 @@ L = [0.5; 0.5; 1];
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi/2;0.5];             % link 1 position and velocity
+th1_0 = [pi/2;0.0];             % link 1 position and velocity
 th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 2000; 1500];        % maximum input to joints
@@ -42,14 +42,14 @@ c = [500; 500; 500];            % damping coefficients
 % create initial states
 q0 = [
       th1_0;th2_0;th3_0;...       % initial joint states
-      0; 0; 0;...                 % initial inputs
+      10; 10; 10;...                 % initial inputs
       0;                          % return for cost
       0;                          % iteration count
       0                           % runtime of opt. function
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-10);
 
 %% Linear Calc. Time [s] Trend
 [a0, a1, err] = linear_ls(q(:,11), q(:,12));
