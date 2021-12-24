@@ -1,4 +1,4 @@
-function [J, h] = cost_gradient(P, dt, q0, u, c, m, L, Cq, h)
+function [J, h] = costgradient_2pc(P, dt, q0, u, c, m, L, Cq, h)
     %% Setup
     J = zeros(size(u));
 
