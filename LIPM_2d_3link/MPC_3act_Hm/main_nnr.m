@@ -23,7 +23,7 @@ Cq = @(q) [
       100*(th1d - q(1))^2 + (veld - q(2))^2;  % + 5e-8*(du(1))^2;  % cost of Link 1
       100*(th2d - q(3))^2 + (veld - q(4))^2;  % + 1e-7*(du(2))^2;  % cost of Link 2
       100*(th3d - q(5))^2 + (veld - q(6))^2;  % + 5e-7*(du(3))^2;  % cost of Link 3
-     ] + cost_barrier(q, 1e6);
+     ];
 
 %% Variable Setup
 % parameters for mass and length

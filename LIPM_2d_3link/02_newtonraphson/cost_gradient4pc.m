@@ -19,7 +19,7 @@ function [g, h] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
         Cp1 = cost(P, dt, q0, up1, c, m, L, Cq, 'Gradient u(i+1)');
         Cp2 = cost(P, dt, q0, up2, c, m, L, Cq, 'Gradient u(i+2)');
         
-        gn = (Cn2 - 8*Cn1 + 8*Cp1 - Cp1)/(12*h);
+        gn = (Cn2 - 8*Cn1 + 8*Cp1 - Cp2)/(12*h);
         
         g(i) = gn;
     end
