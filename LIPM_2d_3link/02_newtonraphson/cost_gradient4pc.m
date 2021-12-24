@@ -1,8 +1,8 @@
-function [J, h] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
+function [g, h] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
     %% Setup
-    J = zeros(size(u));
+    g = zeros(size(u));
 
-    %% Finite Difference Method (J = gradient)
+    %% Finite Difference Method (g = gradient)
     for i = 1:length(u)
         un2 = u;
         un1 = u;
@@ -19,9 +19,9 @@ function [J, h] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
         Cp1 = cost(P, dt, q0, up1, c, m, L, Cq, 'Gradient u(i+1)');
         Cp2 = cost(P, dt, q0, up2, c, m, L, Cq, 'Gradient u(i+2)');
         
-        Jn = (Cn2 - 8*Cn1 + 8*Cp1 - Cp1)/(12*h);
+        gn = (Cn2 - 8*Cn1 + 8*Cp1 - Cp1)/(12*h);
         
-        J(i) = Jn;
+        g(i) = gn;
     end
 end
 

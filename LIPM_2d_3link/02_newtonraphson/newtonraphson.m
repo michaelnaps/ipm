@@ -4,13 +4,13 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     N = length(um);
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'NNR Initial Cost');
-    Jc = cost_gradient4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
+    gc = cost_gradient4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
     un = uc;  Cn = Cc;
 
     count = 1;
     brk = 0;
     while (Cc > eps)
-        udn = Jc/Cc;
+        udn = gc/Cc;
         un = uc - a*udn;
         
         % check boundary constraints
@@ -23,12 +23,12 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
         end
 
         Cn = cost(P, dt, q0, un, c, m, L, Cq, 'NNR Initial Cost');
-        Jn = cost_gradient4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
+        gn = cost_gradient4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
 
         Cdn = abs(Cn - Cc);  % not used currently
         count = count + 1;
 
-        if (sum(Jn < eps) == N)
+        if (sum(gn < eps) == N)
             fprintf("First Order Optimality break. (%i)\n", count)
             brk = 1;
             break;
@@ -40,7 +40,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
             break;
         end
 
-        uc = un;  Cc = Cn;  Jc = Jn;
+        uc = un;  Cc = Cn;  gc = gn;
     end
 
     if (brk == 0)
