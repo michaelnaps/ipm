@@ -49,3 +49,4 @@ G_fmincon
 
 %% Jacobian Calculation
 [G_cost, h] = cost_gradient(P, dt, q0(1:6), u, c, m, L, Cq, 1e-4)
+[G_cost2, h] = cost_gradient2(P, dt, q0(1:6), u, c, m, L, Cq, 1e-4)
