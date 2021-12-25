@@ -60,7 +60,7 @@ q0 = [
 
 %% Linear Calc. Time [s] Trend
 [a0, a1, err] = linear_ls(q(:,11), q(:,12));
-bistime = @(n) a1*n + a0;
+nntime = @(n) a1*n + a0;
 
 %% Graphing and Evaluation
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
@@ -156,7 +156,7 @@ xlabel('RunTime [s]')
 subplot(2,1,2)
 hold on
 plot(q(:,11), q(:,12), '.', 'markersize', 10)
-fplot(bistime, [0 max(q(:,11))+2])
+fplot(nntime, [0 max(q(:,11))+2])
 hold off
 title('Newton-Raphson Time [s] vs. Iteration Count')
 ylabel('Calculation Time [s]')
