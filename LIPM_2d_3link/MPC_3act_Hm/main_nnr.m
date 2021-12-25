@@ -16,8 +16,8 @@ addpath ../02_newtonraphson
 
 %% Cost Function
 th1d = pi/2;
-th2d = 0; 
-th3d = 0;
+th2d = 0.0;
+th3d = 0.0;
 veld = 0;
 Cq = @(q) [
       100*(th1d - q(1))^2 + (veld - q(2))^2;  % + 5e-8*(du(1))^2;  % cost of Link 1

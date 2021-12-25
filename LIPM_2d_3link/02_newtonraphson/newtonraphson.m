@@ -4,8 +4,8 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     N = length(um);
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'NNR Initial Cost');
-    gc = cost_gradient4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
-    Hc = cost_hessian4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
+    gc = cost_gradient(P, dt, q0, uc, c, m, L, Cq, 1e-3);
+    Hc = cost_hessian(P, dt, q0, uc, c, m, L, Cq, 1e-3);
     un = uc;  Cn = Cc;
 
     count = 1;
@@ -24,10 +24,8 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
         end
 
         Cn = cost(P, dt, q0, un, c, m, L, Cq, 'NNR Initial Cost');
-        gn = cost_gradient4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
-        Hn = cost_hessian4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
-
-        Cdn = abs(Cn - Cc);  % not used currently
+        gn = cost_gradient(P, dt, q0, un, c, m, L, Cq, 1e-3);
+        Hn = cost_hessian(P, dt, q0, un, c, m, L, Cq, 1e-3);
         count = count + 1;
 
         if (sum(gn < eps) == N)
