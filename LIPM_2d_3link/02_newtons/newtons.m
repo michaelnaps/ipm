@@ -2,9 +2,9 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Setup - Initial Guess, Cost, Gradient, and Hessian
     N = length(um);
     uc = u0;
-    Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'NNR Initial Cost');
-    gc = cost_gradient(P, dt, q0, uc, c, m, L, Cq, 1e-3);
-    Hc = cost_hessian(P, dt, q0, uc, c, m, L, Cq, 1e-3);
+    Cc = cost(P, dt, q0, u0, uc, c, m, L, Cq, 'NNR Initial Cost');
+    gc = cost_gradient(P, dt, q0, u0, uc, c, m, L, Cq, 1e-3);
+    Hc = cost_hessian(P, dt, q0, u0, uc, c, m, L, Cq, 1e-3);
     un = uc;  Cn = Cc;
 
     %% Loop for Newton's Method
@@ -15,9 +15,9 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
         un = uc - Hc\gc;
 
         % compute new values for cost, gradient, and hessian
-        Cn = cost(P, dt, q0, un, c, m, L, Cq, 'NNR Initial Cost');
-        gn = cost_gradient(P, dt, q0, un, c, m, L, Cq, 1e-3);
-        Hn = cost_hessian(P, dt, q0, un, c, m, L, Cq, 1e-3);
+        Cn = cost(P, dt, q0, u0, un, c, m, L, Cq, 'NNR Initial Cost');
+        gn = cost_gradient(P, dt, q0, u0, un, c, m, L, Cq, 1e-3);
+        Hn = cost_hessian(P, dt, q0, u0, un, c, m, L, Cq, 1e-3);
         udn = abs(un - uc);
         count = count + 1;
 

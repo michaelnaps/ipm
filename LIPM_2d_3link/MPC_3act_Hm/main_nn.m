@@ -15,15 +15,21 @@ close all;
 addpath ../.
 addpath ../02_newtons
 
+%% External Disturbance Testing
+push = [
+     1.75, 3, 5.0;
+     3.50, 1, -2.0
+    ];
+
 %% Cost Function
 th1d =  pi/4;
 th2d =  pi/2;
 th3d = -pi/4;
 veld =  0;
-Cq = @(q) [
-      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2;% + 5e-8*(du(1))^2;  % cost of Link 1
-      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2;% + 1e-7*(du(2))^2;  % cost of Link 2
-      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2;% + 5e-7*(du(3))^2;  % cost of Link 3
+Cq = @(q, du) [
+      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
+      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
      ];
 
 %% Variable Setup
@@ -50,7 +56,7 @@ q0 = [
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, push);
 
 %% Linear Calc. Time [s] Trend
 [a0, a1, err] = linear_ls(q(:,11), q(:,12));
