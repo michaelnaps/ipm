@@ -12,7 +12,7 @@ close all;
 
 restoredefaultpath
 addpath ../.
-addpath ../02_newtonraphson
+addpath ../02_newtons
 
 %% Cost Function
 th1d =  pi/4;
@@ -36,7 +36,7 @@ T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
 th2_0 = [0.0; 2.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
-um = [3000; 2000; 1500];        % maximum input to joints
+um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
 % create initial states

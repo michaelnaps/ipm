@@ -6,7 +6,7 @@ function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, eps)
     for i = 2:length(T)
         
         tic
-        [u, C, n] = newtonraphson(P, dt, q(i-1,1:6)', q(i-1,7:9)', um, c, m, L, Cq, eps);
+        [u, C, n] = newtons(P, dt, q(i-1,1:6)', q(i-1,7:9)', um, c, m, L, Cq, eps);
         t = toc;
         qc = modeuler(P, dt, q(i-1,1:6)', u, c, m, L, 'Main Simulation Loop');
         q(i,:) = [qc(2,:), u', C, n, t];

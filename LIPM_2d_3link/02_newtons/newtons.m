@@ -1,4 +1,4 @@
-function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
+function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Setup - Initial Guess, Cost, Gradient, and Hessian
     N = length(um);
     uc = u0;
@@ -29,7 +29,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
         gn = cost_gradient(P, dt, q0, un, c, m, L, Cq, 1e-3);
         Hn = cost_hessian(P, dt, q0, un, c, m, L, Cq, 1e-3);
 
-        Cdn = abs(Cn - Cc);
+        udn = abs(un - uc);
         count = count + 1;
 
         if (sum(gn < eps) == N)
@@ -38,20 +38,16 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
             break;
         end
 
-%         if ((udn < eps) == N)
-%             fprintf("Change in input break. (%i)\n", count)
-%             brk = 2;
-%             break;
-%         end
-% 
-%         if ((Cdn < eps) == N)
-%             fprintf("Change in cost break. (%i)\n", count)
-%             brk = 3;
-%             break;
-%         end
+        if ((udn < eps) == N)
+            fprintf("Change in input break. (%i)\n", count)
+            brk = 2;
+            break;
+        end
 
         if (count == 1000)
             fprintf("ERROR: Iteration break. (%i)\n", count)
+            fprintf("u1 = %.3f  u2 = %.3f  u3 = %.3f\n", un)
+            fprintf("g1 = %.3f  g2 = %.3f  g3 = %.3f\n", gn)
             brk = -1;
             break;
         end
@@ -63,8 +59,6 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     if (brk == 0)
         % fprintf("Zero cost break. (%i)\n", count)
     end
-
-    % fprintf("u1 = %.3f  u2 = %.3f  u3 = %.3f\n", un)
 
     %% Return Values for Input, Cost, and Iteration Count
     u = un;
