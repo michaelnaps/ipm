@@ -15,14 +15,14 @@ addpath ../.
 addpath ../02_newtonraphson
 
 %% Cost Function
-th1d = pi/2;
-th2d = 0.0;
-th3d = 0.0;
+th1d =  pi/4;
+th2d =  pi/2;
+th3d = -pi/4;
 veld = 0;
 Cq = @(q) [
-      100*(th1d - q(1))^2 + (veld - q(2))^2;  % + 5e-8*(du(1))^2;  % cost of Link 1
-      100*(th2d - q(3))^2 + (veld - q(4))^2;  % + 1e-7*(du(2))^2;  % cost of Link 2
-      100*(th3d - q(5))^2 + (veld - q(6))^2;  % + 5e-7*(du(3))^2;  % cost of Link 3
+      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2;% + 5e-8*(du(1))^2;  % cost of Link 1
+      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2;% + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2;% + 5e-7*(du(3))^2;  % cost of Link 3
      ];
 
 %% Variable Setup

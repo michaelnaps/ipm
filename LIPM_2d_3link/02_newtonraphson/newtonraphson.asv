@@ -1,5 +1,5 @@
 function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
-    %% Setup - Initial Guess, Cost, Gradient, and Hessian
+    %% Setup
     N = length(um);
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'NNR Initial Cost');
@@ -7,7 +7,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     Hc = cost_hessian(P, dt, q0, uc, c, m, L, Cq, 1e-3);
     un = uc;  Cn = Cc;
 
-    %% Loop for Newton-Raphson Method
+    %% Loop for Newton-Raphson 
     count = 1;
     brk = 0;
     while (Cc > eps)
@@ -56,7 +56,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
             break;
         end
 
-        % apply the new values to current for the next iteration
+        % apply the new values to current for the next loop
         uc = un;  Cc = Cn;  gc = gn;  Hc = Hn;
     end
 
@@ -64,11 +64,10 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
         % fprintf("Zero cost break. (%i)\n", count)
     end
 
-    % fprintf("u1 = %.3f  u2 = %.3f  u3 = %.3f\n", un)
-
-    %% Return Values for Input, Cost, and Iteration Count
     u = un;
     C = Cn;
     n = count;
+
+    % fprintf("u1 = %.3f  u2 = %.3f  u3 = %.3f\n", u)
 end
 
