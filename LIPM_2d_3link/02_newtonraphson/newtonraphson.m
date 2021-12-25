@@ -5,12 +5,13 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
     uc = u0;
     Cc = cost(P, dt, q0, uc, c, m, L, Cq, 'NNR Initial Cost');
     gc = cost_gradient4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
+    Hc = cost_hessian4pc(P, dt, q0, uc, c, m, L, Cq, 1e-3);
     un = uc;  Cn = Cc;
 
     count = 1;
     brk = 0;
     while (Cc > eps)
-        udn = gc/Cc;
+        udn = Hc\gc;
         un = uc - a*udn;
         
         % check boundary constraints
@@ -24,6 +25,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
 
         Cn = cost(P, dt, q0, un, c, m, L, Cq, 'NNR Initial Cost');
         gn = cost_gradient4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
+        Hn = cost_hessian4pc(P, dt, q0, un, c, m, L, Cq, 1e-3);
 
         Cdn = abs(Cn - Cc);  % not used currently
         count = count + 1;
@@ -40,7 +42,7 @@ function [u, C, n, brk] = newtonraphson(P, dt, q0, u0, um, c, m, L, Cq, eps)
             break;
         end
 
-        uc = un;  Cc = Cn;  gc = gn;
+        uc = un;  Cc = Cn;  gc = gn;  Hc = Hn;
     end
 
     if (brk == 0)

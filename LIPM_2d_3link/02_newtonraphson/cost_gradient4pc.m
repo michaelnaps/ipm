@@ -1,4 +1,4 @@
-function [g, H] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
+function [g] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
     %% Setup
     g = zeros(size(u));
 
@@ -23,7 +23,5 @@ function [g, H] = cost_gradient4pc(P, dt, q0, u, c, m, L, Cq, h)
         
         g(i) = gn;
     end
-
-    H = cost_hessian4pc(P, dt, q0, u, c, m, L, Cq, h);
 end
 
