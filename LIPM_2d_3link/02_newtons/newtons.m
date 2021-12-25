@@ -13,15 +13,6 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     while (Cc > eps)
         % calculate and add the next Newton's step
         un = uc - Hc\gc;
-        
-        % check boundary constraints
-        for i = 1:N
-            if (un(i) > um(i))
-                un(i) = um(i);
-            elseif (un(i) < -um(i))
-                un(i) = -um(i);
-            end
-        end
 
         % compute new values for cost, gradient, and hessian
         Cn = cost(P, dt, q0, un, c, m, L, Cq, 'NNR Initial Cost');
@@ -60,6 +51,15 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
 
     if (brk == 0)
         % fprintf("Zero cost break. (%i)\n", count)
+    end
+        
+    % check boundary constraints
+    for i = 1:N
+        if (un(i) > um(i))
+            un(i) = um(i);
+        elseif (un(i) < -um(i))
+            un(i) = -um(i);
+        end
     end
 
     %% Return Values for Input, Cost, and Iteration Count
