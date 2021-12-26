@@ -16,11 +16,12 @@ addpath ../.
 addpath ../02_newtons
 
 %% External Disturbance Testing
-push = [
-     1.75, 3,  5.0;
-     3.50, 1, -2.0;
-     3.75, 2,  8.0
-    ];
+push = [];
+% push = [
+%      1.75, 3,  5.0;
+%      3.50, 1, -2.0;
+%      3.75, 2,  8.0
+%     ];
 
 %% Cost Function
 th1d =  pi/4;
@@ -42,7 +43,7 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 2.0];             % link 2 position and velocity
+th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
 um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
@@ -144,12 +145,12 @@ title('Cost Trend')
 ylabel('Cost')
 xlabel('Time [s]')
 
-% calculation time of Newton-Raphson
+% calculation time of Newtons Method
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
 plot(T, q(:,12))
-title('Calculation time of Newton-Raphson')
+title('Calculation time of Newtons Method')
 ylabel('Calculation Time [s]')
 xlabel('RunTime [s]')
 
@@ -159,7 +160,7 @@ hold on
 plot(q(:,11), q(:,12), '.', 'markersize', 10)
 fplot(nntime, [0 max(q(:,11))+2])
 hold off
-title('Newton-Raphson Time [s] vs. Iteration Count')
+title('Newtons Method Time [s] vs. Iteration Count')
 ylabel('Calculation Time [s]')
 xlabel('Iteration Count [n]')
 hold off

@@ -1,4 +1,4 @@
-function [g] = cost_gradient(P, dt, q0, u0, u, c, m, L, Cq, h)
+function [g] = cost_gradient(P, dt, q0, u0, u, c, m, L, Cq, h, loc)
     %% Setup
     N = length(u);
     g = zeros(size(u));
@@ -11,8 +11,8 @@ function [g] = cost_gradient(P, dt, q0, u0, u, c, m, L, Cq, h)
         un1(i) = u(i) - h;
         up1(i) = u(i) + h;
 
-        Cn1 = cost(P, dt, q0, u0, un1, c, m, L, Cq, 'Gradient u(i-1)');
-        Cp1 = cost(P, dt, q0, u0, up1, c, m, L, Cq, 'Gradient u(i+1)');
+        Cn1 = cost(P, dt, q0, u0, un1, c, m, L, Cq, " Gradient u(i-1) " + loc);
+        Cp1 = cost(P, dt, q0, u0, up1, c, m, L, Cq, " Gradient u(i+1) " + loc);
         
         gn = (Cp1 - Cn1)/(2*h);
 

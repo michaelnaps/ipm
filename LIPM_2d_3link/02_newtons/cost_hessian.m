@@ -1,4 +1,4 @@
-function [H] = cost_hessian(P, dt, q0, u0, u, c, m, L, Cq, h)
+function [H] = cost_hessian(P, dt, q0, u0, u, c, m, L, Cq, h, loc)
     %% Setup
     N = length(u);
     H = zeros(N);
@@ -11,8 +11,8 @@ function [H] = cost_hessian(P, dt, q0, u0, u, c, m, L, Cq, h)
         un1(i) = u(i) - h;
         up1(i) = u(i) + h;
 
-        Hn1 = cost_gradient(P, dt, q0, u0, un1, c, m, L, Cq, h);
-        Hp1 = cost_gradient(P, dt, q0, u0, up1, c, m, L, Cq, h);
+        Hn1 = cost_gradient(P, dt, q0, u0, un1, c, m, L, Cq, h, " Hessian (i-1) " + loc);
+        Hp1 = cost_gradient(P, dt, q0, u0, up1, c, m, L, Cq, h, " Hessian (i+1) " + loc);
 
         Hn = (Hp1 - Hn1)/(2*h);
 
