@@ -1,3 +1,33 @@
+%% Optimization Algorithm II
+%  Method: Nonlinear Newton's (NN) Optimization Method
+%  Created by: Michael Napoli
+%
+%  Purpose: To optimize and solve a given system
+%   of n-link pendulum models using model predictive
+%   control (MPC) and the NN algorithm with the
+%   necessary constraints.
+%
+%  Inputs:
+%   'P'   - length of prediction horizon (PH)
+%   'dt'  - step-size for prediction horizon
+%   'q0'  - initial state
+%   'u0'  - initial guess
+%   'um'  - maximum allowable torque values
+%   'c'   - coefficient of damping for each link
+%   'm'   - mass at end of each pendulum
+%   'L'   - length of pendulum links
+%   'Cq'  - system of quadratic cost equations
+%   'eps' - acceptable error (for breaking)
+%
+%  Outputs:
+%   'u'   - inputs for each applicable joint
+%   'C'   - cost of the links for each window of PH
+%   'n'   - number of iterations needed
+%   'brk' - loop break code
+%        -1 -> iteration break (1000)
+%         0 -> zero cost break
+%         1 -> first order optimality
+%         2 -> change in input break
 function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     %% Setup - Initial Guess, Cost, Gradient, and Hessian
     N = length(um);
@@ -23,14 +53,12 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
 
         % first order optimality break
         if (sum(g < eps) == N)
-            % fprintf("First Order Optimality break. (%i)\n", count)
             brk = 1;
             break;
         end
 
         % change in input break
         if ((udn < eps) == N)
-            % fprintf("Change in input break. (%i)\n", count)
             brk = 2;
             break;
         end
@@ -48,10 +76,6 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
         % update current variables for next iteration
         uc = un;
     end
-
-    if (brk == 0)
-        % fprintf("Zero cost break. (%i)\n", count)
-    end
         
     % check boundary constraints
     for i = 1:N
@@ -67,4 +91,3 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     C = Cn;
     n = count;
 end
-
