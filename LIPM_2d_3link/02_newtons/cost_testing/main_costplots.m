@@ -47,7 +47,7 @@ q0 = [
       0                           % runtime of opt. function
      ];
 
-%% Run and Plot costs for varying inputs
+%% Create Cost Trend Data
 u = -3000:3000;
 N = length(u);
 
@@ -85,6 +85,7 @@ for i = 1:N
     C_u3_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;1000;u(i)],c,m,L,Cq_barrier,'test 3');
 end
 
+%% Plot Data
 figure(1)
 plot(u,C_u1_t1,u,C_u2_t1,u,C_u3_t1)
 
