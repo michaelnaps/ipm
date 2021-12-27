@@ -16,12 +16,12 @@ addpath ../.
 addpath ../02_newtons
 
 %% External Disturbance Testing
-push = [];
-% push = [
-%      1.75, 3,  5.0;
-%      3.50, 1, -2.0;
-%      3.75, 2,  8.0
-%     ];
+% push = [];
+push = [
+     1.75, 3,  5.0;
+     3.50, 1, -2.0;
+     3.75, 2,  8.0
+    ];
 
 %% Cost Function
 th1d =  pi/4;

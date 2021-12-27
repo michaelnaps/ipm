@@ -9,15 +9,8 @@ function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, eps, push)
         [u, C, n] = newtons(P, dt, q(i-1,1:6)', q(i-1,7:9)', um, c, m, L, Cq, eps);
         t = toc;
         qc = modeuler(P, dt, q(i-1,1:6)', u, c, m, L, 'Main Simulation Loop');
-        q(i,:) = [qc(2,:), u', C, n, t];
-        
-        if (push ~= [])
-            for j = 1:length(push(:,1))
-                if (push(j,1) == T(i))
-                    q(i,2*push(j,2)) = q(i,2*push(j,2)) + push(j,3);
-                end
-            end
-        end
-        
+        qnew = push_pendulum(qc(2,:), T(i), push);
+        q(i,:) = [qnew, u', C, n, t];
+
     end
 end
