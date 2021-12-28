@@ -4,7 +4,7 @@ clc;clear;
 close all;
 
 addpath ../.
-addpath ../../.
+addpath ../02_newtons
 
 %% Cost Function
 th1d =  pi/4;
