@@ -61,10 +61,14 @@ q0 = [
 [~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, push);
 
 %% Linear Calc. Time [s] Trend
-[a0, a1, err] = linear_ls(q(:,11), q(:,12));
-nntime = @(n) a1*n + a0;
+[a] = polynomial_fit(q(:,11), q(:,12), 3);
+nntime = @(n) a(4)*n.^3 + a(3)*n.^2 + a(2)*n + a(1);
+% nntime = @(n) a(2)*n + a(1);
+err = sum((q(:,12) - nntime(q(:,11))).^2);
 
 %% Graphing and Evaluation
+clc;close all;
+
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
@@ -155,10 +159,11 @@ ylabel('Calculation Time [s]')
 xlabel('RunTime [s]')
 
 % calculation time vs. iteration count
+nrange = 0:0.1:max(q(:,11))+1;
 subplot(2,1,2)
 hold on
 plot(q(:,11), q(:,12), '.', 'markersize', 10)
-fplot(nntime, [0 max(q(:,11))+2])
+plot(nrange, nntime(nrange))
 hold off
 title('Newtons Method Time [s] vs. Iteration Count')
 ylabel('Calculation Time [s]')
