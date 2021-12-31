@@ -1,10 +1,10 @@
-function [Cb] = cost_barrier(q, mu)
+function [Cb] = cost_barrier(q, mu, a)
     wmax = 3;
 
     Cineq = [
-         (q(2)/wmax)^20;
-         (q(4)/wmax)^20;
-         (q(6)/wmax)^20;
+         (q(2)/wmax)^a;
+         (q(4)/wmax)^a;
+         (q(6)/wmax)^a;
         ];
 
     Cb = mu*Cineq;
