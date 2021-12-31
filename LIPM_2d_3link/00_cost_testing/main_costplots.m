@@ -18,11 +18,7 @@ Cq = @(q, du) [
       100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
      ];
 
-Cq_barrier = @(q, du) [
-      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
-      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
-      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
-     ] + cost_barrier(q, 1e6);
+barrier = @(q, du) cost_barrier(q, 1);
 
 %% Variable Setup
 % parameters for mass and length
@@ -48,7 +44,7 @@ q0 = [
      ];
 
 %% Create Cost Trend Data
-u = -3000:3000;
+u = 200:500;
 N = length(u);
 
 C_u1_t1 = zeros(N,1);
@@ -72,17 +68,17 @@ for i = 1:N
     C_u2_t1(i) = cost(P,dt,q0(1:6),[0;0;0],[0;u(i);0],c,m,L,Cq,'test 2');
     C_u3_t1(i) = cost(P,dt,q0(1:6),[0;0;0],[0;0;u(i)],c,m,L,Cq,'test 3');
 
-    C_u1_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);1000;1000],c,m,L,Cq,'test 1');
-    C_u2_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;u(i);1000],c,m,L,Cq,'test 2');
-    C_u3_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;1000;u(i)],c,m,L,Cq,'test 3');
+%     C_u1_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);1000;1000],c,m,L,Cq,'test 1');
+%     C_u2_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;u(i);1000],c,m,L,Cq,'test 2');
+%     C_u3_t2(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;1000;u(i)],c,m,L,Cq,'test 3');
 
-    C_u1_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);0;0],c,m,L,Cq_barrier,'test 1');
-    C_u2_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[0;u(i);0],c,m,L,Cq_barrier,'test 2');
-    C_u3_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[0;0;u(i)],c,m,L,Cq_barrier,'test 3');
+    C_u1_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);0;0],c,m,L,barrier,'test 1');
+    C_u2_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[0;u(i);0],c,m,L,barrier,'test 2');
+    C_u3_t3(i) = cost(P,dt,q0(1:6),[0;0;0],[0;0;u(i)],c,m,L,barrier,'test 3');
 
-    C_u1_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);1000;1000],c,m,L,Cq_barrier,'test 1');
-    C_u2_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;u(i);1000],c,m,L,Cq_barrier,'test 2');
-    C_u3_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;1000;u(i)],c,m,L,Cq_barrier,'test 3');
+%     C_u1_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[u(i);1000;1000],c,m,L,barrier,'test 1');
+%     C_u2_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;u(i);1000],c,m,L,barrier,'test 2');
+%     C_u3_t4(i) = cost(P,dt,q0(1:6),[0;0;0],[1000;1000;u(i)],c,m,L,barrier,'test 3');
 end
 
 %% Plot Data
@@ -97,3 +93,7 @@ plot(u,C_u1_t3,u,C_u2_t3,u,C_u3_t3)
 
 figure(4)
 plot(u,C_u1_t4,u,C_u2_t4,u,C_u3_t4)
+
+figure(5)
+plot(u,C_u1_t1,u,C_u1_t3)%,u,C_u1_t1+C_u1_t3)
+legend("cost", "cost barrier")%, "combined")
