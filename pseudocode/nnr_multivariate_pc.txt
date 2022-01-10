@@ -22,7 +22,7 @@ Goal: Optimize a give cost function by adjusting the input on a
   where U is the new input value to be iterated on.
 ____________________________________________________________________________
 
-Optimization Method: Newton-Raphson Method
+Optimization Method: Newton's Optimization Method
 Target: Minimum cost input for system C(u)
 
 01| create initial guess (set to uc)
