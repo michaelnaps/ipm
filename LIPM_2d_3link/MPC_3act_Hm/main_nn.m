@@ -32,7 +32,7 @@ Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
       100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
-     ] + cost_barrier(q, 1, 20);
+     ];% + cost_barrier(q, 1, 20);
 
 %% Variable Setup
 % parameters for mass and length
@@ -61,14 +61,12 @@ q0 = [
 [~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, push);
 
 %% Linear Calc. Time [s] Trend
-[a] = polynomial_fit(q(:,11), q(:,12), 3);
+N = length(q(:,11));
+[a] = polynomial_fit(q(2:N,11), q(2:N,12), 3);
 nntime = @(n) a(4)*n.^3 + a(3)*n.^2 + a(2)*n + a(1);
-% nntime = @(n) a(2)*n + a(1);
-err = sum((q(:,12) - nntime(q(:,11))).^2);
+err = sum((q(2:N,12) - nntime(q(2:N,11))).^2);
 
 %% Graphing and Evaluation
-clc;close all;
-
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
@@ -162,11 +160,11 @@ xlabel('RunTime [s]')
 nrange = 0:0.1:max(q(:,11))+1;
 subplot(2,1,2)
 hold on
-plot(q(:,11), q(:,12), '.', 'markersize', 10)
-plot(nrange, nntime(nrange))
+plot(q(:,11), 1000*q(:,12), '.', 'markersize', 10)
+plot(nrange, 1000*nntime(nrange))
 hold off
 title('Newtons Method Time [s] vs. Iteration Count')
-ylabel('Calculation Time [s]')
+ylabel('Calculation Time [ms]')
 xlabel('Iteration Count [n]')
 hold off
 
