@@ -2,7 +2,7 @@ function [T, q] = mpc_control(P, T, q0, um, c, m, L, Cq, eps, push)
     %% MPC Controller
     dt = T(2) - T(1);
     q = NaN(length(T), length(q0));
-    q(1,:) = q0;
+    q(1,:) = push_pendulum(q0, T(1), push);
     for i = 2:length(T)
         
         tic

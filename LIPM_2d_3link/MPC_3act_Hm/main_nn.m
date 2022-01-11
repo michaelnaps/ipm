@@ -18,6 +18,7 @@ addpath ../02_newtons
 %% External Disturbance Testing
 % push = [];
 push = [
+     0.00, 2, -4.0;
      1.75, 3,  5.0;
      3.50, 1, -2.0;
      3.75, 2,  3.0
@@ -42,9 +43,9 @@ L = [0.5; 0.5; 1];
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [th1d; 0.0];             % link 1 position and velocity
-th2_0 = [th2d; 0.0];             % link 2 position and velocity
-th3_0 = [th3d; 0.0];             % link 3 position and velocity
+th1_0 = [th1d; 0.0];            % link 1 position and velocity
+th2_0 = [th2d; 0.0];            % link 2 position and velocity
+th3_0 = [th3d; 0.0];            % link 3 position and velocity
 um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
