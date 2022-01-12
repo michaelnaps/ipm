@@ -18,7 +18,7 @@ Cq = @(q, du) [
       100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
      ];
 
-barrier = @(q, du) cost_barrier(q, 1);
+barrier = @(q, du) cost_barrier(q, 1, 1);
 
 %% Variable Setup
 % parameters for mass and length
@@ -28,9 +28,9 @@ L = [0.5; 0.5; 1];
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi/4; 0.0];             % link 1 position and velocity
-th2_0 = [pi/2; 0.0];             % link 2 position and velocity
-th3_0 = [-pi/4;0.0];             % link 3 position and velocity
+th1_0 = [pi/4; 2.5];             % link 1 position and velocity
+th2_0 = [pi/2;-2.5];             % link 2 position and velocity
+th3_0 = [-pi/4;2.5];             % link 3 position and velocity
 um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
@@ -44,7 +44,7 @@ q0 = [
      ];
 
 %% Create Cost Trend Data
-u = 200:500;
+u = -3000:3000;
 N = length(u);
 
 C_u1_t1 = zeros(N,1);
@@ -85,15 +85,15 @@ end
 figure(1)
 plot(u,C_u1_t1,u,C_u2_t1,u,C_u3_t1)
 
-figure(2)
-plot(u,C_u1_t2,u,C_u2_t2,u,C_u3_t2)
+% figure(2)
+% plot(u,C_u1_t2,u,C_u2_t2,u,C_u3_t2)
 
 figure(3)
 plot(u,C_u1_t3,u,C_u2_t3,u,C_u3_t3)
 
-figure(4)
-plot(u,C_u1_t4,u,C_u2_t4,u,C_u3_t4)
+% figure(4)
+% plot(u,C_u1_t4,u,C_u2_t4,u,C_u3_t4)
 
 figure(5)
-plot(u,C_u1_t1,u,C_u1_t3)%,u,C_u1_t1+C_u1_t3)
-legend("cost", "cost barrier")%, "combined")
+plot(u,C_u1_t1,u,C_u1_t3,u,C_u1_t1+C_u1_t3)
+legend("cost", "cost barrier", "combined")

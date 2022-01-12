@@ -18,7 +18,7 @@ addpath ../02_newtons
 %% External Disturbance Testing
 % push = [];
 push = [
-     0.00, 2, -4.0;
+     0.50, 2, 10.0;
      1.75, 3,  5.0;
      3.50, 1, -2.0;
      3.75, 2,  3.0
@@ -33,7 +33,7 @@ Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
       100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
-     ];% + cost_barrier(q, 1, 20);
+     ] + cost_barrier(q, 1, 10);
 
 %% Variable Setup
 % parameters for mass and length
