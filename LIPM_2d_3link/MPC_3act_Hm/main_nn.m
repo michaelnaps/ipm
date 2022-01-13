@@ -18,16 +18,27 @@ addpath ../02_newtons
 %% External Disturbance Testing
 % push = [];
 push = [
-     0.50, 2, 10.0;
-     1.75, 3,  5.0;
+     0.50, 3,  5.0;
      3.50, 1, -2.0;
      3.75, 2,  3.0
     ];
 
+h_adj = [
+     6.00, 1.9
+    ];
+
+%% Mass, Length, Height and Angle Constants
+% parameters for mass and length
+m = [15; 15; 60];
+L = [0.5; 0.5; 1];
+% calculate desired joint angles
+h = 1.75;
+thd = des_jointangles(L, h);
+
 %% Cost Function
-th1d =  pi/4;
-th2d =  pi/2;
-th3d = -pi/4;
+th1d = thd(1);
+th2d = thd(2);
+th3d = thd(3);
 veld =  0;
 Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
@@ -36,9 +47,6 @@ Cq = @(q, du) [
      ] + cost_barrier(q, 1, 10);
 
 %% Variable Setup
-% parameters for mass and length
-m = [15; 15; 60];
-L = [0.5; 0.5; 1];
 % establish state space vectors and variables
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
