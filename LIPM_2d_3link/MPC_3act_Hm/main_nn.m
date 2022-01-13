@@ -23,8 +23,13 @@ push = [
      3.75, 2,  3.0
     ];
 
-h_adj = [
-     6.00, 1.9
+% h = [0.00, 1.7];
+h = [
+     0.00, 1.7;
+     1.00, 1.2;
+     2.50, 1.5;
+     6.00, 1.9;
+     7.50, 1.7
     ];
 
 %% Mass, Length, Height and Angle Constants
@@ -32,14 +37,13 @@ h_adj = [
 m = [15; 15; 60];
 L = [0.5; 0.5; 1];
 % calculate desired joint angles
-h = 1.75;
-thd = des_jointangles(L, h);
+thd = des_jointangles(L, h(1,2));
 
 %% Cost Function
 th1d = thd(1);
 th2d = thd(2);
 th3d = thd(3);
-veld =  0;
+veld = 0;
 Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
@@ -67,7 +71,7 @@ q0 = [
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, push);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, h, push);
 
 %% Linear Calc. Time [s] Trend
 N = length(q(:,11));
