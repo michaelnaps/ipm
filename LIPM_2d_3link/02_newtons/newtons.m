@@ -28,11 +28,11 @@
 %         0 -> zero cost break
 %         1 -> first order optimality
 %         2 -> change in input break
-function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
+function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, thd, eps)
     %% Setup - Initial Guess, Cost, Gradient, and Hessian
     N = length(um);
     uc = u0;
-    Cc = cost(P, dt, q0, u0, uc, c, m, L, Cq, " NN Initial Cost ");
+    Cc = cost(P, dt, q0, u0, uc, c, m, L, Cq, thd, " NN Initial Cost ");
     un = uc;  Cn = Cc;
 
     %% Loop for Newton's Method
@@ -40,14 +40,14 @@ function [u, C, n, brk] = newtons(P, dt, q0, u0, um, c, m, L, Cq, eps)
     brk = 0;
     while (Cc > eps)
         % gradient and hessian of the current input
-        g = cost_gradient(P, dt, q0, u0, uc, c, m, L, Cq, 1e-3, " NN Main Loop Gradient ");
-        H = cost_hessian(P, dt, q0, u0, uc, c, m, L, Cq, 1e-3, " NN Main Loop Hessian ");
+        g = cost_gradient(P, dt, q0, u0, uc, c, m, L, Cq, thd, 1e-3, " NN Main Loop Gradient ");
+        H = cost_hessian(P, dt, q0, u0, uc, c, m, L, Cq, thd, 1e-3, " NN Main Loop Hessian ");
 
         % calculate and add the next Newton's step
         un = uc - H\g;
 
         % compute new values for cost, gradient, and hessian
-        Cn = cost(P, dt, q0, u0, un, c, m, L, Cq, " NN Main Loop Cost ");
+        Cn = cost(P, dt, q0, u0, un, c, m, L, Cq, thd, " NN Main Loop Cost ");
         udn = abs(un - uc);
         count = count + 1;
 

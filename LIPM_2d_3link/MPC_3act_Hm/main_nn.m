@@ -1,8 +1,8 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: 3 Links (actuated at ground)
+%  Complexity: 3 Links (fully actuated)
 %  Created by: Michael Napoli
 %  Created on: 11/5/2021
-
+%
 %  Purpose: Model and control a 3-link
 %           pendulum via the model predictive
 %           control (MPC) architecture.
@@ -19,35 +19,34 @@ addpath ../02_newtons
 % push = [];
 push = [
      0.50, 3,  5.0;
-     3.50, 1, -2.0;
+     3.50, 3, -2.0;
      3.75, 2,  3.0
     ];
 
-% h = [0.00, 1.7];
-h = [
-     0.00, 1.7;
-     1.00, 1.2;
-     2.50, 1.5;
-     6.00, 1.9;
-     7.50, 1.7
-    ];
+height = [0.00, 1.7];
+% height = [
+%      0.00, 1.7;
+%      1.00, 1.2;
+%      3.50, 1.5;
+%      6.00, 1.9;
+%      7.50, 1.7
+%     ];
+% h_t = (0:0.2:10)';  h = [linspace(1,2,5/0.2)';linspace(2,1,5/0.2+1)'];
+% height = [h_t, h];
 
 %% Mass, Length, Height and Angle Constants
 % parameters for mass and length
 m = [15; 15; 60];
 L = [0.5; 0.5; 1];
 % calculate desired joint angles
-thd = des_jointangles(L, h(1,2));
+thd0 = des_jointangles(L, height(1,2));
 
 %% Cost Function
-th1d = thd(1);
-th2d = thd(2);
-th3d = thd(3);
 veld = 0;
-Cq = @(q, du) [
-      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
-      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
-      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
+Cq = @(thd, q, du) [
+      100*((cos(thd(1)) - cos(q(1)))^2 + (sin(thd(1)) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
+      100*((cos(thd(2)) - cos(q(3)))^2 + (sin(thd(2)) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(thd(3)) - cos(q(5)))^2 + (sin(thd(3)) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
      ] + cost_barrier(q, 1, 10);
 
 %% Variable Setup
@@ -55,9 +54,9 @@ Cq = @(q, du) [
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [th1d; 0.0];            % link 1 position and velocity
-th2_0 = [th2d; 0.0];            % link 2 position and velocity
-th3_0 = [th3d; 0.0];            % link 3 position and velocity
+th1_0 = [thd0(1); 0.0];            % link 1 position and velocity
+th2_0 = [thd0(2); 0.0];            % link 2 position and velocity
+th3_0 = [thd0(3); 0.0];            % link 3 position and velocity
 um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
@@ -71,7 +70,7 @@ q0 = [
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6, h, push);
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, thd0, 1e-6, height, push);
 
 %% Linear Calc. Time [s] Trend
 N = length(q(:,11));
