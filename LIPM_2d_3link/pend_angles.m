@@ -1,4 +1,4 @@
-function [thd] = des_jointangles(L, h)
+function [thd] = pend_angles(L, h)
     %% Length and Height Parameters for Link 1
     l1 = L(1);  l3 = L(3);
     h12 = (h - l3)/2;

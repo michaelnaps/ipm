@@ -39,7 +39,7 @@ height = [0.00, 1.7];
 m = [15; 15; 60];
 L = [0.5; 0.5; 1];
 % calculate desired joint angles
-thd0 = des_jointangles(L, height(1,2));
+thd0 = pend_angles(L, height(1,2));
 
 %% Cost Function
 veld = 0;
