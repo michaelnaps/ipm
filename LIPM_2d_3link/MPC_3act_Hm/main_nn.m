@@ -70,7 +70,8 @@ q0 = [
      ];
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, thd0, 1e-6, height, push);
+eps = 1e-6;
+[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, thd0, eps, height, push);
 
 %% Linear Calc. Time [s] Trend
 N = length(q(:,11));
