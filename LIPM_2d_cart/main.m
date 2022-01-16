@@ -1,5 +1,5 @@
 %% Project: Linear Inverted Pendulum Model
-%  Complexity: 1 Link and Cart (fully actuated)
+%  Complexity: 1 Link and Cart (actuated at cart)
 %  Created by: Michael Napoli
 %  Created on: 1/16/2022
 %
@@ -12,15 +12,20 @@ restoredefaultpath
 clc;clear;
 close all;
 
+addpath ./01_primary
 addpath ./02_newtons
 
 %% External Disturbance Testing
 push = [];
-position = [0.00, 0.00];
+
+position = [
+     0.00, 0.00;
+     1.25, 3.00
+    ];
 
 %% Mass, Length, Height and Angle Constants
 % parameters for mass and length
-m = [100; 40];
+m = [100; 10];
 L = [0.0; 2.0];  % cart L always 0
 
 %% Cost Function
@@ -36,7 +41,7 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 pos_0 = [qd0(1); qd0(2)];       % cart position and velocity
-th_0 =  [qd0(3); 5.0];          % link position and velocity
+th_0 =  [qd0(3); 0.0];          % link position and velocity
 um = [3000; 0];                 % maximum input to link and cart
 c = [500; 500];                 % damping coefficients
 
@@ -53,7 +58,7 @@ q0 = [
 eps = 1e-6;
 [~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, qd0, eps, position, push);
 
-%% Linear Calc. Time [s] Trend
+%% Calc. Time Trend
 N = length(q(:,8));
 [a] = polynomial_fit(q(2:N,8), q(2:N,9), 3);
 nntime = @(n) a(4)*n.^3 + a(3)*n.^2 + a(2)*n + a(1);
@@ -121,9 +126,9 @@ xlabel('Time [s]')
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
-plot(T, q(:,9))
+plot(T, 1000*q(:,9))
 title('Calculation time of Newtons Method')
-ylabel('Calculation Time [s]')
+ylabel('Calculation Time [ms]')
 xlabel('RunTime [s]')
 
 % calculation time vs. iteration count

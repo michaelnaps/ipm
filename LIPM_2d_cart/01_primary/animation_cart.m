@@ -1,11 +1,11 @@
-function figid = animation_cart(q, T, m, L)
+function fig = animation_cart(q, T, m, L)
     %% body parameters.
     m1 = m(1); m2 = m(2);
     L1 = L(1); L2 = L(2);
     
     %% unpacking
-    thetaList = q(:,1);
-    cartList = q(:,3);
+    cartList = q(:,1);
+    thetaList = q(:,3);
     
     %% Delay
     dt = T(2) - T(1);
