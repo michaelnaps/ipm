@@ -13,7 +13,8 @@ clc;clear;
 close all;
 
 addpath ../.
-addpath ../02_newtons
+addpath ../../algorithms
+addpath ../../algorithms/02_newtons
 
 %% External Disturbance Testing
 push = [];
