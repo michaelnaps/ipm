@@ -13,8 +13,8 @@ clc;clear;
 close all;
 
 addpath ../.
-addpath ../../algorithms
-addpath ../../algorithms/02_newtons
+addpath /home/michaelnaps/prog/mpc_algorithms/mlab
+addpath /home/michaelnaps/prog/mpc_algorithms/mlab/02_newtons
 
 %% External Disturbance Testing
 push = [];
