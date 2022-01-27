@@ -17,21 +17,21 @@ addpath /home/michaelnaps/prog/mpc_algorithms/mlab
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab/02_newtons
 
 %% External Disturbance Testing
-push = [];
+push = [0.75, 3, 5.0];
 % push = [
 %      0.50, 3,  5.0;
 %      3.50, 3, -2.0;
 %      3.75, 2,  3.0
 %     ];
 
-% height = [0.00, 1.6];
-height = [
-     0.00, 1.6;
-     1.00, 1.2;
-     3.50, 1.5;
-     6.00, 1.9;
-     7.50, 1.6
-    ];
+height = [0.00, 1.6];
+% height = [
+%      0.00, 1.6;
+%      1.00, 1.2;
+%      3.50, 1.5;
+%      6.00, 1.9;
+%      7.50, 1.6
+%     ];
 % h_t = (0:0.2:10)';  h = [linspace(1,2,5/0.2)';linspace(2,1,5/0.2+1)'];
 % height = [h_t, h];
 
