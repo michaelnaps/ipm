@@ -78,7 +78,7 @@ eps = 1e-6;
 N = length(q(:,11));
 [a] = polynomial_fit(q(2:N,11), q(2:N,12), 3);
 nntime = @(n) a(4)*n.^3 + a(3)*n.^2 + a(2)*n + a(1);
-err = sum((q(2:N,12) - nntime(q(2:N,11))).^2);
+err = sum((q(2:N,12) - nntime(q(2:N,11))).^2)/length(q(2:N,12));
 
 %% Graphing and Evaluation
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
@@ -165,9 +165,9 @@ xlabel('Time [s]')
 figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
-plot(T, q(:,12))
+plot(T, 1000*q(:,12))
 title('Calculation time of Newtons Method')
-ylabel('Calculation Time [s]')
+ylabel('Calculation Time [ms]')
 xlabel('RunTime [s]')
 
 % calculation time vs. iteration count
