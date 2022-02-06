@@ -7,12 +7,14 @@
 %           pendulum via the model predictive
 %           control (MPC) architecture.
 
+restoredefaultpath;
+
 clc;clear;
 close all;
 
-restoredefaultpath
 addpath ../.
-addpath ../01a_bisection
+addpath /home/michaelnaps/prog/mpc_algorithms/mlab
+addpath /home/michaelnaps/prog/mpc_algorithms/mlab/01a_bisection
 
 
 %% Cost Function
@@ -21,9 +23,9 @@ th2d = 0.0;
 th3d = 0.0;
 veld = 0;
 Cq = @(q, du) [
-      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2 + 5e-8*(du(1))^2;  % cost of Link 1
-      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
-      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2 + 5e-7*(du(3))^2;  % cost of Link 3
+      100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2;% + 1e-7*(du(1))^2;  % cost of Link 1
+      100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2;% + 1e-7*(du(2))^2;  % cost of Link 2
+      100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2;% + 1e-7*(du(3))^2;  % cost of Link 3
      ];
 
 
@@ -36,9 +38,9 @@ P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
 th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 2.0];             % link 2 position and velocity
+th2_0 = [0.0; 0.0];             % link 2 position and velocity
 th3_0 = [0.0; 0.0];             % link 3 position and velocity
-um = [3000; 2000; 1500];        % maximum input to joints
+um = [3000; 3000; 3000];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
 % create initial states
