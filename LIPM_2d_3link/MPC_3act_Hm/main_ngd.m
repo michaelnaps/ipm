@@ -16,22 +16,22 @@ addpath ../.
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab
 
 %% External Disturbance Testing
-push = [];
-% push = [0.75, 3, 5.0];
+% push = [];
+push = [0.75, 3, 5.0];
 % push = [
 %      0.50, 3,  5.0;
 %      3.50, 3, -2.0;
 %      3.75, 2,  3.0
 %     ];
 
-% height = [0.00, 1.6];
-height = [
-     0.00, 1.6;
-     1.00, 1.2;
-     3.50, 1.5;
-     6.00, 1.9;
-     7.50, 1.6
-    ];
+height = [0.00, 1.6];
+% height = [
+%      0.00, 1.6;
+%      1.00, 1.2;
+%      3.50, 1.5;
+%      6.00, 1.9;
+%      7.50, 1.6
+%     ];
 % h_t = (0:0.2:10)';  h = [linspace(1,2,5/0.2)';linspace(2,1,5/0.2+1)'];
 % height = [h_t, h];
 
@@ -63,12 +63,9 @@ c = [500; 500; 500];            % damping coefficients
 
 % create initial states
 q0 = [
-      th1_0;th2_0;th3_0;...       % initial joint states
-      0; 0; 0;...                 % initial inputs
-      0;                          % return for cost
-      0;                          % iteration count
-      0;                          % runtime of opt. function
-      0                           % break condition
+      th1_0;th2_0;th3_0;...  % initial joint states
+      0; 0; 0;...            % initial inputs
+      0; 0; 0; 0;            % return for cost, count, runtime, and break
      ];
 
 %% Implementation
@@ -182,6 +179,7 @@ hold off
 title('Gradient Descent Time [s] vs. Iteration Count')
 ylabel('Calculation Time [ms]')
 xlabel('Iteration Count [n]')
+ylim([min(1000*q(:,12))-1 max(1000*q(:,12))+1])
 hold off
 
 % break condition frequency
@@ -197,11 +195,11 @@ plot(brk_u, brk_n, 'xb')
 for i = 1:length(brk_u)
     plot([brk_u(i); brk_u(i)], [0; brk_n(i)], 'b');
 end
-hold off
 title("Break Condition for NGD")
 ylabel("Count [n]")
 xlabel("Break Condition")
-xlim([-1.5 2.5])
+xlim([min(brk_u)-0.5 max(brk_u)+0.5])
+hold off
 
 %% animation of 3-link pendulum
 % animation_3link(q, T, m, L);
