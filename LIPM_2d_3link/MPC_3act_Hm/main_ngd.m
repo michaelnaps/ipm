@@ -16,21 +16,22 @@ addpath ../.
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab
 
 %% External Disturbance Testing
-push = [0.75, 3, 5.0];
+push = [];
+% push = [0.75, 3, 5.0];
 % push = [
 %      0.50, 3,  5.0;
 %      3.50, 3, -2.0;
 %      3.75, 2,  3.0
 %     ];
 
-height = [0.00, 1.6];
-% height = [
-%      0.00, 1.6;
-%      1.00, 1.2;
-%      3.50, 1.5;
-%      6.00, 1.9;
-%      7.50, 1.6
-%     ];
+% height = [0.00, 1.6];
+height = [
+     0.00, 1.6;
+     1.00, 1.2;
+     3.50, 1.5;
+     6.00, 1.9;
+     7.50, 1.6
+    ];
 % h_t = (0:0.2:10)';  h = [linspace(1,2,5/0.2)';linspace(2,1,5/0.2+1)'];
 % height = [h_t, h];
 
@@ -47,7 +48,7 @@ Cq = @(thd, q, du) [
       100*((cos(thd(1)) - cos(q(1)))^2 + (sin(thd(1)) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(thd(2)) - cos(q(3)))^2 + (sin(thd(2)) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
       100*((cos(thd(3)) - cos(q(5)))^2 + (sin(thd(3)) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
-     ];% + cost_barrier(q, 1, 10);
+     ] + ngd.cost_barrier(q, 1, 10);
 
 %% Variable Setup
 % establish state space vectors and variables
@@ -66,14 +67,14 @@ q0 = [
       0; 0; 0;...                 % initial inputs
       0;                          % return for cost
       0;                          % iteration count
-      0                           % runtime of opt. function
+      0;                          % runtime of opt. function
+      0                           % break condition
      ];
 
 %% Implementation
-alph = 0.01;
-eps = 1e-3;
-h = 1e-3;
-[~, q] = ngd.mpc_root(P, T, q0, um, c, m, L, Cq, qd0, alph, eps, h, height, push);
+arng = [0.1; 100000];
+eps = 1e-6; h = 1e-3;
+[~, q] = ngd.mpc_root(P, T, q0, um, c, m, L, Cq, qd0, arng, eps, h, height, push);
 
 %% Linear Calc. Time [s] Trend
 N = length(q(:,11));
@@ -167,7 +168,7 @@ figure('Position', [0 0 700 800])
 hold on
 subplot(2,1,1)
 plot(T, 1000*q(:,12))
-title('Calculation time of Newtons Method')
+title('Calculation time of Gradient Descent')
 ylabel('Calculation Time [ms]')
 xlabel('RunTime [s]')
 
@@ -178,10 +179,29 @@ hold on
 plot(q(:,11), 1000*q(:,12), '.', 'markersize', 10)
 plot(nrange, 1000*nntime(nrange))
 hold off
-title('Newtons Method Time [s] vs. Iteration Count')
+title('Gradient Descent Time [s] vs. Iteration Count')
 ylabel('Calculation Time [ms]')
 xlabel('Iteration Count [n]')
 hold off
 
-% % animation of 3-link pendulum
+% break condition frequency
+brk_u = unique(q(:,13));
+brk_n = zeros(length(brk_u), 1);
+for i = 1:length(brk_u)
+    brk_n(i) = sum(brk_u(i) == q(:,13));
+end
+
+figure('Position', [0 0 400 400])
+hold on
+plot(brk_u, brk_n, 'xb')
+for i = 1:length(brk_u)
+    plot([brk_u(i); brk_u(i)], [0; brk_n(i)], 'b');
+end
+hold off
+title("Break Condition for NGD")
+ylabel("Count [n]")
+xlabel("Break Condition")
+xlim([-1.5 2.5])
+
+%% animation of 3-link pendulum
 % animation_3link(q, T, m, L);
