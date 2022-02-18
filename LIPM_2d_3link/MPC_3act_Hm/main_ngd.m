@@ -65,11 +65,11 @@ c = [500; 500; 500];            % damping coefficients
 q0 = [
       th1_0;th2_0;th3_0;...  % initial joint states
       0; 0; 0;...            % initial inputs
-      0; 0; 0; 0;            % return for cost, count, runtime, and break
+      0; 0; 0; 0; 0;         % return for cost, count, runtime, and break
      ];
 
 %% Implementation
-arng = [0.1; 100000];
+arng = [0; 20000];
 eps = 1e-6; h = 1e-3;
 [~, q] = ngd.mpc_root(P, T, q0, um, c, m, L, Cq, qd0, arng, eps, h, height, push);
 
@@ -77,20 +77,20 @@ eps = 1e-6; h = 1e-3;
 N = length(q(:,11));
 [a] = polynomial_fit(q(2:N,11), q(2:N,12), 3);
 nntime = @(n) a(4)*n.^3 + a(3)*n.^2 + a(2)*n + a(1);
-err = sum((q(2:N,12) - nntime(q(2:N,11))).^2)/length(q(2:N,12));
+err = sum(sqrt(q(2:N,12) - nntime(q(2:N,11))).^2)/length(q(2:N,12));
 
 %% Graphing and Evaluation
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
-fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
+fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n\n", q(length(q),9))
 fprintf("Final Position of Link 1 ---------- %.4fpi [rad]\n", q(length(q),1)/pi)
-fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4fpi [rad]\n", q(length(q),3)/pi)
+fprintf("Final Position of Link 3 ---------- %.4fpi [rad]\n\n", q(length(q),5)/pi)
+fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Final Position of Link 3 ---------- %.4fpi [rad]\n", q(length(q),5)/pi)
-fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,11))/length(q));
+fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n\n", q(length(q),6))
+fprintf("Average Number of Iterations ------ %.4f [n]\n\n", sum(q(:,11))/length(q));
 
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
