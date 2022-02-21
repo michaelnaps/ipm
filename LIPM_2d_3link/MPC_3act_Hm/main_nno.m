@@ -14,7 +14,6 @@ close all;
 
 addpath ../.
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab
-addpath /home/michaelnaps/prog/mpc_algorithms/mlab/02_newtons
 
 %% External Disturbance Testing
 push = [0.75, 3, 5.0];
@@ -48,7 +47,7 @@ Cq = @(thd, q, du) [
       100*((cos(thd(1)) - cos(q(1)))^2 + (sin(thd(1)) - sin(q(1)))^2) + (veld - q(2))^2 + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(thd(2)) - cos(q(3)))^2 + (sin(thd(2)) - sin(q(3)))^2) + (veld - q(4))^2 + 1e-7*(du(2))^2;  % cost of Link 2
       100*((cos(thd(3)) - cos(q(5)))^2 + (sin(thd(3)) - sin(q(5)))^2) + (veld - q(6))^2 + 1e-7*(du(3))^2;  % cost of Link 3
-     ] + cost_barrier(q, 1, 10);
+     ] + nno.cost_barrier(q, 1, 10);
 
 %% Variable Setup
 % establish state space vectors and variables
@@ -72,7 +71,7 @@ q0 = [
 
 %% Implementation
 eps = 1e-6;
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, thd0, eps, height, push);
+[~, q] = nno.mpc_control(P, T, q0, um, c, m, L, Cq, thd0, eps, height, push);
 
 %% Linear Calc. Time [s] Trend
 N = length(q(:,11));

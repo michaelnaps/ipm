@@ -14,7 +14,6 @@ close all;
 
 addpath ../.
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab
-addpath /home/michaelnaps/prog/mpc_algorithms/mlab/01a_bisection
 
 
 %% Cost Function
@@ -54,7 +53,7 @@ q0 = [
 
 
 %% Implementation
-[~, q] = mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
+[~, q] = pbs.mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
 
 %% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
