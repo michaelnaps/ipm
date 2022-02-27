@@ -83,14 +83,14 @@ err = sum((q(2:N,12) - nntime(q(2:N,11))).^2)/length(q(2:N,12));
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,12)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
-fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n", q(length(q),9))
+fprintf("Final Input at Link 3 ------------- %.4f [Nm]\n\n", q(length(q),9))
 fprintf("Final Position of Link 1 ---------- %.4fpi [rad]\n", q(length(q),1)/pi)
-fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
 fprintf("Final Position of Link 2 ---------- %.4fpi [rad]\n", q(length(q),3)/pi)
+fprintf("Final Position of Link 3 ---------- %.4fpi [rad]\n\n", q(length(q),5)/pi)
+fprintf("Final Velocity of Link 1 ---------- %.4f [rad/s]\n", q(length(q),2))
 fprintf("Final Velocity of Link 2 ---------- %.4f [rad/s]\n", q(length(q),4))
-fprintf("Final Position of Link 3 ---------- %.4fpi [rad]\n", q(length(q),5)/pi)
-fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n", q(length(q),6))
-fprintf("Average Number of Iterations ------ %.4f [n]\n", sum(q(:,11))/length(q));
+fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n\n", q(length(q),6))
+fprintf("Average Number of Iterations ------ %.4f [n]\n\n", sum(q(:,11))/length(q));
 
 % velocity and position of link 1
 figure('Position', [0 0 1400 800])
