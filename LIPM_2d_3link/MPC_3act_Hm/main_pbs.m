@@ -15,18 +15,16 @@ close all;
 addpath ../.
 addpath /home/michaelnaps/prog/mpc_algorithms/mlab
 
-
 %% Cost Function
-th1d = pi/2;
-th2d = 0.0; 
-th3d = 0.0;
+th1d =  pi/4;
+th2d =  pi/2; 
+th3d = -pi/4;
 veld = 0;
 Cq = @(q, du) [
       100*((cos(th1d) - cos(q(1)))^2 + (sin(th1d) - sin(q(1)))^2) + (veld - q(2))^2;% + 1e-7*(du(1))^2;  % cost of Link 1
       100*((cos(th2d) - cos(q(3)))^2 + (sin(th2d) - sin(q(3)))^2) + (veld - q(4))^2;% + 1e-7*(du(2))^2;  % cost of Link 2
       100*((cos(th3d) - cos(q(5)))^2 + (sin(th3d) - sin(q(5)))^2) + (veld - q(6))^2;% + 1e-7*(du(3))^2;  % cost of Link 3
      ];
-
 
 %% Variable Setup
 % parameters for mass and length
@@ -36,10 +34,10 @@ L = [0.5; 0.5; 1];
 P = 4;                          % prediction horizon [time steps]
 dt = 0.025;                     % change in time
 T = 0:dt:10;                    % time span
-th1_0 = [pi/2;0.0];             % link 1 position and velocity
-th2_0 = [0.0; 0.0];             % link 2 position and velocity
-th3_0 = [0.0; 0.0];             % link 3 position and velocity
-um = [3000; 3000; 3000];        % maximum input to joints
+th1_0 = [th1d; 0.0];            % link 1 position and velocity
+th2_0 = [th2d; 0.0];            % link 2 position and velocity
+th3_0 = [th3d; 0.0];            % link 3 position and velocity
+um = [3000; 2000; 1500];        % maximum input to joints
 c = [500; 500; 500];            % damping coefficients
 
 % create initial states
@@ -51,18 +49,22 @@ q0 = [
       0                           % calculation time
      ];
 
-
 %% Implementation
-[~, q] = pbs.mpc_control(P, T, q0, um, c, m, L, Cq, 1e-6);
+eps = 1e-6;
+[~, q] = pbs.mpc_control(P, T, q0, um, c, m, L, Cq, eps);
 
 %% Calculate Center of Mass for Animation
 CoM = map_CoM(q, m, L);
 
-%% Linear Calc. Time Trend
-[a0, a1, err] = linear_ls(q(:,13), q(:,14));
-bistime = @(n) a1*n + a0;
+%% Linear Calc. Time [s] Trend
+N = length(q(:,13));
+[a] = polynomial_fit(q(:,13), q(:,14), 1);
+pbstime = @(n) a(1) + a(2)*n;  % + a(3)*n.^2 + a(4)*n.^3;
+err = sum((q(:,14) - pbstime(q(:,13))).^2)/length(q(:,14));
 
 %% Graphing and Evaluation
+close all;
+
 fprintf("Total Runtime: -------------------- %.4f [s]\n", sum(q(:,14)))
 fprintf("Final Input at Link 1 ------------- %.4f [Nm]\n", q(length(q),7))
 fprintf("Final Input at Link 2 ------------- %.4f [Nm]\n", q(length(q),8))
@@ -173,7 +175,7 @@ xlabel('Runtime [s]')
 subplot(2,1,2)
 hold on
 plot(q(:,13), q(:,14), '.', 'markersize', 10)
-fplot(bistime, [0 max(q(:,13))+2])
+fplot(pbstime, [0 max(q(:,13))+2])
 hold off
 title('Bisection Time vs. Iteration Count')
 ylabel('Calculation Time [s]')
