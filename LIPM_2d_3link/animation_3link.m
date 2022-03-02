@@ -17,7 +17,7 @@ function [] = animation_3link(q, T, m, L)
     dt = T(2) - T(1);
 
     %% animation
-    figure('Position', [0 0 700 800]);
+    figure('Position', [0 0 400 800]);
     hold on
     for iFrame = 1:length(T)
         th1 = theta1List(iFrame);
@@ -40,7 +40,7 @@ function [] = animation_3link(q, T, m, L)
         plot([-L1/2 L1/2],[0 0],'color',[0 0 0],'linewidth',2);
 
         axis equal; % do axis equal before mentioning the xlim ylim
-        xlim([-(L1+L2) (L1+L2)]); ylim([-(L1+L2+L3+0.5) (L1+L2+L3+0.5)]);
+        xlim([-(L1+L2) (L1+L2)]); ylim([-0.5 (L1+L2+L3+0.5)]);
         pause(dt/10);
         
         hold off
