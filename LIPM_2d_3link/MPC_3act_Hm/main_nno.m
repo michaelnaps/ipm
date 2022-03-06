@@ -94,7 +94,7 @@ fprintf("Final Velocity of Link 3 ---------- %.4f [rad/s]\n\n", q(length(q),6))
 fprintf("Average Number of Iterations ------ %.4f [n]\n\n", sum(q(:,11))/length(q));
 
 % velocity and position of link 1
-figure('Position', [0 0 1400 800])
+jointStates_fig = figure('Position', [0 0 1400 800]);
 hold on
 subplot(2,3,1)
 yyaxis left
@@ -155,14 +155,14 @@ xlabel('Time [s]')
 hold off
 
 % Cost vs. Time [s]
-figure('Position', [0 0 1400 400])
+cost_fig = figure('Position', [0 0 400 400]);
 plot(T, q(:,10))
 title('Cost Trend')
 ylabel('Cost')
 xlabel('Time [s]')
 
 % calculation time of Newtons Method
-figure('Position', [0 0 700 800])
+calcTime_fig = figure('Position', [0 0 700 800]);
 hold on
 subplot(2,1,1)
 plot(T, 1000*q(:,12))
@@ -181,6 +181,10 @@ title('Newtons Method Time [s] vs. Iteration Count')
 ylabel('Calculation Time [ms]')
 xlabel('Iteration Count [n]')
 hold off
+
+%% export plots to png files
+% exportgraphics(jointStates_fig, './nno_Figures/nno_singlePushRecovery.tif', 'resolution', 1200)
+% exportgraphics(calcTime_fig, './nno_Figures/nno_calculationTime.tif', 'resolution', 1200)
 
 % % animation of 3-link pendulum
 % animation_3link(q, T, m, L);
