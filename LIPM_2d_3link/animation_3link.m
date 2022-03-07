@@ -1,4 +1,4 @@
-function [] = animation_3link(q, T, m, L)
+function [anim] = animation_3link(q, T, m, L)
     %% body parameters.
     m1 = m(1); m2 = m(2); m3 = m(3);
     L1 = L(1); L2 = L(2); L3 = L(3);
@@ -17,9 +17,9 @@ function [] = animation_3link(q, T, m, L)
     dt = T(2) - T(1);
 
     %% animation
-    figure('Position', [0 0 400 800]);
+    anim = figure('Position', [0 0 400 800]);
     hold on
-    for iFrame = 1:length(T)
+    for iFrame = 1:length(q(:,1))
         th1 = theta1List(iFrame);
         th2 = theta2List(iFrame);
         th3 = theta3List(iFrame);
