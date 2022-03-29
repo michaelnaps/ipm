@@ -66,7 +66,8 @@ q0 = [
       0; 0; 0;...                 % initial inputs
       0;                          % return for cost
       0;                          % iteration count
-      0                           % runtime of opt. function
+      0;                          % runtime of opt. function
+      0                           % break condition
      ];
 
 %% Implementation
@@ -180,6 +181,25 @@ hold off
 title('Newtons Method Time [s] vs. Iteration Count')
 ylabel('Calculation Time [ms]')
 xlabel('Iteration Count [n]')
+hold off
+
+% break condition frequency
+brk_u = unique(q(:,13));
+brk_n = zeros(length(brk_u), 1);
+for i = 1:length(brk_u)
+    brk_n(i) = sum(brk_u(i) == q(:,13));
+end
+
+figure('Position', [0 0 400 400])
+hold on
+plot(brk_u, brk_n, 'xb')
+for i = 1:length(brk_u)
+    plot([brk_u(i); brk_u(i)], [0; brk_n(i)], 'b');
+end
+title("Break Condition for NNO")
+ylabel("Count [n]")
+xlabel("Break Condition")
+xlim([min(brk_u)-0.5 max(brk_u)+0.5])
 hold off
 
 %% export plots to png files
