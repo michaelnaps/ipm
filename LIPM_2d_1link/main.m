@@ -13,14 +13,14 @@ close all;
 addpath ../.
 
 % animation adjustment and time span
-T = 30;      % [s]
+T = 5;      % [s]
 
 % initial conditions and tracking variables for gains
-q0 = [pi/2-1; 0; 0; 0; 0];  % joint pos and joint vel
+q0 = [-0.1;0;0;0];  % joint pos and joint vel
 
 % solve nonlinear state space
-[T,q] = ode45(@(t,q) statespace(q,50,800,800,800), [0 T], q0);
+[T,q] = ode45(@(t,q) statespace_lapm(q,0,1), [0 T], q0);
 
 % % simulate process
-m = 10;  L = 1;
-animation_1link(q, T, m, L);
+m = 10;  H = 1;
+animation_lapm(q, T, m, H);
