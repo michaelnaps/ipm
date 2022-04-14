@@ -19,7 +19,7 @@ function [anim] = animation_1link(q, T, m, L)
         plot(xKnee, yKnee, 's', 'color', '#77AC30', 'markerfacecolor', '#77AC30', 'markersize', m); hold on;
 
         plot([-L/2 L/2], [0 0], 'color', [0 0 0], 'linewidth', 2);
-        ylim([-L L]);  xlim([-L L]);
+        ylim([-L L] + 1/4*[-1 1]);  xlim([-L L] + 1/4*[-1 1]);
         hold off
 
         pause(dt);
