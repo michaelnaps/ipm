@@ -10,7 +10,7 @@ function dq = statespace(q, c, kp, ki, kd)
     
     % error
     e = (pi/2 - q1);  % sin(1/2 * (q1 + pi));
-    de = e - e0;
+    de = e0 - e;
     
     % proportional controller
     up = kp * e;
