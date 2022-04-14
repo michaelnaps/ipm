@@ -10,43 +10,17 @@
 clc;clear;
 close all;
 
+addpath ../.
+
 % animation adjustment and time span
-adj = pi/2;  % [rad]
-T = 10;      % [s]
+T = 5;      % [s]
 
 % initial conditions and tracking variables for gains
-q0 = [pi/2+adj; 1; 0; 0; 0];  % joint pos and joint vel
+q0 = [pi/2-0.1; 0; 0; 0; 0];  % joint pos and joint vel
 
 % solve nonlinear state space
-[t,q] = ode45(@(t,q) statespace(q,50,800,800), [0 T], q0);
-
-% % angular position
-% figure(1)
-% hold on
-% plot(t, q(:,1));
-% title('Angular Position')
-% hold off
-% 
-% % angular velocity
-% figure(2)
-% hold on
-% plot(t, q(:,2));
-% title('Angular Velocity')
-% hold off
-
-% % proportional gain vs. position
-% figure(3)
-% hold on
-% plot(q(:,3), q(:,1))
-% title('Proportional Gain Plot')
-% xlabel('Kp * Torque [Nm]')
-% ylabel('Angle [rad]')
-% hold off
-
-% % gain vs. position equation
-% figure(4)
-% fplot(@(q1) sin(1/2 * (q1 + pi)), [0 6*pi])
+[T,q] = ode45(@(t,q) statespace(q,50,800,800,800), [0 T], q0);
 
 % % simulate process
-n = length(q(:,1));
-animation([q(:,1)-adj, zeros(n,1), q(:,2), zeros(n,1)]', 0.01);
+m = 10;  L = 1;
+animation_1link(q, T, m, L);
