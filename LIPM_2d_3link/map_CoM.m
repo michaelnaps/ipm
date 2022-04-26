@@ -13,14 +13,14 @@ function CoM = map_CoM(q, m, L)
         
         xAnkle = 0; yAnkle = 0;
         
-        xKnee = xAnkle + L1*cos(th1);
-        yKnee = yAnkle + L1*sin(th1);
+        xKnee = 2*xAnkle + 1/2*L1*cos(th1);
+        yKnee = 2*yAnkle + 1/2*L1*sin(th1);
         
-        xHip = xKnee + L2*cos(th1+th2);
-        yHip = yKnee + L2*sin(th1+th2);
+        xHip = 2*xKnee + 1/2*L2*cos(th1+th2);
+        yHip = 2*yKnee + 1/2*L2*sin(th1+th2);
         
-        xHead = xHip + L3*cos(th1+th2+th3);
-        yHead = yHip + L3*sin(th1+th2+th3);
+        xHead = 2*xHip + 1/2*L3*cos(th1+th2+th3);
+        yHead = 2*yHip + 1/2*L3*sin(th1+th2+th3);
         
         CoM(i,1) = (m1*xKnee + m2*xHip + m3*xHead) / (m1 + m2 + m3);
         CoM(i,2) = (m1*yKnee + m2*yHip + m3*yHead) / (m1 + m2 + m3);
